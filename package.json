@@ -1,0 +1,10 @@
+{
+  "name": "farmasi-mayra",
+  "private": true,
+  "type": "module",
+  "description": "Mayra Soto Burgos's Farmasi vCard, quizzes and PIN-protected team page on Netlify.",
+  "dependencies": {
+    "@netlify/blobs": "11.1.1",
+    "@netlify/functions": "6.0.0"
+  }
+}

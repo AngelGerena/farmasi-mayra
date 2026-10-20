@@ -1,0 +1,22 @@
+# Static site lives in /site; serverless functions in /netlify/functions (PIN check, leads, quiz intake).
+[build]
+  publish = "site"
+
+[[headers]]
+  for = "/*.vcf"
+  [headers.values]
+    Content-Type = "text/vcard; charset=utf-8"
+    Content-Disposition = "attachment; filename=mayra-soto-burgos.vcf"
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+
+# Mayra's private team page: never indexed, never cached
+[[headers]]
+  for = "/equipo/*"
+  [headers.values]
+    X-Robots-Tag = "noindex, nofollow"
+    Cache-Control = "no-store"
