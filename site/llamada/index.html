@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Hablemos | Mayra Soto Burgos</title>
+<meta name="description" content="Book a free 15-minute call with Mayra Soto Burgos to learn about joining her Farmasi beauty team.">
+<meta property="og:title" content="Let's talk | Mayra Soto Burgos">
+<meta property="og:description" content="Book a free 15-minute call with me. No pressure, just answers.">
+<meta property="og:image" content="https://farmasi.mayra.finessemedia.pro/images/photo.jpg">
+<link rel="canonical" href="https://farmasi.mayra.finessemedia.pro/llamada/">
+<meta name="theme-color" content="#FFFFFF">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Abril+Fatface&family=DM+Sans:wght@400;500;700&display=swap">
+<link rel="stylesheet" href="../css/pages.css">
+</head>
+<body>
+<main class="pg">
+  <div class="pg-top">
+    <a class="pg-back" href="../" data-t="back">&larr; Mi tarjeta</a>
+    <div class="lang" role="group" aria-label="Language"><button type="button" data-lang="en" aria-pressed="false">EN</button><button type="button" data-lang="es" aria-pressed="true">ES</button></div>
+  </div>
+
+  <header class="hero">
+    <p class="eyebrow" data-t="eyebrow">Llamada gratis · 15 minutos</p>
+    <h1 data-t="h1">Hablemos.</h1>
+    <p class="lede" data-t="lede">Déjame tu número y te escribo por WhatsApp para cuadrar la llamada. Sin presión, solo respuestas.</p>
+  </header>
+
+  <form class="form" id="callForm" novalidate>
+    <label class="field"><span data-t="name">Tu nombre</span><input id="cName" name="name" autocomplete="given-name" required></label>
+    <label class="field"><span>WhatsApp</span><input id="cPhone" name="phone" type="tel" inputmode="tel" autocomplete="tel" data-ph="phPh" placeholder="787 555 0123" required></label>
+
+    <fieldset>
+      <legend class="legend" data-t="whatQ">¿Qué te interesa?</legend>
+      <label class="choice"><input type="radio" name="interest" value="join" checked><span data-t="iJoin">Quiero unirme a tu equipo</span></label>
+      <label class="choice"><input type="radio" name="interest" value="info"><span data-t="iInfo">Quiero saber cómo funciona</span></label>
+      <label class="choice"><input type="radio" name="interest" value="shop"><span data-t="iShop">Quiero ayuda con productos</span></label>
+    </fieldset>
+
+    <fieldset>
+      <legend class="legend" data-t="whenQ">¿Cuándo te queda mejor?</legend>
+      <label class="choice"><input type="radio" name="when" value="am" checked><span><b data-t="wAm">Mañana</b><small>9:00 AM – 12:00 PM</small></span></label>
+      <label class="choice"><input type="radio" name="when" value="pm"><span><b data-t="wPm">Tarde</b><small>12:00 PM – 5:00 PM</small></span></label>
+      <label class="choice"><input type="radio" name="when" value="eve"><span><b data-t="wEve">Noche</b><small>5:00 PM – 8:00 PM</small></span></label>
+    </fieldset>
+
+    <p class="err" id="cErr" role="alert" hidden></p>
+    <button type="submit" class="pill coral" id="cSend"><span data-t="send">Quiero mi llamada</span></button>
+    <p class="fine" data-t="fine">Solo uso tu número para escribirte sobre esta llamada.</p>
+  </form>
+
+  <section class="done" id="done" hidden aria-live="polite">
+    <div class="mark"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></div>
+    <h2 id="doneH"></h2>
+    <p data-t="doneP">Te escribo por WhatsApp en el horario que escogiste. Si no quieres esperar, escríbeme tú ahora.</p>
+    <div class="cta">
+      <a class="pill ink" id="doneWa" href="#" target="_blank" rel="noopener"><span data-t="doneWa">Escribirle a Mayra ahora</span></a>
+      <a class="link" href="../mi-equipo/" data-t="doneMore">Mientras tanto, conoce mi equipo</a>
+    </div>
+  </section>
+
+  <p class="credit"><span data-t="crafted">Hecho por</span> <a href="https://finessemedia.pro" target="_blank" rel="noopener">Finesse Media</a></p>
+</main>
+
+<!-- Netlify Forms reads this hidden form at deploy time; the page posts to it -->
+<form name="quiz-leads" data-netlify="true" netlify-honeypot="bot-field" hidden>
+  <input name="bot-field"><input name="name"><input name="phone"><input name="quiz"><input name="result"><input name="products"><input name="answers"><input name="lang"><input name="source">
+</form>
+<script src="../js/pages.js"></script>
+<script>
+(function () {
+  var D = {
+    es: { title: 'Hablemos | Mayra Soto Burgos', back: '← Mi tarjeta', eyebrow: 'Llamada gratis · 15 minutos', h1: 'Hablemos.',
+      lede: 'Déjame tu número y te escribo por WhatsApp para cuadrar la llamada. Sin presión, solo respuestas.',
+      name: 'Tu nombre', phPh: '787 555 0123', whatQ: '¿Qué te interesa?', iJoin: 'Quiero unirme a tu equipo', iInfo: 'Quiero saber cómo funciona',
+      iShop: 'Quiero ayuda con productos', whenQ: '¿Cuándo te queda mejor?', wAm: 'Mañana', wPm: 'Tarde', wEve: 'Noche',
+      send: 'Quiero mi llamada', fine: 'Solo uso tu número para escribirte sobre esta llamada.',
+      doneP: 'Te escribo por WhatsApp en el horario que escogiste. Si no quieres esperar, escríbeme tú ahora.',
+      doneWa: 'Escribirle a Mayra ahora', doneMore: 'Mientras tanto, conoce mi equipo', crafted: 'Hecho por',
+      errName: 'Escribe tu nombre.', errPhone: 'Escribe tu número de WhatsApp de 10 dígitos.', errSend: 'No se pudo enviar. Revisa tu conexión e intenta otra vez.',
+      thanks: '¡Listo, {n}!', sending: 'Enviando...',
+      wa: 'Hola Mayra, soy {n}. Acabo de pedir una llamada desde tu tarjeta. {i} Me queda mejor en la {w}.',
+      i: { join: 'Me interesa unirme a tu equipo.', info: 'Quiero saber cómo funciona Farmasi.', shop: 'Quiero ayuda con productos.' },
+      w: { am: 'mañana (9:00 AM a 12:00 PM)', pm: 'tarde (12:00 PM a 5:00 PM)', eve: 'noche (5:00 PM a 8:00 PM)' } },
+    en: { title: "Let's talk | Mayra Soto Burgos", back: '← My card', eyebrow: 'Free call · 15 minutes', h1: "Let's talk.",
+      lede: 'Leave your number and I will message you on WhatsApp to set up the call. No pressure, just answers.',
+      name: 'Your name', phPh: '407 555 0123', whatQ: 'What are you interested in?', iJoin: 'I want to join your team', iInfo: 'I want to know how it works',
+      iShop: 'I want help with products', whenQ: 'When works best for you?', wAm: 'Morning', wPm: 'Afternoon', wEve: 'Evening',
+      send: 'Book my call', fine: 'I only use your number to message you about this call.',
+      doneP: 'I will message you on WhatsApp during the time you picked. If you do not want to wait, message me now.',
+      doneWa: 'Message Mayra now', doneMore: 'Meanwhile, meet my team', crafted: 'Crafted by',
+      errName: 'Please enter your name.', errPhone: 'Please enter your 10-digit WhatsApp number.', errSend: 'Could not send. Check your connection and try again.',
+      thanks: 'You are all set, {n}!', sending: 'Sending...',
+      wa: 'Hi Mayra, this is {n}. I just booked a call from your card. {i} The {w} works best for me.',
+      i: { join: 'I am interested in joining your team.', info: 'I want to know how Farmasi works.', shop: 'I want help with products.' },
+      w: { am: 'morning (9:00 AM to 12:00 PM)', pm: 'afternoon (12:00 PM to 5:00 PM)', eve: 'evening (5:00 PM to 8:00 PM)' } }
+  };
+  MS.translate(D);
+  var f = document.getElementById('callForm'), err = document.getElementById('cErr'), btn = document.getElementById('cSend');
+  f.addEventListener('input', function () { err.hidden = true; });
+  function val(n) { var x = f.querySelector('input[name="' + n + '"]:checked'); return x ? x.value : ''; }
+  f.addEventListener('submit', function (e) {
+    e.preventDefault();
+    var L = D[MS.lang()], name = document.getElementById('cName').value.trim(), phone = MS.digits(document.getElementById('cPhone').value);
+    if (!name) { err.textContent = L.errName; err.hidden = false; return; }
+    if (phone.length < 11) { err.textContent = L.errPhone; err.hidden = false; return; }
+    err.hidden = true; btn.disabled = true; btn.firstElementChild.textContent = L.sending;
+    var interest = val('interest'), when = val('when');
+    MS.postLead({ name: name, phone: phone, quiz: 'call', result: interest, answers: L.w[when], products: '' })
+      .then(function () {
+        var first = name.split(/\s+/)[0];
+        document.getElementById('doneH').textContent = L.thanks.replace('{n}', first);
+        document.getElementById('doneWa').href = 'https://wa.me/' + MS.WA + '?text=' +
+          encodeURIComponent(L.wa.replace('{n}', name).replace('{i}', L.i[interest]).replace('{w}', L.w[when]));
+        f.hidden = true; document.getElementById('done').hidden = false; window.scrollTo(0, 0);
+      })
+      .catch(function () { err.textContent = L.errSend; err.hidden = false; })
+      .then(function () { btn.disabled = false; btn.firstElementChild.textContent = D[MS.lang()].send; });
+  });
+})();
+</script>
+</body>
+</html>

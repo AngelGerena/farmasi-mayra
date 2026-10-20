@@ -7,7 +7,7 @@ import { getStore } from '@netlify/blobs'
 import { randomUUID } from 'node:crypto'
 import { hasValidToken, json } from '../../lib/auth.mjs'
 
-const EDITABLE = ['name', 'phone', 'quiz', 'result', 'lang', 'source', 'products', 'stage', 'step', 'lastContact', 'notes']
+const EDITABLE = ['name', 'phone', 'quiz', 'result', 'lang', 'source', 'products', 'answers', 'stage', 'step', 'lastContact', 'notes']
 
 function pick(body) {
   const out = {}

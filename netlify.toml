@@ -1,4 +1,4 @@
-# Static site lives in /site; serverless functions in /netlify/functions (PIN check, leads, quiz intake).
+# Static site lives in /site; serverless functions in /netlify/functions (PIN check, leads, lead intake, Team Hub).
 [build]
   publish = "site"
 
@@ -20,3 +20,15 @@
   [headers.values]
     X-Robots-Tag = "noindex, nofollow"
     Cache-Control = "no-store"
+
+# Team Hub: only for her team, never indexed
+[[headers]]
+  for = "/hub/*"
+  [headers.values]
+    X-Robots-Tag = "noindex, nofollow"
+
+# Event date and spotlight change often: always fetch the latest
+[[headers]]
+  for = "/data/*"
+  [headers.values]
+    Cache-Control = "no-cache"

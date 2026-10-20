@@ -1,4 +1,4 @@
-// Every verified "quiz-leads" form submission becomes a lead on Mayra's team page.
+// Every verified "quiz-leads" form submission (call requests and event RSVPs) becomes a lead on Mayra's team page.
 // Netlify signs and verifies form events, so this cannot be called from outside.
 import { getStore } from '@netlify/blobs'
 import { randomUUID } from 'node:crypto'

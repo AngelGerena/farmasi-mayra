@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<title>Team Hub | Mayra Soto Burgos</title>
+<meta name="theme-color" content="#FFFFFF">
+<link rel="apple-touch-icon" href="../images/photo.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Abril+Fatface&family=DM+Sans:wght@400;500;700&display=swap">
+<link rel="stylesheet" href="../css/pages.css">
+</head>
+<body>
+<main class="pg">
+  <div class="pg-top">
+    <a class="pg-back" href="../" data-t="back">&larr; Mi tarjeta</a>
+    <div class="lang" role="group" aria-label="Language"><button type="button" data-lang="en" aria-pressed="false">EN</button><button type="button" data-lang="es" aria-pressed="true">ES</button></div>
+  </div>
+
+  <header class="hero">
+    <p class="eyebrow" data-t="eyebrow">Solo para mi equipo</p>
+    <h1>Team Hub</h1>
+  </header>
+
+  <form class="gate form" id="gate" novalidate>
+    <p class="lede" data-t="gateP">Escribe el código del equipo que te di para entrar.</p>
+    <label class="field"><span data-t="codeL">Código del equipo</span><input id="code" autocomplete="off" autocapitalize="characters" spellcheck="false" required></label>
+    <p class="err" id="gErr" role="alert" hidden></p>
+    <button type="submit" class="pill coral" id="gBtn"><span data-t="enter">Entrar</span></button>
+    <a class="link" id="askCode" href="#" target="_blank" rel="noopener" data-t="ask">No tengo el código</a>
+  </form>
+
+  <div id="hub" hidden>
+    <div style="display:flex;flex-direction:column;gap:18px">
+      <p class="lede" id="welcome"></p>
+
+      <section class="card">
+        <h3 data-t="checkH">Tu primera semana</h3>
+        <p id="checkP"></p>
+        <ul class="checks" id="checks"></ul>
+      </section>
+
+      <section class="card">
+        <h3 data-t="schedH">Calendario del equipo</h3>
+        <div id="sched"></div>
+      </section>
+
+      <section class="card">
+        <h3 data-t="linksH">Enlaces importantes</h3>
+        <ul class="linklist" id="links"></ul>
+      </section>
+
+      <section class="card">
+        <h3 data-t="promoH">Este mes</h3>
+        <div id="promos" style="display:flex;flex-direction:column;gap:12px"></div>
+      </section>
+
+      <section class="card">
+        <h3 data-t="teamH">Nuestro equipo</h3>
+        <ul class="people" id="team"></ul>
+      </section>
+
+      <button type="button" class="link" id="out" style="border:0;background:none;cursor:pointer" data-t="out">Salir del Team Hub</button>
+    </div>
+  </div>
+
+  <p class="credit"><span data-t="crafted">Hecho por</span> <a href="https://finessemedia.pro" target="_blank" rel="noopener">Finesse Media</a></p>
+</main>
+<script src="../js/pages.js"></script>
+<script>
+(function () {
+  var D = {
+    es: { title: 'Team Hub | Mayra Soto Burgos', back: '← Mi tarjeta', eyebrow: 'Solo para mi equipo', gateP: 'Escribe el código del equipo que te di para entrar.',
+      codeL: 'Código del equipo', enter: 'Entrar', ask: 'No tengo el código', checkH: 'Tu primera semana', schedH: 'Calendario del equipo',
+      linksH: 'Enlaces importantes', promoH: 'Este mes', teamH: 'Nuestro equipo', out: 'Salir del Team Hub', crafted: 'Hecho por',
+      done: '{d} de {t} listos', wrong: 'Ese código no es. Revísalo e intenta otra vez.', locked: 'Demasiados intentos. Espera {m} minutos.',
+      off: 'El Team Hub todavía no está activado.', net: 'No se pudo entrar. Revisa tu conexión.', wa: 'WhatsApp',
+      askMsg: 'Hola Mayra, soy parte de tu equipo y necesito el código del Team Hub.' },
+    en: { title: 'Team Hub | Mayra Soto Burgos', back: '← My card', eyebrow: 'For my team only', gateP: 'Enter the team code I gave you to get in.',
+      codeL: 'Team code', enter: 'Enter', ask: 'I do not have the code', checkH: 'Your first week', schedH: 'Team calendar',
+      linksH: 'Important links', promoH: 'This month', teamH: 'Our team', out: 'Leave the Team Hub', crafted: 'Crafted by',
+      done: '{d} of {t} done', wrong: 'That is not the code. Check it and try again.', locked: 'Too many tries. Wait {m} minutes.',
+      off: 'The Team Hub is not turned on yet.', net: 'Could not get in. Check your connection.', wa: 'WhatsApp',
+      askMsg: 'Hi Mayra, I am on your team and I need the Team Hub code.' }
+  };
+  MS.translate(D);
+  function $(id) { return document.getElementById(id); }
+  function el(tag, cls, text) { var e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; }
+  var KEY = 'hub-code', DONE = 'hub-checks', H = null;
+  function store(k, v) { try { if (v == null) localStorage.removeItem(k); else localStorage.setItem(k, v); } catch (e) {} }
+  function read(k) { try { return localStorage.getItem(k); } catch (e) { return null; } }
+  var checked = {};
+  try { checked = JSON.parse(read(DONE) || '{}') || {}; } catch (e) {}
+
+  function render(l) {
+    $('askCode').href = 'https://wa.me/' + MS.WA + '?text=' + encodeURIComponent(D[l].askMsg);
+    if (!H) return;
+    $('welcome').textContent = H.welcome[l];
+    var c = $('checks'); c.innerHTML = '';
+    H.checklist.forEach(function (x) {
+      var li = el('li'), lab = el('label'), box = el('input'); box.type = 'checkbox'; box.checked = !!checked[x.id];
+      box.addEventListener('change', function () { checked[x.id] = box.checked; store(DONE, JSON.stringify(checked)); count(l); });
+      lab.appendChild(box); lab.appendChild(el('span', null, x[l])); li.appendChild(lab); c.appendChild(li);
+    });
+    count(l);
+    var s = $('sched'); s.innerHTML = '';
+    H.schedule.forEach(function (x) { var r = el('div', 'sched'); r.appendChild(el('span', null, x[l][0])); r.appendChild(el('b', null, x[l][1])); s.appendChild(r); });
+    var k = $('links'); k.innerHTML = '';
+    H.links.forEach(function (x) { var li = el('li'), a = el('a', null, x[l]); a.href = x.url; a.target = '_blank'; a.rel = 'noopener'; li.appendChild(a); k.appendChild(li); });
+    var p = $('promos'); p.innerHTML = '';
+    H.promos.forEach(function (x) { var d = el('div'); d.appendChild(el('b', null, x[l][0])); d.appendChild(el('p', null, x[l][1])); p.appendChild(d); });
+    var t = $('team'); t.innerHTML = '';
+    H.team.forEach(function (x) {
+      var li = el('li'), ini = x.name.split(/\s+/).map(function (w) { return w[0]; }).join('').slice(0, 2);
+      li.appendChild(el('span', 'avatar', ini));
+      var who = el('div', 'who'); who.appendChild(el('b', null, x.name)); who.appendChild(el('span', null, x[l])); li.appendChild(who);
+      var a = el('a', null, D[l].wa); a.href = 'https://wa.me/' + x.phone; a.target = '_blank'; a.rel = 'noopener'; li.appendChild(a);
+      t.appendChild(li);
+    });
+  }
+  function count(l) {
+    var n = H.checklist.filter(function (x) { return checked[x.id]; }).length;
+    $('checkP').textContent = D[l].done.replace('{d}', n).replace('{t}', H.checklist.length);
+  }
+  MS.onLang(render);
+
+  function open(code, quiet) {
+    var L = D[MS.lang()], err = $('gErr'), btn = $('gBtn');
+    btn.disabled = true;
+    return fetch('/api/hub', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ code: code }) })
+      .then(function (r) { return r.json().catch(function () { return {}; }); })
+      .then(function (d) {
+        btn.disabled = false;
+        if (d.hub) { H = d.hub; store(KEY, code); $('gate').hidden = true; $('hub').hidden = false; render(MS.lang()); return; }
+        store(KEY, null);
+        if (quiet) return;
+        err.textContent = d.error === 'locked' ? L.locked.replace('{m}', d.minutes || 15) : d.error === 'not_configured' ? L.off : L.wrong;
+        err.hidden = false;
+      })
+      .catch(function () { btn.disabled = false; if (!quiet) { err.textContent = L.net; err.hidden = false; } });
+  }
+  $('gate').addEventListener('submit', function (e) {
+    e.preventDefault(); $('gErr').hidden = true;
+    var code = $('code').value.trim(); if (code) open(code);
+  });
+  $('out').addEventListener('click', function () { store(KEY, null); H = null; $('hub').hidden = true; $('gate').hidden = false; $('code').value = ''; });
+  var saved = read(KEY); if (saved) open(saved, true);
+})();
+</script>
+</body>
+</html>

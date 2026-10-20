@@ -166,7 +166,7 @@ h2:first-child{margin-top:4px}
   <header class="head">
     <div class="headrow"><p class="eyebrow">Mayra Soto Burgos · Farmasi</p><button type="button" class="signout" id="signOut">Salir</button></div>
     <h1>Mi Equipo</h1>
-    <p>Tus leads de los quizzes, el próximo mensaje para cada una, y todo lo que necesitas para compartir.</p>
+    <p>Quién pidió llamada o se anotó a tu evento, el próximo mensaje para cada una, y todo lo que necesitas para compartir.</p>
   </header>
 
   <nav class="tabs" role="tablist" aria-label="Secciones">
@@ -196,17 +196,14 @@ h2:first-child{margin-top:4px}
     <form class="add" id="addForm" hidden novalidate>
       <label>Nombre<input id="fName" autocomplete="off" required></label>
       <label>WhatsApp<input id="fPhone" type="tel" inputmode="tel" autocomplete="off" placeholder="407 555 0123" required></label>
-      <label>Quiz
-        <select id="fQuiz"><option value="boss">Beauty Boss</option><option value="glow">Encuentra tu Glow</option><option value="none">Sin quiz</option></select>
-      </label>
-      <label>Resultado<select id="fResult"></select></label>
+      <label>¿Qué busca?<select id="fResult"></select></label>
       <label>Idioma<select id="fLang"><option value="es">Español</option><option value="en">English</option></select></label>
       <label>¿De dónde vino?<select id="fSource">
         <option value="direct">Directo</option><option value="status">Estado de WhatsApp</option><option value="msg">Mensaje personal</option>
         <option value="group">Grupo de WhatsApp</option><option value="flyer">Flyer</option><option value="tent">Letrero de mesa</option>
         <option value="bag">Sticker en bolsa</option><option value="person">En persona</option>
       </select></label>
-      <label class="full">Productos (opcional)<input id="fProducts" autocomplete="off" placeholder="Sunkiss Drops, Zen Extension Lash Mascara"></label>
+      <label class="full">Detalles (opcional)<input id="fAnswers" autocomplete="off" placeholder="Mejor hora, evento, lo que te contó..."></label>
       <p class="err" id="fErr" hidden></p>
       <div class="row"><button type="submit" class="btn ink">Guardar</button><button type="button" class="btn line" id="addCancel">Cancelar</button></div>
     </form>
@@ -222,9 +219,6 @@ h2:first-child{margin-top:4px}
         <button type="button" data-sl="es" aria-pressed="true">ES</button><button type="button" data-sl="en" aria-pressed="false">EN</button>
       </div>
     </div>
-    <h2>Imágenes para tu estado</h2>
-    <p class="note">Mantén presionada la imagen para guardarla. Súbela a tu estado de WhatsApp y pega el texto de abajo, que lleva el enlace.</p>
-    <div class="statusgrid" id="statusGrid"></div>
     <h2>Mensajes listos para enviar</h2>
     <div class="msgs" id="shareMsgs"></div>
     <h2>Tus enlaces</h2>
@@ -239,7 +233,7 @@ h2:first-child{margin-top:4px}
         <button type="button" data-sl="es" aria-pressed="true">ES</button><button type="button" data-sl="en" aria-pressed="false">EN</button>
       </div>
     </div>
-    <h2>Seguimiento por resultado</h2>
+    <h2>Seguimiento por tipo de lead</h2>
     <div class="typepick" id="typePick"></div>
     <div class="msgs" id="followMsgs"></div>
     <h2>Cuando te digan...</h2>
@@ -256,16 +250,13 @@ h2:first-child{margin-top:4px}
   var DAY = 86400000;
 
   var TYPES = {
-    creator:   { es: 'Glow Creator', en: 'Glow Creator', quiz: 'boss' },
-    connector: { es: 'Conectora Social', en: 'Social Connector', quiz: 'boss' },
-    shopper:   { es: 'Compradora Inteligente', en: 'Smart Shopper', quiz: 'boss' },
-    leader:    { es: 'Futura Líder', en: 'Future Leader', quiz: 'boss' },
-    natural:   { es: 'Glow Natural', en: 'Effortless Glow', quiz: 'glow' },
-    soft:      { es: 'Glam Suave', en: 'Soft Glam', quiz: 'glow' },
-    full:      { es: 'Glam Total', en: 'Full Glam Icon', quiz: 'glow' },
-    none:      { es: 'Sin quiz', en: 'No quiz', quiz: 'none' }
+    join:  { es: 'Quiere unirse', en: 'Wants to join', quiz: 'call' },
+    info:  { es: 'Quiere información', en: 'Wants info', quiz: 'call' },
+    shop:  { es: 'Quiere productos', en: 'Wants products', quiz: 'call' },
+    event: { es: 'Viene al evento', en: 'Coming to the event', quiz: 'event' },
+    none:  { es: 'En persona', en: 'Met in person', quiz: 'none' }
   };
-  // Map the quiz's result names (as the form stores them) back to a type key
+  // Map stored result names back to a type key
   var NAME2KEY = {};
   Object.keys(TYPES).forEach(function (k) { NAME2KEY[TYPES[k].es] = k; NAME2KEY[TYPES[k].en] = k; });
 
@@ -275,50 +266,45 @@ h2:first-child{margin-top:4px}
   ];
   var SRC = { direct: 'Directo', status: 'Estado', msg: 'Mensaje', group: 'Grupo', flyer: 'Flyer', tent: 'Letrero', bag: 'Sticker', person: 'En persona' };
 
-  // Follow-up scripts: day 0, day 2, day 5. {n}=first name, {r}=result, {p}=products, {p1}=first product
+  // Follow-up scripts: day 0, day 2, day 5. {n}=first name, {line}=line for what she wants, {t}=best time or event details
   var LINE = {
-    creator: { es: 'Eso quiere decir que tienes un talento natural para crear contenido, y en Farmasi eso se nota.',
-               en: 'That means you have a natural talent for content, and that really shows at Farmasi.' },
-    connector: { es: 'Eso quiere decir que la gente confía en ti y le gusta lo que recomiendas. Así es como crece un negocio de belleza.',
-                 en: 'That means people trust you and like what you recommend. That is exactly how a beauty business grows.' },
-    shopper: { es: 'Eso quiere decir que ya te encantan los productos, y como influencer los compras a mejor precio.',
-               en: 'That means you already love the products, and as an influencer you buy them at a better price.' },
-    leader: { es: 'Eso quiere decir que piensas en grande y te motiva ayudar a otras a crecer. Me encantaría trabajar contigo.',
-              en: 'That means you think big and love helping others grow. I would love to work with you.' }
+    join: { es: 'Me alegra mucho que te interese unirte a mi equipo.', en: 'I am so glad you are interested in joining my team.' },
+    info: { es: 'Te explico cómo funciona, sin ningún compromiso.', en: 'I will walk you through how it works, no strings attached.' },
+    shop: { es: 'Te ayudo a escoger lo que mejor te quede.', en: 'I will help you pick what suits you best.' }
   };
   var FOLLOW = {
-    boss: [
+    call: [
       { when: { es: 'Día 0 · el mismo día', en: 'Day 0 · same day' },
-        es: '¡Hola {n}! Soy Mayra. Vi que hiciste mi quiz y te salió {r}. {line} ¿Te cuento cómo empezaría alguien como tú? Son 5 minutos por aquí o por llamada, como prefieras.',
-        en: 'Hi {n}! It is Mayra. I saw you took my quiz and got {r}. {line} Can I tell you how someone like you would get started? It takes 5 minutes here or on a call, whatever you prefer.' },
+        es: '¡Hola {n}! Soy Mayra. Recibí tu pedido de llamada desde mi tarjeta. {line} Me dijiste que te queda mejor en la {t}. ¿Te llamo hoy o prefieres mañana?',
+        en: 'Hi {n}! It is Mayra. I got your call request from my card. {line} You said the {t} works best for you. Should I call you today or tomorrow?' },
       { when: { es: 'Día 2 · si no contestó', en: 'Day 2 · if no reply' },
-        es: 'Hola {n}, ¿pudiste ver mi mensaje? Te dejo mi página para que veas los paquetes con calma: ' + JOIN + '\nCualquier pregunta, aquí estoy.',
-        en: 'Hi {n}, did you get a chance to see my message? Here is my page so you can look at the packages when you have a minute: ' + JOIN + '\nI am here for any questions.' },
+        es: 'Hola {n}, te escribí para cuadrar nuestra llamada de 15 minutos. ¿Qué día te queda mejor esta semana? Mientras, aquí puedes ver cómo trabajo con mi equipo: ' + SITE + '/mi-equipo/',
+        en: 'Hi {n}, I messaged you to set up our 15-minute call. What day works best this week? In the meantime, here is how I work with my team: ' + SITE + '/mi-equipo/' },
       { when: { es: 'Día 5 · último mensaje', en: 'Day 5 · last message' },
-        es: 'Hola {n}, no te quiero molestar. Si ahora no es buen momento, no pasa nada. Te dejo mi tarjeta por si un día te animas: ' + SITE + '\n¿Quieres que te mande las ofertas del mes por aquí?',
-        en: 'Hi {n}, I do not want to bother you. If now is not a good time, that is completely fine. Here is my card in case you want to start someday: ' + SITE + '\nWould you like me to send you the monthly deals here?' }
+        es: 'Hola {n}, no te quiero molestar. Si ahora no es buen momento, no pasa nada. Te dejo mi tarjeta por si un día quieres hablar: ' + SITE,
+        en: 'Hi {n}, I do not want to bother you. If now is not a good time, that is completely fine. Here is my card in case you want to talk someday: ' + SITE }
     ],
-    glow: [
+    event: [
       { when: { es: 'Día 0 · el mismo día', en: 'Day 0 · same day' },
-        es: '¡Hola {n}! Soy Mayra. Vi tu resultado: {r}. Te recomendé {p}. ¿Te ayudo a escoger el tono, o te cuento cuál es mi favorito?',
-        en: 'Hi {n}! It is Mayra. I saw your result: {r}. I recommended {p}. Want help choosing your shade, or should I tell you which one is my favorite?' },
-      { when: { es: 'Día 2 · si no contestó', en: 'Day 2 · if no reply' },
-        es: 'Hola {n}, si quieres probar {p1}, aquí lo puedes ver: ' + STORE + '\nSi me dices tu tono de piel, te digo cuál te queda mejor.',
-        en: 'Hi {n}, if you want to try {p1}, you can see it here: ' + STORE + '\nIf you tell me your skin tone, I will tell you which one suits you best.' },
-      { when: { es: 'Día 5 · invitación al equipo', en: 'Day 5 · team invite' },
-        es: 'Hola {n}, ¿sabías que como influencer de Farmasi compras tus productos a mejor precio? Si te da curiosidad, hice un quiz de 1 minuto: ' + SITE + '/boss/?src=msg',
-        en: 'Hi {n}, did you know that as a Farmasi influencer you buy your products at a better price? If you are curious, I made a 1-minute quiz: ' + SITE + '/boss/?src=msg' }
+        es: '¡Hola {n}! Soy Mayra. ¡Qué bueno que vienes! Quedaste anotada para: {t}. Te mando el enlace antes de empezar. Cualquier pregunta, aquí estoy.',
+        en: 'Hi {n}! It is Mayra. So happy you are coming! You are on the list for: {t}. I will send you the link before we start. Any questions, I am here.' },
+      { when: { es: 'Día 2 · recordatorio', en: 'Day 2 · reminder' },
+        es: 'Hola {n}, te recuerdo nuestro evento: {t}. ¿Sigues pudiendo conectarte? Te guardo tu lugar.',
+        en: 'Hi {n}, just a reminder about our event: {t}. Are you still able to join? I am holding your spot.' },
+      { when: { es: 'Día 5 · después del evento', en: 'Day 5 · after the event' },
+        es: 'Hola {n}, ¡gracias por tu interés en el evento! ¿Qué te pareció? Si quieres, hablamos 15 minutos y te contesto cualquier pregunta: ' + SITE + '/llamada/',
+        en: 'Hi {n}, thank you for your interest in the event! What did you think? If you want, we can talk for 15 minutes and I will answer any questions: ' + SITE + '/llamada/' }
     ],
     none: [
       { when: { es: 'Día 0 · el mismo día', en: 'Day 0 · same day' },
-        es: '¡Hola {n}! Soy Mayra. Me encantó hablar contigo. Hice un quiz de 1 minuto para ver qué tipo de Beauty Boss eres, ¿lo haces y me cuentas? ' + SITE + '/boss/?src=person',
-        en: 'Hi {n}! It is Mayra. I loved talking with you. I made a 1-minute quiz to see what kind of Beauty Boss you are. Will you take it and tell me? ' + SITE + '/boss/?src=person' },
+        es: '¡Hola {n}! Soy Mayra. Me encantó conocerte. Te dejo mi tarjeta para que me tengas a mano: ' + SITE + '\nY aquí puedes ver cómo trabajo con mi equipo: ' + SITE + '/mi-equipo/?src=person',
+        en: 'Hi {n}! It is Mayra. I loved meeting you. Here is my card so you always have me handy: ' + SITE + '\nAnd here is how I work with my team: ' + SITE + '/mi-equipo/?src=person' },
       { when: { es: 'Día 2 · si no contestó', en: 'Day 2 · if no reply' },
-        es: 'Hola {n}, ¿pudiste hacer el quiz? Tu resultado me dice cómo te puedo ayudar mejor.',
-        en: 'Hi {n}, did you get to take the quiz? Your result tells me how I can help you best.' },
+        es: 'Hola {n}, ¿pudiste ver mi tarjeta? Si quieres, hablamos 15 minutos y te cuento todo. Aquí escoges el horario: ' + SITE + '/llamada/?src=person',
+        en: 'Hi {n}, did you get a chance to look at my card? If you want, we can talk for 15 minutes and I will tell you everything. Pick a time here: ' + SITE + '/llamada/?src=person' },
       { when: { es: 'Día 5 · último mensaje', en: 'Day 5 · last message' },
-        es: 'Hola {n}, te dejo mi tarjeta para que me tengas a mano: ' + SITE + '\nCuando quieras, aquí estoy.',
-        en: 'Hi {n}, here is my card so you always have me handy: ' + SITE + '\nWhenever you are ready, I am here.' }
+        es: 'Hola {n}, cuando quieras, aquí estoy. ¿Quieres que te mande las ofertas del mes por aquí?',
+        en: 'Hi {n}, whenever you are ready, I am here. Would you like me to send you the monthly deals here?' }
     ]
   };
   var GAP = [0, 2, 3]; // days after the previous message: day 0, day 2, day 5
@@ -331,8 +317,8 @@ h2:first-child{margin-top:4px}
       es: 'Hay varios paquetes para empezar y te ayudo a escoger el que más te convenga. Aquí los puedes ver: ' + JOIN,
       en: 'There are a few starter packages and I will help you choose the one that fits you best. You can see them here: ' + JOIN },
     { t: { es: '"No sé vender"', en: '"I do not know how to sell"' },
-      es: 'No tienes que ser vendedora. Solo compartes lo que usas y te gusta. Yo te paso los mensajes y las ideas para empezar.',
-      en: 'You do not have to be a salesperson. You just share what you use and love. I will give you the messages and ideas to get started.' },
+      es: 'No tienes que ser vendedora. Solo compartes lo que usas y te gusta. En mi equipo te paso los mensajes y las ideas para empezar.',
+      en: 'You do not have to be a salesperson. You just share what you use and love. On my team you get the messages and ideas to get started.' },
     { t: { es: '"Déjame pensarlo"', en: '"Let me think about it"' },
       es: '¡Claro! Tómate tu tiempo. ¿Qué es lo que más te hace dudar? Así te ayudo con eso.',
       en: 'Of course! Take your time. What is the main thing on your mind? That way I can help with it.' },
@@ -342,28 +328,28 @@ h2:first-child{margin-top:4px}
   ];
 
   var SHARE = [
-    { t: { es: 'Mensaje personal · Beauty Boss', en: 'Personal message · Beauty Boss' }, src: 'msg', q: 'boss',
-      es: 'Hola [nombre], hice un quiz cortito y pensé en ti. Son 6 preguntas y te dice qué tipo de Beauty Boss eres. ¿Me cuentas qué te sale?\n{link}',
-      en: 'Hi [name], I made a short quiz and thought of you. It is 6 questions and tells you what kind of Beauty Boss you are. Will you tell me what you get?\n{link}' },
-    { t: { es: 'Mensaje personal · Encuentra tu Glow', en: 'Personal message · Find Your Glow' }, src: 'msg', q: 'glow',
-      es: 'Hola [nombre], si alguna vez no sabes qué productos usar, hice un quiz de 4 preguntas que te recomienda productos según tu piel y tu estilo.\n{link}',
-      en: 'Hi [name], if you are ever not sure which products to use, I made a 4-question quiz that recommends products for your skin and style.\n{link}' },
-    { t: { es: 'Grupo de WhatsApp', en: 'WhatsApp group' }, src: 'group', q: 'boss',
-      es: '¡Hola a todas! Estoy creciendo mi equipo de belleza con Farmasi y creé un quiz de 1 minuto: ¿Qué tipo de Beauty Boss eres? Háganlo y cuéntenme su resultado.\n{link}',
-      en: 'Hi everyone! I am growing my beauty team with Farmasi and made a 1-minute quiz: What kind of Beauty Boss are you? Take it and tell me your result.\n{link}' },
-    { t: { es: 'Recordatorio amable', en: 'Friendly reminder' }, src: 'msg', q: 'boss',
-      es: 'Hola [nombre], ¿pudiste hacer el quiz? Tu resultado me dice cómo te puedo ayudar mejor.\n{link}',
-      en: 'Hi [name], did you get to take the quiz? Your result tells me how I can help you best.\n{link}' }
+    { t: { es: 'Mensaje personal · Llamada', en: 'Personal message · Call' }, src: 'msg', p: 'llamada',
+      es: 'Hola [nombre], estoy creciendo mi equipo de belleza con Farmasi y pensé en ti. ¿Te gustaría que habláramos 15 minutos? Sin compromiso. Aquí escoges el horario:\n{link}',
+      en: 'Hi [name], I am growing my beauty team with Farmasi and thought of you. Would you like to talk for 15 minutes? No strings attached. Pick a time here:\n{link}' },
+    { t: { es: 'Mensaje personal · Por qué mi equipo', en: 'Personal message · Why my team' }, src: 'msg', p: 'mi-equipo',
+      es: 'Hola [nombre], te comparto cómo trabajo con mi equipo y cómo apoyo a cada persona que empieza conmigo. Échale un vistazo y me cuentas:\n{link}',
+      en: 'Hi [name], here is how I work with my team and how I support everyone who starts with me. Take a look and let me know what you think:\n{link}' },
+    { t: { es: 'Grupo de WhatsApp · Evento', en: 'WhatsApp group · Event' }, src: 'group', p: 'evento',
+      es: '¡Hola a todas! Tengo una noche de oportunidad por Zoom para conocer Farmasi y hacerme preguntas. Es gratis y sin compromiso. Guarden su lugar aquí:\n{link}',
+      en: 'Hi everyone! I am hosting an opportunity night on Zoom to learn about Farmasi and ask me anything. It is free with no strings attached. Save your spot here:\n{link}' },
+    { t: { es: 'Estado de WhatsApp', en: 'WhatsApp status' }, src: 'status', p: 'llamada',
+      es: '¿Te da curiosidad Farmasi? Te lo explico en 15 minutos. Escoge tu horario aquí:\n{link}',
+      en: 'Curious about Farmasi? I will explain it in 15 minutes. Pick your time here:\n{link}' },
+    { t: { es: 'Recordatorio amable', en: 'Friendly reminder' }, src: 'msg', p: 'llamada',
+      es: 'Hola [nombre], ¿pudiste ver mi mensaje? Si quieres, hablamos 15 minutos esta semana. Aquí escoges el horario:\n{link}',
+      en: 'Hi [name], did you get a chance to see my message? If you want, we can talk for 15 minutes this week. Pick a time here:\n{link}' }
   ];
-  var STATUS = [
-    { q: 'boss', es: '¿Qué tipo de Beauty Boss eres? Haz mi quiz de 1 minuto:\n{link}', en: 'What kind of Beauty Boss are you? Take my 1-minute quiz:\n{link}' },
-    { q: 'glow', es: 'Encuentra tu Glow: 4 preguntas y te digo qué productos de Farmasi van contigo.\n{link}', en: 'Find Your Glow: 4 questions and I will tell you which Farmasi products fit you.\n{link}' }
-  ];
+  var PAGES = [['llamada', 'Llamada'], ['mi-equipo', 'Por qué mi equipo'], ['evento', 'Evento']];
   var LINKS = [
     ['Estado de WhatsApp', 'status'], ['Mensaje personal', 'msg'], ['Grupo de WhatsApp', 'group'],
     ['Flyer', 'flyer'], ['Letrero de mesa', 'tent'], ['Sticker en bolsa', 'bag'], ['En persona', 'person']
   ];
-  function link(q, src) { return SITE + '/' + q + '/?src=' + src; }
+  function link(page, src) { return SITE + '/' + page + '/?src=' + src; }
 
   // ---------- helpers ----------
   function $(id) { return document.getElementById(id); }
@@ -392,6 +378,7 @@ h2:first-child{margin-top:4px}
       .replace('{line}', LINE[key] ? LINE[key][lang] : '')
       .replace('{p}', prods.length ? prods.join(', ') : fallbackP)
       .replace('{p1}', prods[0] || (lang === 'es' ? 'mis favoritos' : 'my favorites'))
+      .replace('{t}', lead.answers || (T.quiz === 'event' ? (lang === 'es' ? 'nuestro próximo evento' : 'our next event') : (lang === 'es' ? 'hora que te quede mejor' : 'time that suits you')))
       .replace(/  +/g, ' ');
   }
   function quizOf(lead) { var k = lead.result || 'none'; return (TYPES[k] || TYPES.none).quiz; }
@@ -419,7 +406,7 @@ h2:first-child{margin-top:4px}
   // ---------- share + scripts (static) ----------
   var slang = 'es';
   try { slang = localStorage.getItem('card-hub-lang') || 'es'; } catch (e) {}
-  var ptype = 'creator';
+  var ptype = 'join';
 
   function msgCard(title, body, when, extra) {
     var c = el('div', 'msg');
@@ -432,25 +419,16 @@ h2:first-child{margin-top:4px}
     return c;
   }
   function renderShare() {
-    var g = $('statusGrid'); g.innerHTML = '';
-    STATUS.forEach(function (s) {
-      var f = el('figure'), img = el('img'); img.src = 'img/status-' + s.q + '-' + slang + '.jpg';
-      img.alt = s.q === 'boss' ? 'Imagen del quiz Beauty Boss' : 'Imagen del quiz Encuentra tu Glow'; img.loading = 'lazy';
-      f.appendChild(img);
-      var text = s[slang].replace('{link}', link(s.q, 'status'));
-      f.appendChild(msgCard(s.q === 'boss' ? 'Texto · Beauty Boss' : 'Texto · Encuentra tu Glow', text));
-      g.appendChild(f);
-    });
     var m = $('shareMsgs'); m.innerHTML = '';
-    SHARE.forEach(function (s) { m.appendChild(msgCard(s.t[slang], s[slang].replace('{link}', link(s.q, s.src)))); });
+    SHARE.forEach(function (s) { m.appendChild(msgCard(s.t[slang], s[slang].replace('{link}', link(s.p, s.src)))); });
     var tb = $('linkTable'); tb.innerHTML = '';
     LINKS.forEach(function (l) {
       var tr = el('tr'); tr.appendChild(el('td', null, l[0]));
       var td = el('td');
-      ['boss', 'glow'].forEach(function (q) {
+      PAGES.forEach(function (pg) {
         var row = el('div'); row.style.display = 'flex'; row.style.gap = '8px'; row.style.alignItems = 'center'; row.style.justifyContent = 'space-between'; row.style.padding = '2px 0';
-        var code = el('code', null, link(q, l[1]));
-        var b = el('button', 'copy', 'Copiar'); b.type = 'button'; b.addEventListener('click', function () { copyText(link(q, l[1]), b); });
+        var code = el('code', null, link(pg[0], l[1])); code.title = pg[1];
+        var b = el('button', 'copy', 'Copiar'); b.type = 'button'; b.addEventListener('click', function () { copyText(link(pg[0], l[1]), b); });
         row.appendChild(code); row.appendChild(b); td.appendChild(row);
       });
       tr.appendChild(td); tb.appendChild(tr);
@@ -458,14 +436,17 @@ h2:first-child{margin-top:4px}
   }
   function renderScripts() {
     var tp = $('typePick'); tp.innerHTML = '';
-    ['creator', 'connector', 'shopper', 'leader', 'natural', 'soft', 'full', 'none'].forEach(function (k) {
+    Object.keys(TYPES).forEach(function (k) {
       var b = el('button', null, TYPES[k][slang]); b.type = 'button'; b.setAttribute('aria-pressed', k === ptype ? 'true' : 'false');
       b.addEventListener('click', function () { ptype = k; renderScripts(); });
       tp.appendChild(b);
     });
-    var sample = { name: slang === 'es' ? '[nombre]' : '[name]', result: ptype, products: ptype === 'natural' ? 'Dr. C. Tuna Glow Face Mist, Sunkiss Drops' : ptype === 'soft' ? 'Air Blush Duo, Coral Pop, Zen Extension Lash Mascara' : ptype === 'full' ? 'VFX PRO Blur Primer, Full Blast Mascara' : '' };
+    var sampleT = TYPES[ptype].quiz === 'event'
+      ? (slang === 'es' ? 'Noche de Oportunidad Farmasi · Jueves, 29 de octubre · 7:00 PM' : 'Farmasi Opportunity Night · Thursday, October 29 · 7:00 PM')
+      : (slang === 'es' ? 'tarde (12:00 PM a 5:00 PM)' : 'afternoon (12:00 PM to 5:00 PM)');
+    var sample = { name: slang === 'es' ? '[nombre]' : '[name]', result: ptype, answers: TYPES[ptype].quiz === 'none' ? '' : sampleT };
     var f = $('followMsgs'); f.innerHTML = '';
-    FOLLOW[TYPES[ptype].quiz].forEach(function (m) { f.appendChild(msgCard(m.when[slang], fill(m[slang], sample, slang).replace('[nombre]', '[nombre]'))); });
+    FOLLOW[TYPES[ptype].quiz].forEach(function (m) { f.appendChild(msgCard(m.when[slang], fill(m[slang], sample, slang))); });
     var o = $('objMsgs'); o.innerHTML = '';
     OBJ.forEach(function (x) { o.appendChild(msgCard(x.t[slang], x[slang])); });
   }
@@ -487,12 +468,11 @@ h2:first-child{margin-top:4px}
   filterSel.addEventListener('change', function () { try { localStorage.setItem('card-hub-filter', filterSel.value); } catch (e) {} renderLeads(); });
 
   function resultOptions() {
-    var q = $('fQuiz').value, s = $('fResult'); s.innerHTML = '';
-    Object.keys(TYPES).filter(function (k) { return TYPES[k].quiz === q; }).forEach(function (k) {
-      var o = el('option', null, TYPES[k].es); o.value = k; s.appendChild(o);
-    });
+    var s = $('fResult'); s.innerHTML = '';
+    Object.keys(TYPES).forEach(function (k) { var o = el('option', null, TYPES[k].es); o.value = k; s.appendChild(o); });
+    s.value = 'none';
   }
-  $('fQuiz').addEventListener('change', resultOptions); resultOptions();
+  resultOptions();
   $('addBtn').addEventListener('click', function () { $('addForm').hidden = false; $('fName').focus(); });
   $('addCancel').addEventListener('click', function () { $('addForm').hidden = true; $('fErr').hidden = true; });
   $('addForm').addEventListener('submit', function (e) {
@@ -502,8 +482,8 @@ h2:first-child{margin-top:4px}
     err.hidden = true;
     var now = new Date().toISOString();
     api('POST', {
-      name: name, phone: digits(phone), quiz: $('fQuiz').value, result: $('fResult').value, lang: $('fLang').value,
-      source: $('fSource').value, products: $('fProducts').value.trim(), stage: 'new', step: 0,
+      name: name, phone: digits(phone), quiz: TYPES[$('fResult').value].quiz, result: $('fResult').value, lang: $('fLang').value,
+      source: $('fSource').value, answers: $('fAnswers').value.trim(), products: '', stage: 'new', step: 0,
       created: now, lastContact: null, notes: ''
     }).then(function (r) {
       if (r && r.lead) { leads.push(r.lead); renderLeads(); }
@@ -542,6 +522,7 @@ h2:first-child{margin-top:4px}
       chips.appendChild(el('span', 'chip wait', d <= 1 ? 'Mañana' : 'En ' + d + ' días'));
     }
     c.appendChild(chips);
+    if (l.answers) c.appendChild(el('p', 'note', (q === 'call' ? 'Mejor hora: ' : q === 'event' ? 'Evento: ' : 'Detalles: ') + l.answers));
 
     if (isActive(l) && s < 3 && l.stage !== 'talking') {
       var m = FOLLOW[q][s], text = fill(m[lang], l, lang);
@@ -571,7 +552,6 @@ h2:first-child{margin-top:4px}
 
     if (open[l.id]) {
       if (l.products) c.appendChild(el('p', 'note', 'Productos: ' + l.products));
-      if (l.answers) c.appendChild(el('p', 'note', 'Respuestas: ' + l.answers));
       var ta = el('textarea'); ta.value = l.notes || ''; ta.placeholder = 'Notas (lo que te contó, cuándo volver a escribirle...)';
       ta.setAttribute('aria-label', 'Notas');
       ta.addEventListener('change', function () { update(l.id, { notes: ta.value }).then(function () { toast('Notas guardadas'); }); });
@@ -615,7 +595,7 @@ h2:first-child{margin-top:4px}
     var list = $('list'); list.innerHTML = '';
     if (!leads.length) {
       var e = el('div', 'empty'); e.appendChild(el('b', null, 'Todavía no hay leads'));
-      e.appendChild(document.createTextNode('Cuando alguien haga uno de tus quizzes y te deje su número, aparece aquí con su resultado y el mensaje que le toca. También puedes tocar "Agregar lead" para alguien que conociste en persona.'));
+      e.appendChild(document.createTextNode('Cuando alguien pida una llamada o se anote a tu evento desde tu tarjeta, aparece aquí con el mensaje que le toca. También puedes tocar "Agregar lead" para alguien que conociste en persona.'));
       list.appendChild(e); return;
     }
     if (!rows.length) { list.appendChild(el('div', 'empty', 'No hay leads en esta vista.')); return; }

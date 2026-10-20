@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Por qué mi equipo | Mayra Soto Burgos</title>
+<meta name="description" content="Why join Mayra Soto Burgos's Farmasi beauty team: training, weekly calls, a supportive group and one-on-one mentoring.">
+<meta property="og:title" content="Why My Team | Mayra Soto Burgos">
+<meta property="og:description" content="Training, weekly calls, a supportive group and one-on-one mentoring. Nobody starts alone.">
+<meta property="og:image" content="https://farmasi.mayra.finessemedia.pro/images/photo.jpg">
+<link rel="canonical" href="https://farmasi.mayra.finessemedia.pro/mi-equipo/">
+<meta name="theme-color" content="#FFFFFF">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Abril+Fatface&family=DM+Sans:wght@400;500;700&display=swap">
+<link rel="stylesheet" href="../css/pages.css">
+</head>
+<body>
+<main class="pg">
+  <div class="pg-top">
+    <a class="pg-back" href="../" data-t="back">&larr; Mi tarjeta</a>
+    <div class="lang" role="group" aria-label="Language"><button type="button" data-lang="en" aria-pressed="false">EN</button><button type="button" data-lang="es" aria-pressed="true">ES</button></div>
+  </div>
+
+  <header class="hero">
+    <p class="eyebrow" data-t="eyebrow">Por qué mi equipo</p>
+    <h1 data-t="h1">Aquí nadie empieza sola.</h1>
+    <div class="face">
+      <img src="../images/photo.jpg" alt="" width="64" height="64">
+      <span><b>Mayra Soto Burgos</b><span data-t="role">Directora de Belleza Farmasi</span></span>
+    </div>
+  </header>
+
+  <section class="prose" id="story"></section>
+
+  <section>
+    <h2 data-t="giveH">Lo que te doy</h2>
+    <div class="rows" id="promises"></div>
+  </section>
+
+  <section>
+    <h2 data-t="planH">Tus primeros 30 días</h2>
+    <p class="lede" data-t="planS" style="font-size:15px;margin:6px 0 16px">Así empezamos juntas, paso a paso.</p>
+    <ol class="plan" id="plan"></ol>
+  </section>
+
+  <div class="cta">
+    <a class="pill coral" href="../llamada/"><span data-t="call">Hablemos 15 minutos</span></a>
+    <a class="pill ink" href="https://www.farmasius.com/mayrasotoburgos/package-selection" target="_blank" rel="noopener"><span data-t="join">Ver paquetes para empezar</span></a>
+  </div>
+
+  <p class="credit"><span data-t="crafted">Hecho por</span> <a href="https://finessemedia.pro" target="_blank" rel="noopener">Finesse Media</a></p>
+</main>
+<script src="../js/pages.js"></script>
+<script>
+(function () {
+  MS.translate({
+    es: { title: 'Por qué mi equipo | Mayra Soto Burgos', back: '← Mi tarjeta', eyebrow: 'Por qué mi equipo', h1: 'Aquí nadie empieza sola.',
+      role: 'Directora de Belleza Farmasi', giveH: 'Lo que te doy', planH: 'Tus primeros 30 días', planS: 'Así empezamos juntas, paso a paso.',
+      call: 'Hablemos 15 minutos', join: 'Ver paquetes para empezar', crafted: 'Hecho por' },
+    en: { title: 'Why My Team | Mayra Soto Burgos', back: '← My card', eyebrow: 'Why my team', h1: 'Nobody starts alone here.',
+      role: 'Farmasi Beauty Director', giveH: 'What I give you', planH: 'Your first 30 days', planS: 'This is how we start together, step by step.',
+      call: "Let's talk for 15 minutes", join: 'See starter packages', crafted: 'Crafted by' }
+  });
+  function el(tag, cls, text) { var e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; }
+  var C;
+  function render(l) {
+    if (!C) return;
+    var s = document.getElementById('story'); s.innerHTML = '';
+    C.story[l].forEach(function (p) { s.appendChild(el('p', null, p)); });
+    var pr = document.getElementById('promises'); pr.innerHTML = '';
+    C.promises.forEach(function (x, i) {
+      var r = el('div', 'row'); r.appendChild(el('span', 'n', String(i + 1).padStart(2, '0')));
+      var t = el('div'); t.appendChild(el('b', null, x[l][0])); t.appendChild(el('span', null, x[l][1])); r.appendChild(t); pr.appendChild(r);
+    });
+    var pl = document.getElementById('plan'); pl.innerHTML = '';
+    C.plan.forEach(function (x) { var li = el('li'); li.appendChild(el('b', null, x[l][0])); li.appendChild(el('span', null, x[l][1])); pl.appendChild(li); });
+  }
+  MS.onLang(render);
+  MS.content().then(function (c) { C = c; render(MS.lang()); });
+})();
+</script>
+</body>
+</html>

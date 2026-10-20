@@ -1,0 +1,49 @@
+{
+  "_note": "PLACEHOLDER CONTENT. Replace with Mayra's real story, event and team before sharing her card.",
+  "story": {
+    "es": [
+      "Empecé con Farmasi porque me encantaban los productos y quería algo mío, a mi ritmo y sin dejar de lado a mi familia.",
+      "Lo que más me motiva hoy es ver a otras mujeres creer en sí mismas. Por eso mi equipo no es solo un grupo de ventas: es un lugar donde aprendemos juntas, nos celebramos y nadie empieza sola."
+    ],
+    "en": [
+      "I started with Farmasi because I loved the products and wanted something of my own, at my own pace, without putting my family second.",
+      "What drives me today is watching other women believe in themselves. That is why my team is not just a sales group. It is a place where we learn together, celebrate each other, and nobody starts alone."
+    ]
+  },
+  "promises": [
+    { "es": ["Entrenamiento paso a paso", "Te enseño desde cómo abrir tu tienda hasta cómo compartir sin sentirte vendedora."],
+      "en": ["Step-by-step training", "I show you everything from opening your store to sharing without feeling like a salesperson."] },
+    { "es": ["Llamadas de equipo cada semana", "Nos conectamos para aprender, resolver dudas y celebrar los logros de todas."],
+      "en": ["Weekly team calls", "We meet to learn, answer questions and celebrate everyone's wins."] },
+    { "es": ["Un grupo que te apoya", "Tienes acceso a nuestro grupo privado de WhatsApp con ideas, mensajes y apoyo diario."],
+      "en": ["A group that has your back", "You get our private WhatsApp group with ideas, ready-made messages and daily support."] },
+    { "es": ["Mentoría directa conmigo", "Hablamos uno a uno para armar tu plan según el tiempo que tienes."],
+      "en": ["One-on-one mentoring with me", "We talk one on one to build a plan around the time you actually have."] }
+  ],
+  "plan": [
+    { "es": ["Semana 1", "Abres tu tienda, te unes al grupo y hacemos tu primera llamada de bienvenida."],
+      "en": ["Week 1", "You open your store, join the group and we do your welcome call."] },
+    { "es": ["Semana 2", "Escoges tus productos favoritos y aprendes a compartirlos con tu gente."],
+      "en": ["Week 2", "You pick your favorite products and learn how to share them with your people."] },
+    { "es": ["Semana 3", "Haces tu primera presentación o evento, con mi ayuda."],
+      "en": ["Week 3", "You host your first presentation or event, with my help."] },
+    { "es": ["Semana 4", "Revisamos lo que funcionó y armamos tu plan para el próximo mes."],
+      "en": ["Week 4", "We review what worked and plan your next month together."] }
+  ],
+  "event": {
+    "start": "2026-10-29T19:00:00-04:00",
+    "minutes": 60,
+    "where": { "es": "En línea por Zoom", "en": "Online on Zoom" },
+    "title": { "es": "Noche de Oportunidad Farmasi", "en": "Farmasi Opportunity Night" },
+    "about": {
+      "es": "Una hora relajada para conocer cómo funciona Farmasi, ver los productos más vendidos y hacerme todas tus preguntas. No tienes que decidir nada esa noche.",
+      "en": "A relaxed hour to see how Farmasi works, check out the best-selling products and ask me anything. You do not have to decide anything that night."
+    }
+  },
+  "spotlight": [
+    { "name": "Carmen R.", "es": "Nueva Manager", "en": "New Manager" },
+    { "name": "Yesenia L.", "es": "Bienvenida al equipo", "en": "Welcome to the team" },
+    { "name": "Lourdes M.", "es": "Nueva Senior Manager", "en": "New Senior Manager" },
+    { "name": "Paola V.", "es": "Bienvenida al equipo", "en": "Welcome to the team" }
+  ]
+}

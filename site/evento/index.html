@@ -1,0 +1,149 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Próximo evento | Mayra Soto Burgos</title>
+<meta name="description" content="Save your spot at Mayra Soto Burgos's next Farmasi event.">
+<meta property="og:title" content="Next event | Mayra Soto Burgos">
+<meta property="og:description" content="Save your spot at my next Farmasi event.">
+<meta property="og:image" content="https://farmasi.mayra.finessemedia.pro/images/photo.jpg">
+<link rel="canonical" href="https://farmasi.mayra.finessemedia.pro/evento/">
+<meta name="theme-color" content="#FFFFFF">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Abril+Fatface&family=DM+Sans:wght@400;500;700&display=swap">
+<link rel="stylesheet" href="../css/pages.css">
+</head>
+<body>
+<main class="pg">
+  <div class="pg-top">
+    <a class="pg-back" href="../" data-t="back">&larr; Mi tarjeta</a>
+    <div class="lang" role="group" aria-label="Language"><button type="button" data-lang="en" aria-pressed="false">EN</button><button type="button" data-lang="es" aria-pressed="true">ES</button></div>
+  </div>
+
+  <header class="hero">
+    <p class="eyebrow" data-t="eyebrow">Próximo evento</p>
+    <h1 id="evTitle">&nbsp;</h1>
+  </header>
+
+  <div id="ev" hidden>
+    <article class="ticket">
+      <div class="when">
+        <div class="day"><b id="evDay"></b><small id="evMon"></small></div>
+        <div class="info"><strong id="evDate"></strong><span id="evTime"></span><span id="evWhere"></span></div>
+      </div>
+      <p id="evAbout"></p>
+    </article>
+  </div>
+
+  <div id="none" class="card" hidden>
+    <h3 data-t="noneH">Pronto anuncio el próximo evento</h3>
+    <p data-t="noneP">Mientras tanto, pídeme una llamada y te cuento todo en 15 minutos.</p>
+    <a class="pill coral" href="../llamada/"><span data-t="noneBtn">Hablemos 15 minutos</span></a>
+  </div>
+
+  <form class="form" id="rsvp" novalidate hidden>
+    <h2 data-t="rsvpH">Guarda tu lugar</h2>
+    <label class="field"><span data-t="name">Tu nombre</span><input id="rName" autocomplete="given-name" required></label>
+    <label class="field"><span>WhatsApp</span><input id="rPhone" type="tel" inputmode="tel" autocomplete="tel" data-ph="phPh" placeholder="787 555 0123" required></label>
+    <p class="err" id="rErr" role="alert" hidden></p>
+    <button type="submit" class="pill coral" id="rSend"><span data-t="send">Reservar mi lugar</span></button>
+    <p class="fine" data-t="fine">Te mando el enlace y un recordatorio por WhatsApp.</p>
+  </form>
+
+  <section class="done" id="done" hidden aria-live="polite">
+    <div class="mark"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></div>
+    <h2 id="doneH"></h2>
+    <p data-t="doneP">Te mando el enlace por WhatsApp antes del evento. Agrégalo a tu calendario para que no se te pase.</p>
+  </section>
+
+  <div class="cta" id="calWrap" hidden>
+    <button type="button" class="pill ink" id="cal"><span data-t="cal">Agregar a mi calendario</span></button>
+  </div>
+
+  <p class="credit"><span data-t="crafted">Hecho por</span> <a href="https://finessemedia.pro" target="_blank" rel="noopener">Finesse Media</a></p>
+</main>
+
+<form name="quiz-leads" data-netlify="true" netlify-honeypot="bot-field" hidden>
+  <input name="bot-field"><input name="name"><input name="phone"><input name="quiz"><input name="result"><input name="products"><input name="answers"><input name="lang"><input name="source">
+</form>
+<script src="../js/pages.js"></script>
+<script>
+(function () {
+  var D = {
+    es: { title: 'Próximo evento | Mayra Soto Burgos', back: '← Mi tarjeta', eyebrow: 'Próximo evento', noneH: 'Pronto anuncio el próximo evento',
+      noneP: 'Mientras tanto, pídeme una llamada y te cuento todo en 15 minutos.', noneBtn: 'Hablemos 15 minutos', rsvpH: 'Guarda tu lugar',
+      name: 'Tu nombre', phPh: '787 555 0123', send: 'Reservar mi lugar', fine: 'Te mando el enlace y un recordatorio por WhatsApp.',
+      doneP: 'Te mando el enlace por WhatsApp antes del evento. Agrégalo a tu calendario para que no se te pase.',
+      cal: 'Agregar a mi calendario', crafted: 'Hecho por', thanks: '¡Te espero, {n}!', sending: 'Enviando...',
+      errName: 'Escribe tu nombre.', errPhone: 'Escribe tu número de WhatsApp de 10 dígitos.', errSend: 'No se pudo enviar. Revisa tu conexión e intenta otra vez.',
+      to: 'a' },
+    en: { title: 'Next event | Mayra Soto Burgos', back: '← My card', eyebrow: 'Next event', noneH: 'My next event is coming soon',
+      noneP: 'In the meantime, book a call and I will tell you everything in 15 minutes.', noneBtn: "Let's talk for 15 minutes", rsvpH: 'Save your spot',
+      name: 'Your name', phPh: '407 555 0123', send: 'Save my spot', fine: 'I will send you the link and a reminder on WhatsApp.',
+      doneP: 'I will send you the link on WhatsApp before the event. Add it to your calendar so you do not miss it.',
+      cal: 'Add to my calendar', crafted: 'Crafted by', thanks: 'See you there, {n}!', sending: 'Sending...',
+      errName: 'Please enter your name.', errPhone: 'Please enter your 10-digit WhatsApp number.', errSend: 'Could not send. Check your connection and try again.',
+      to: 'to' }
+  };
+  MS.translate(D);
+  var E, start, end, live = false;
+  function $(id) { return document.getElementById(id); }
+  function render(l) {
+    if (!E) return;
+    if (!live) { $('evTitle').textContent = l === 'en' ? 'Coming soon' : 'Muy pronto'; return; }
+    $('evTitle').textContent = E.title[l];
+    $('evDay').textContent = start.getDate();
+    $('evMon').textContent = start.toLocaleDateString(l === 'en' ? 'en-US' : 'es-US', { month: 'short' }).replace('.', '');
+    $('evDate').textContent = MS.date(start, l);
+    $('evTime').textContent = MS.time(start) + ' ' + D[l].to + ' ' + MS.time(end);
+    $('evWhere').textContent = E.where[l];
+    $('evAbout').textContent = E.about[l];
+  }
+  MS.onLang(render);
+  MS.content().then(function (c) {
+    E = c.event;
+    start = E && new Date(E.start);
+    live = !!(start && !isNaN(start) && start.getTime() + (E.minutes || 60) * 60000 > Date.now());
+    if (live) { end = new Date(start.getTime() + (E.minutes || 60) * 60000); $('ev').hidden = false; $('rsvp').hidden = false; $('calWrap').hidden = false; }
+    else $('none').hidden = false;
+    render(MS.lang());
+  });
+
+  $('rsvp').addEventListener('input', function () { $('rErr').hidden = true; });
+  $('rsvp').addEventListener('submit', function (e) {
+    e.preventDefault();
+    var L = D[MS.lang()], err = $('rErr'), btn = $('rSend'), name = $('rName').value.trim(), phone = MS.digits($('rPhone').value);
+    if (!name) { err.textContent = L.errName; err.hidden = false; return; }
+    if (phone.length < 11) { err.textContent = L.errPhone; err.hidden = false; return; }
+    err.hidden = true; btn.disabled = true; btn.firstElementChild.textContent = L.sending;
+    var l = MS.lang();
+    MS.postLead({ name: name, phone: phone, quiz: 'event', result: 'event', products: '', answers: E.title[l] + ' · ' + MS.date(start, l) + ' · ' + MS.time(start) })
+      .then(function () {
+        $('doneH').textContent = L.thanks.replace('{n}', name.split(/\s+/)[0]);
+        $('rsvp').hidden = true; $('done').hidden = false;
+      })
+      .catch(function () { err.textContent = L.errSend; err.hidden = false; })
+      .then(function () { btn.disabled = false; btn.firstElementChild.textContent = D[MS.lang()].send; });
+  });
+
+  // Calendar file (.ics) the phone opens in its own calendar app
+  $('cal').addEventListener('click', function () {
+    var l = MS.lang();
+    function z(d) { return d.toISOString().replace(/[-:]/g, '').replace(/\.\d{3}/, ''); }
+    function esc(s) { return String(s).replace(/([,;\\])/g, '\\$1').replace(/\n/g, '\\n'); }
+    var ics = ['BEGIN:VCALENDAR', 'VERSION:2.0', 'PRODID:-//Mayra Soto Burgos//Evento//ES', 'BEGIN:VEVENT',
+      'UID:' + z(start) + '-mayra@farmasi.mayra.finessemedia.pro', 'DTSTAMP:' + z(new Date()),
+      'DTSTART:' + z(start), 'DTEND:' + z(end), 'SUMMARY:' + esc(E.title[l]), 'LOCATION:' + esc(E.where[l]),
+      'DESCRIPTION:' + esc(E.about[l] + '\n' + location.origin + '/evento/'),
+      'BEGIN:VALARM', 'TRIGGER:-PT30M', 'ACTION:DISPLAY', 'DESCRIPTION:' + esc(E.title[l]), 'END:VALARM',
+      'END:VEVENT', 'END:VCALENDAR'].join('\r\n');
+    var a = document.createElement('a');
+    a.href = URL.createObjectURL(new Blob([ics], { type: 'text/calendar;charset=utf-8' }));
+    a.download = 'evento-mayra.ics'; document.body.appendChild(a); a.click(); a.remove();
+  });
+})();
+</script>
+</body>
+</html>

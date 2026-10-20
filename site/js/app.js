@@ -7,8 +7,11 @@
       role: 'Farmasi Beauty Director', inside: 'In this issue',
       shopT: 'Shop My Farmasi Picks', shopS: 'Makeup, skincare and fragrance I actually use. Tap to shop.',
       joinT: 'Join My Beauty Team', joinS: 'Become a Farmasi influencer and build your own beauty business with me.',
-      bossT: 'What Kind of Beauty Boss Are You?', bossS: 'Take my 1-minute quiz and see what your Farmasi business could look like.',
-      glowT: 'Find Your Glow', glowS: 'Four quick questions and I will pick the Farmasi products that fit you.',
+      whyT: 'Why My Team', whyS: 'How I train and support everyone who starts with me. Nobody starts alone.',
+      callT: "Let's Talk for 15 Minutes", callS: 'Curious about Farmasi? Book a free call and ask me anything.',
+      evT: 'My Next Event', evS: 'Save your spot at my next opportunity night.', evAt: 'at', evSoon: 'New date coming soon. Tap to stay in the loop.',
+      hubT: 'Team Hub', hubS: 'Already on my team? Training, calendar and links, all in one place.',
+      spotH: 'Team spotlight', crafted: 'Crafted by',
       call: 'Call', email: 'Email', save: 'Save Contact', share: 'Share my card',
       ref: 'Get your own vCard', copied: 'Link copied. Paste it anywhere.', copyFail: 'Copy this link: '
     },
@@ -19,8 +22,11 @@
       role: 'Directora de Belleza Farmasi', inside: 'En esta edición',
       shopT: 'Compra Mis Favoritos de Farmasi', shopS: 'Maquillaje, cuidado de la piel y fragancias que de verdad uso. Toca para comprar.',
       joinT: 'Únete a Mi Equipo de Belleza', joinS: 'Conviértete en influencer de Farmasi y crea tu propio negocio de belleza conmigo.',
-      bossT: '¿Qué Tipo de Beauty Boss Eres?', bossS: 'Haz mi quiz de 1 minuto y descubre cómo sería tu negocio con Farmasi.',
-      glowT: 'Encuentra tu Glow', glowS: 'Cuatro preguntas rápidas y te elijo los productos de Farmasi que van contigo.',
+      whyT: 'Por Qué Mi Equipo', whyS: 'Cómo entreno y apoyo a cada persona que empieza conmigo. Aquí nadie empieza sola.',
+      callT: 'Hablemos 15 Minutos', callS: '¿Te da curiosidad Farmasi? Pide una llamada gratis y pregúntame lo que quieras.',
+      evT: 'Mi Próximo Evento', evS: 'Guarda tu lugar en mi próxima noche de oportunidad.', evAt: 'a las', evSoon: 'Pronto anuncio la nueva fecha. Toca para enterarte.',
+      hubT: 'Team Hub', hubS: '¿Ya eres de mi equipo? Entrenamientos, calendario y enlaces, todo en un solo lugar.',
+      spotH: 'Logros del equipo', crafted: 'Hecho por',
       call: 'Llamar', email: 'Correo', save: 'Guardar Contacto', share: 'Compartir mi tarjeta',
       ref: 'Obtén tu propia vCard', copied: 'Enlace copiado. Pégalo donde quieras.', copyFail: 'Copia este enlace: '
     }
@@ -41,7 +47,41 @@
       b.setAttribute('aria-pressed', b.getAttribute('data-lang') === l ? 'true' : 'false');
     });
     try { localStorage.setItem('card-lang', l); } catch (e) {}
+    renderContent();
   }
+
+  // Next event date and team spotlight come from data/content.json, so they can change without touching the page
+  var C = null;
+  function time(d) {
+    var h = d.getHours(), m = d.getMinutes();
+    return (h % 12 || 12) + ':' + (m < 10 ? '0' : '') + m + ' ' + (h >= 12 ? 'PM' : 'AM');
+  }
+  function renderContent() {
+    if (!C) return;
+    var sub = document.getElementById('eventSub'), ev = C.event, start = ev && new Date(ev.start);
+    if (sub) {
+      if (start && !isNaN(start) && start.getTime() + (ev.minutes || 60) * 60000 > Date.now()) {
+        var d = start.toLocaleDateString(lang === 'en' ? 'en-US' : 'es-US', { weekday: 'long', month: 'long', day: 'numeric' });
+        sub.textContent = ev.title[lang] + ' \u00b7 ' + d.charAt(0).toUpperCase() + d.slice(1) + ' ' + T[lang].evAt + ' ' + time(start);
+      } else {
+        sub.textContent = T[lang].evSoon;
+      }
+    }
+    var list = document.getElementById('spotList'), wrap = document.getElementById('spot');
+    if (list && wrap && C.spotlight && C.spotlight.length) {
+      list.innerHTML = '';
+      C.spotlight.forEach(function (x) {
+        var li = document.createElement('li'), av = document.createElement('span'), nm = document.createElement('b'), rk = document.createElement('span');
+        av.className = 'spot-av';
+        av.textContent = x.name.split(/\s+/).map(function (w) { return w.charAt(0); }).join('').slice(0, 2);
+        nm.textContent = x.name; rk.textContent = x[lang] || x.es;
+        li.appendChild(av); li.appendChild(nm); li.appendChild(rk); list.appendChild(li);
+      });
+      wrap.hidden = false;
+    }
+  }
+  fetch('data/content.json', { cache: 'no-cache' }).then(function (r) { return r.json(); })
+    .then(function (c) { C = c; renderContent(); }).catch(function () {});
   document.querySelectorAll('[data-lang]').forEach(function (b) {
     b.addEventListener('click', function () { apply(b.getAttribute('data-lang')); });
   });
@@ -67,15 +107,10 @@
     if (e.target.closest('a, button')) tick();
   });
 
-  // Carry a source code (?src=flyer) from the card into the quiz links so sign-ups show where they came from
+  // Remember a source code (?src=flyer) for this visit so call requests and RSVPs show where they came from
   try {
     var src = new URLSearchParams(location.search).get('src');
-    if (src) {
-      sessionStorage.setItem('card-src', src);
-      document.querySelectorAll('a[href="boss/"], a[href="glow/"]').forEach(function (a) {
-        a.setAttribute('href', a.getAttribute('href') + '?src=' + encodeURIComponent(src));
-      });
-    }
+    if (src) sessionStorage.setItem('card-src', src);
   } catch (e) {}
 
   // Mayra's private "Mis leads" button. A phone counts as Mayra's once she opens the card with ?equipo=abrir
