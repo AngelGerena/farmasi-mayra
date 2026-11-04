@@ -49,7 +49,9 @@ export default async (req) => {
     if (!name || phone.length < 10) return json({ error: 'need_name_phone' }, 400)
     if (!e) return json({ error: 'no_event' }, 404)
     const l = body.lang === 'en' ? 'en' : 'es'
-    return json({ join: e.join, ics: '/api/evento?lang=' + l + '&t=' + stamp(e.ev.start) })
+    // If the site's secret isn't set, skip the server file; the page then makes a simple calendar file itself
+    const t = stamp(e.ev.start)
+    return json({ join: e.join, ics: t ? '/api/evento?lang=' + l + '&t=' + t : '' })
   }
 
   if (req.method === 'GET') {
