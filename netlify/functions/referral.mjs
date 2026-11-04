@@ -145,18 +145,20 @@ export default async (req) => {
     const name = clean(body.name, 80), business = clean(body.business, 120)
     let phone = String(body.phone || '').replace(/\D/g, '')
     if (phone.length === 10) phone = '1' + phone
+    const mail = clean(body.email, 120).toLowerCase()
     if (!name || phone.length < 11 || phone.length > 15) return json({ error: 'need_name_phone' }, 400)
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(mail)) return json({ error: 'need_email' }, 400)
     if (await limited(s, 'new-' + ipKey(req), 6, 60) || await limited(s, 'new-all', 60, 60 * 24)) return json({ error: 'busy' }, 429)
     const ref = {
       id: randomUUID(), code: await nextCode(s), partner: 'hiram', source: 'mayra-card',
-      name, phone, business, lang: body.lang === 'en' ? 'en' : 'es',
+      name, phone, email: mail, business, lang: body.lang === 'en' ? 'en' : 'es',
       status: 'new', amount: 0, note: '', created: new Date().toISOString(), soldAt: null
     }
     await s.setJSON('ref/' + ref.id, ref)
     await Promise.all([
       email('Nuevo referido ' + ref.code + ': ' + name + ' (tarjeta de Mayra)', [
         'Nuevo referido de Hiram desde la tarjeta de Mayra Soto Burgos.',
-        'Código: ' + ref.code, 'Nombre: ' + name, 'Negocio: ' + (business || '-'), 'WhatsApp: +' + phone,
+        'Código: ' + ref.code, 'Nombre: ' + name, 'Negocio: ' + (business || '-'), 'WhatsApp: +' + phone, 'Email: ' + mail,
         'Fecha: ' + new Date(ref.created).toLocaleString('en-US', { timeZone: 'America/New_York', dateStyle: 'medium', timeStyle: 'short' })
       ], { label: 'Escribirle por WhatsApp', href: 'https://wa.me/' + phone }),
       whatsappAngel(ref)
@@ -170,7 +172,7 @@ export default async (req) => {
   if (req.method === 'GET') {
     const list = await all(s)
     // Hiram sees who and where things stand, without customers' phone numbers
-    const view = role === 'admin' ? list : list.map(({ phone, ...r }) => ({ ...r, phone: phone ? '••• ' + String(phone).slice(-4) : '' }))
+    const view = role === 'admin' ? list : list.map(({ phone, email, ...r }) => ({ ...r, phone: phone ? '••• ' + String(phone).slice(-4) : '' }))
     return json({ role, referrals: view, totals: totals(list) })
   }
 

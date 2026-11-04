@@ -113,7 +113,7 @@
       var li = el('li', 'r');
       var top = el('div', 'top'), who = el('div', 'who');
       who.appendChild(el('b', null, r.name));
-      who.appendChild(el('span', null, [r.business, r.phone ? (role === 'admin' ? '+' + r.phone : r.phone) : '', fmtDate(r.created, l)].filter(Boolean).join(' · ')));
+      who.appendChild(el('span', null, [r.business, r.phone ? (role === 'admin' ? '+' + r.phone : r.phone) : '', r.email, fmtDate(r.created, l)].filter(Boolean).join(' · ')));
       top.appendChild(who); top.appendChild(el('span', 'code', r.code)); li.appendChild(top);
       li.appendChild(el('span', 'st ' + r.status, L.st[r.status] || r.status));
       if (r.status === 'sold') li.appendChild(el('p', 'money', L.sale + ': ' + money(r.amount) + ' · ' + L.com + ': ' + money(r.amount * t.rate)));
@@ -135,7 +135,9 @@
             .catch(function (e) { save.disabled = false; save.textContent = e && e.error === 'need_amount' ? L.needAmount : L.fail; });
         });
         var wa = el('a', 'mini', L.wa); wa.href = 'https://wa.me/' + r.phone; wa.target = '_blank'; wa.rel = 'noopener';
-        bt.appendChild(save); bt.appendChild(wa); li.appendChild(bt);
+        bt.appendChild(save); bt.appendChild(wa);
+        if (r.email) { var em = el('a', 'mini', 'Email'); em.href = 'mailto:' + r.email; bt.appendChild(em); }
+        li.appendChild(bt);
       }
       ul.appendChild(li);
     });

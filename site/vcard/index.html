@@ -29,6 +29,7 @@
   <form class="form" id="f" novalidate>
     <label class="field"><span data-t="name">Tu nombre</span><input id="fName" autocomplete="name" required></label>
     <label class="field"><span>WhatsApp</span><input id="fPhone" type="tel" inputmode="tel" autocomplete="tel" data-ph="phPh" placeholder="787 555 0123" required></label>
+    <label class="field"><span data-t="email">Tu email</span><input id="fEmail" type="email" inputmode="email" autocomplete="email" data-ph="emailPh" placeholder="tu@email.com" required></label>
     <label class="field"><span data-t="biz">¿A qué te dedicas?</span><input id="fBiz" data-ph="bizPh" placeholder="Ej. Farmasi, salón, bienes raíces"></label>
     <label class="hp" aria-hidden="true">Website<input id="fWeb" tabindex="-1" autocomplete="off"></label>
     <p class="err" id="fErr" role="alert" hidden></p>
@@ -53,7 +54,7 @@
   var D = {
     es: { title: 'Quiero mi vCard | OKUNAMI', back: '← Tarjeta de Mayra', h1: '¿Te gustó esta tarjeta?',
       lede: 'Te hago una igual de bonita para tu negocio. Déjame tus datos y te escribo por WhatsApp.',
-      name: 'Tu nombre', phPh: '787 555 0123', biz: '¿A qué te dedicas?', bizPh: 'Ej. Farmasi, salón, bienes raíces',
+      name: 'Tu nombre', phPh: '787 555 0123', email: 'Tu email', emailPh: 'tu@email.com', errEmail: 'Escribe un email válido.', biz: '¿A qué te dedicas?', bizPh: 'Ej. Farmasi, salón, bienes raíces',
       send: 'Quiero mi vCard', sending: 'Enviando...', fine: 'Angel Gerena · Finesse Media LLC. Sin compromiso.',
       thanks: '¡Gracias, {n}!', doneP: 'Recibí tus datos. Te escribo pronto por WhatsApp para empezar tu vCard.',
       codeL: 'Tu código', back2: 'Volver a la tarjeta de Mayra', crafted: 'Hecho por',
@@ -61,7 +62,7 @@
       errSend: 'No se pudo enviar. Revisa tu conexión e intenta otra vez.', errBusy: 'Demasiados intentos. Intenta más tarde o escríbele a Angel directo.' },
     en: { title: 'Get your own vCard | OKUNAMI', back: "← Mayra's card", h1: 'Like this card?',
       lede: 'I will make you one just as beautiful for your business. Leave your details and I will message you on WhatsApp.',
-      name: 'Your name', phPh: '407 555 0123', biz: 'What do you do?', bizPh: 'E.g. Farmasi, salon, real estate',
+      name: 'Your name', phPh: '407 555 0123', email: 'Your email', emailPh: 'you@email.com', errEmail: 'Please enter a valid email.', biz: 'What do you do?', bizPh: 'E.g. Farmasi, salon, real estate',
       send: 'I want my vCard', sending: 'Sending...', fine: 'Angel Gerena · Finesse Media LLC. No strings attached.',
       thanks: 'Thank you, {n}!', doneP: 'I got your details. I will message you on WhatsApp soon to start your vCard.',
       codeL: 'Your code', back2: "Back to Mayra's card", crafted: 'Crafted by',
@@ -83,9 +84,11 @@
     var name = $('fName').value.trim(), phone = MS.digits($('fPhone').value);
     if (!name) { err.textContent = L.errName; err.hidden = false; return; }
     if (phone.length < 11) { err.textContent = L.errPhone; err.hidden = false; return; }
+    var email = $('fEmail').value.trim();
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)) { err.textContent = L.errEmail; err.hidden = false; return; }
     btn.disabled = true; btn.firstElementChild.textContent = L.sending;
     fetch('/api/referral', { method: 'POST', headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ name: name, phone: phone, business: $('fBiz').value.trim(), lang: l, website: $('fWeb').value }) })
+      body: JSON.stringify({ name: name, phone: phone, email: email, business: $('fBiz').value.trim(), lang: l, website: $('fWeb').value }) })
       .then(function (r) { return r.json().then(function (d) { if (!r.ok) throw d; return d; }); })
       .then(function (d) {
         code = d.code; first = name.split(/\s+/)[0]; $('code').textContent = code; links(MS.lang());
