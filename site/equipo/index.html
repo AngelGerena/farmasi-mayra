@@ -43,7 +43,8 @@ h1{margin:0;font-family:var(--display);font-weight:400;font-size:clamp(34px,9vw,
 .head p{margin:4px 0 0;color:var(--mute);line-height:1.45}
 
 .tabs{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--paper);display:flex;gap:6px;padding:12px 0;border-bottom:1px solid var(--line)}
-.tabs button{flex:1 1 0;min-width:0;padding:0 4px;min-height:44px;border:1.5px solid var(--line);border-radius:999px;background:var(--paper);font-size:13px;font-weight:700;letter-spacing:1px;text-transform:uppercase;cursor:pointer}
+.tabs button{flex:1 1 auto;min-width:0;padding:0 8px;min-height:44px;border:1.5px solid var(--line);border-radius:999px;background:var(--paper);font-size:12px;font-weight:700;letter-spacing:.4px;text-transform:uppercase;white-space:nowrap;cursor:pointer}
+@media (max-width:359px){.tabs{gap:4px}.tabs button{padding:0 5px;font-size:11px;letter-spacing:.2px}}
 .tabs button[aria-selected="true"]{background:var(--coral);border-color:var(--coral);color:var(--paper)}
 .tabs .count{display:inline-block;min-width:20px;margin-left:4px;padding:0 6px;border-radius:999px;background:var(--coral);color:var(--paper);font-size:11px;line-height:18px;font-variant-numeric:tabular-nums}
 
