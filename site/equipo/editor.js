@@ -158,6 +158,16 @@
     mins.input.addEventListener('input', function () { ev.minutes = Math.max(15, Math.min(600, parseInt(mins.input.value, 10) || 60)); });
     updateStart();
     bind('Dónde (ej. En línea por Zoom)', 'where.es', { full: true });
+    if (!ev.join) ev.join = {};
+    var zt = el('p', 'enote full', 'Zoom: solo lo ven las personas después de reservar su lugar. También se guarda en su calendario.');
+    grid.appendChild(zt);
+    var zl = bind('Enlace de Zoom (https://...)', 'join.url', { full: true, type: 'url' });
+    bind('ID de reunión', 'join.id');
+    bind('Código de acceso', 'join.pass');
+    zl.addEventListener('change', function () {
+      var v = zl.value.trim();
+      if (v && !/^https:\/\//i.test(v)) { v = 'https://' + v.replace(/^https?:\/\//i, ''); zl.value = v; ev.join.url = v; }
+    });
     bind('Descripción', 'about.es', { full: true, area: true });
     bind('Event name', 'title.en', { full: true, en: true });
     bind('Where', 'where.en', { full: true, en: true });

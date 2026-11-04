@@ -55,12 +55,19 @@
   <section class="done" id="done" hidden aria-live="polite">
     <div class="mark"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></div>
     <h2 id="doneH"></h2>
-    <p data-t="doneP">Te mando el enlace por WhatsApp antes del evento. Agrégalo a tu calendario para que no se te pase.</p>
+    <p id="doneP"></p>
+    <div class="join" id="join" hidden>
+      <a class="pill coral" id="zoomBtn" href="#" target="_blank" rel="noopener"><span data-t="zoom">Entrar por Zoom</span></a>
+      <dl class="joinfo">
+        <div id="zIdRow" hidden><dt data-t="zId">ID de reunión</dt><dd id="zId"></dd></div>
+        <div id="zPassRow" hidden><dt data-t="zPass">Código de acceso</dt><dd id="zPass"></dd></div>
+      </dl>
+    </div>
+    <div class="cta" id="calWrap" hidden>
+      <a class="pill ink" id="cal" href="#"><span data-t="cal">Agregar a mi calendario</span></a>
+      <p class="fine" data-t="calFine">Se guarda en tu calendario con el enlace de Zoom y un recordatorio 30 minutos antes.</p>
+    </div>
   </section>
-
-  <div class="cta" id="calWrap" hidden>
-    <button type="button" class="pill ink" id="cal"><span data-t="cal">Agregar a mi calendario</span></button>
-  </div>
 
   <p class="credit"><span data-t="crafted">Hecho por</span> <a href="https://finessemedia.pro" target="_blank" rel="noopener">Finesse Media</a></p>
 </main>
@@ -76,6 +83,9 @@
       noneP: 'Mientras tanto, pídeme una llamada y te cuento todo en 15 minutos.', noneBtn: 'Hablemos 15 minutos', rsvpH: 'Guarda tu lugar',
       name: 'Tu nombre', phPh: '787 555 0123', send: 'Reservar mi lugar', fine: 'Te mando el enlace y un recordatorio por WhatsApp.',
       doneP: 'Te mando el enlace por WhatsApp antes del evento. Agrégalo a tu calendario para que no se te pase.',
+      doneZ: 'Aquí tienes el enlace. Guárdalo en tu calendario para que no se te pase.',
+      zoom: 'Entrar por Zoom', zId: 'ID de reunión', zPass: 'Código de acceso',
+      calFine: 'Se guarda en tu calendario con el enlace y un recordatorio 30 minutos antes.',
       cal: 'Agregar a mi calendario', crafted: 'Hecho por', thanks: '¡Te espero, {n}!', sending: 'Enviando...',
       errName: 'Escribe tu nombre.', errPhone: 'Escribe tu número de WhatsApp de 10 dígitos.', errSend: 'No se pudo enviar. Revisa tu conexión e intenta otra vez.',
       to: 'a' },
@@ -83,6 +93,9 @@
       noneP: 'In the meantime, book a call and I will tell you everything in 15 minutes.', noneBtn: "Let's talk for 15 minutes", rsvpH: 'Save your spot',
       name: 'Your name', phPh: '407 555 0123', send: 'Save my spot', fine: 'I will send you the link and a reminder on WhatsApp.',
       doneP: 'I will send you the link on WhatsApp before the event. Add it to your calendar so you do not miss it.',
+      doneZ: 'Here is your link. Save it to your calendar so you do not miss it.',
+      zoom: 'Join on Zoom', zId: 'Meeting ID', zPass: 'Passcode',
+      calFine: 'It saves to your calendar with the link and a reminder 30 minutes before.',
       cal: 'Add to my calendar', crafted: 'Crafted by', thanks: 'See you there, {n}!', sending: 'Sending...',
       errName: 'Please enter your name.', errPhone: 'Please enter your 10-digit WhatsApp number.', errSend: 'Could not send. Check your connection and try again.',
       to: 'to' }
@@ -90,7 +103,9 @@
   MS.translate(D);
   var E, start, end, live = false;
   function $(id) { return document.getElementById(id); }
+  var J = null, ICS = '';
   function render(l) {
+    $('doneP').textContent = J && J.url ? D[l].doneZ : D[l].doneP;
     if (!E) return;
     if (!live) { $('evTitle').textContent = l === 'en' ? 'Coming soon' : 'Muy pronto'; return; }
     $('evTitle').textContent = E.title[l];
@@ -106,7 +121,7 @@
     E = c.event;
     start = E && new Date(E.start);
     live = !!(start && !isNaN(start) && start.getTime() + (E.minutes || 60) * 60000 > Date.now());
-    if (live) { end = new Date(start.getTime() + (E.minutes || 60) * 60000); $('ev').hidden = false; $('rsvp').hidden = false; $('calWrap').hidden = false; }
+    if (live) { end = new Date(start.getTime() + (E.minutes || 60) * 60000); $('ev').hidden = false; $('rsvp').hidden = false; }
     else $('none').hidden = false;
     render(MS.lang());
   });
@@ -121,15 +136,33 @@
     var l = MS.lang();
     MS.postLead({ name: name, phone: phone, quiz: 'event', result: 'event', products: '', answers: E.title[l] + ' · ' + MS.date(start, l) + ' · ' + MS.time(start) })
       .then(function () {
-        $('doneH').textContent = L.thanks.replace('{n}', name.split(/\s+/)[0]);
-        $('rsvp').hidden = true; $('done').hidden = false;
+        // Zoom details and the calendar file come back only after the spot is saved
+        return fetch('/api/evento', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ name: name, phone: phone, lang: l }) })
+          .then(function (r) { return r.ok ? r.json() : {}; })
+          .catch(function () { return {}; })
+          .then(function (d) {
+            J = d.join || null; ICS = d.ics || '';
+            if (J && J.url) {
+              $('zoomBtn').href = J.url;
+              if (J.id) { $('zId').textContent = J.id; $('zIdRow').hidden = false; }
+              if (J.pass) { $('zPass').textContent = J.pass; $('zPassRow').hidden = false; }
+              $('join').hidden = false;
+            }
+            $('cal').href = ICS || '#';
+            $('calWrap').hidden = false;
+            $('doneH').textContent = L.thanks.replace('{n}', name.split(/\s+/)[0]);
+            render(MS.lang());
+            $('rsvp').hidden = true; $('done').hidden = false;
+          });
       })
       .catch(function () { err.textContent = L.errSend; err.hidden = false; })
       .then(function () { btn.disabled = false; btn.firstElementChild.textContent = D[MS.lang()].send; });
   });
 
   // Calendar file (.ics) the phone opens in its own calendar app
-  $('cal').addEventListener('click', function () {
+  $('cal').addEventListener('click', function (ev) {
+    if (ICS) { ev.preventDefault(); location.href = ICS.replace(/lang=\w+/, 'lang=' + MS.lang()); return; }
+    ev.preventDefault();
     var l = MS.lang();
     function z(d) { return d.toISOString().replace(/[-:]/g, '').replace(/\.\d{3}/, ''); }
     function esc(s) { return String(s).replace(/([,;\\])/g, '\\$1').replace(/\n/g, '\\n'); }

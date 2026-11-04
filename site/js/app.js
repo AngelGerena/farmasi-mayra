@@ -1,8 +1,8 @@
 (function () {
   var T = {
     en: {
-      tag: 'Farmasi Director', bigword: 'BEAUTY', badgeB: "Let's Talk", ring: "TAP ME • LET'S TALK • TAP ME • LET'S TALK •",
-      role: 'Farmasi Beauty Director',
+      tag: 'Bronze Director', bigword: 'BEAUTY', badgeB: "Let's Talk", ring: "TAP ME • LET'S TALK • TAP ME • LET'S TALK •",
+      role: 'Farmasi Bronze Director',
       shopT: 'Shop My Favorites', shopS: 'Makeup, skincare and fragrance I actually use.',
       whyT: 'Why My Team', whyS: 'Nobody starts alone here.',
       callT: "Let's Talk for 15 Minutes", callS: 'Free call, no strings attached.',
@@ -15,8 +15,8 @@
       copied: 'Link copied. Paste it anywhere.', copyFail: 'Copy this link: '
     },
     es: {
-      tag: 'Directora Farmasi', bigword: 'BELLEZA', badgeB: 'Hablemos', ring: 'TÓCAME • HABLEMOS • TÓCAME • HABLEMOS •',
-      role: 'Directora de Belleza Farmasi',
+      tag: 'Directora Bronze', bigword: 'BELLEZA', badgeB: 'Hablemos', ring: 'TÓCAME • HABLEMOS • TÓCAME • HABLEMOS •',
+      role: 'Directora Bronze Farmasi',
       shopT: 'Compra Mis Favoritos', shopS: 'Maquillaje, piel y fragancias que de verdad uso.',
       whyT: 'Por Qué Mi Equipo', whyS: 'Aquí nadie empieza sola.',
       callT: 'Hablemos 15 Minutos', callS: 'Llamada gratis, sin compromiso.',
