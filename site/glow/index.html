@@ -1,0 +1,280 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Encuentra tu Glow | Mayra Soto Burgos</title>
+<meta name="description" content="Find the Farmasi products that fit you: skin care, makeup, weight control, energy and more. A 30-second quiz by Mayra Soto Burgos.">
+<meta property="og:title" content="Encuentra tu Glow | Mayra Soto Burgos">
+<meta property="og:description" content="Quiz de 30 segundos: los productos Farmasi que van contigo.">
+<meta property="og:image" content="https://mayra.okunami.pro/images/photo.jpg">
+<link rel="canonical" href="https://mayra.okunami.pro/glow/">
+<meta name="theme-color" content="#FFFFFF">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,500&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap">
+<link rel="stylesheet" href="../css/pages.css">
+<style>
+  .qprog{height:6px;border-radius:999px;background:var(--line);overflow:hidden}
+  .qprog i{display:block;height:100%;width:0;background:linear-gradient(90deg,#FF8A94,#E23D52);border-radius:999px;transition:width .3s ease}
+  .qcount{margin:0;font-size:12px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--rose)}
+  .qq{margin:0;font-family:var(--display);font-weight:700;font-size:28px;line-height:1.12;text-wrap:balance}
+  .opts{display:flex;flex-direction:column;gap:10px}
+  .opt{min-height:56px;padding:12px 18px;border:1.5px solid var(--line);border-radius:16px;background:#FFFFFF;text-align:left;font-size:16px;font-weight:500;cursor:pointer;transition:border-color .15s ease,background .15s ease,transform .1s ease}
+  .opt:active{transform:scale(.98)}
+  .opt[aria-pressed="true"]{border-color:var(--coral);background:var(--tint)}
+  .qback{align-self:flex-start;min-height:44px;border:0;background:none;padding:0;font-size:13px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--rose);cursor:pointer}
+  .rcard{border-radius:22px;background:linear-gradient(160deg,#FF8A94 0%,#FF5A68 50%,#E23D52 100%);color:#FFFFFF;box-shadow:0 14px 30px rgba(226,61,82,.3);padding:24px 22px;display:flex;flex-direction:column;gap:10px;position:relative;overflow:hidden}
+  .rcard::after{content:"";position:absolute;right:-60px;top:-60px;width:180px;height:180px;border-radius:50%;background:radial-gradient(circle,rgba(255,255,255,.35),rgba(255,255,255,0) 70%)}
+  .rcard small{position:relative;z-index:1;font-size:11px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:rgba(255,255,255,.9)}
+  .rcard h2{position:relative;z-index:1;margin:0;color:#FFFFFF;font-size:34px}
+  .rcard p{position:relative;z-index:1;margin:0;font-size:16px;color:rgba(255,255,255,.95)}
+  .steps{margin:0;padding:0 0 0 20px;display:flex;flex-direction:column;gap:8px;font-size:16px}
+  .steps li::marker{color:var(--coral);font-weight:700}
+  .links{display:flex;flex-direction:column;gap:10px}
+  .plink{display:flex;justify-content:space-between;align-items:center;gap:12px;min-height:56px;padding:12px 16px;border:1.5px solid var(--line);border-radius:16px;font-weight:700;color:var(--ink)}
+  .plink small{display:block;font-weight:500;font-size:13px;color:var(--mute)}
+  .plink::after{content:"\203A\FE0E";color:var(--coral);font-size:24px;line-height:1}
+  .pgrid{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+  .pgrid:empty{display:none}
+  .pcard{display:flex;flex-direction:column;gap:4px;height:100%;padding:8px;border-radius:14px;border:1.5px solid var(--line);background:#FFF;color:var(--ink)}
+  .pcard span.ph{display:block;aspect-ratio:1;border-radius:10px;background:var(--tint);overflow:hidden}
+  .pcard img{width:100%;height:100%;object-fit:contain;display:block}
+  .pcard b{font-size:12px;line-height:1.25;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+  .pcard i{font-style:normal;font-size:13px;font-weight:800;color:var(--rose);margin-top:auto}
+  .note{margin:0;font-size:13px;color:var(--mute);background:var(--tint);border-radius:12px;padding:10px 12px}
+</style>
+</head>
+<body>
+<main class="pg">
+  <div class="pg-top">
+    <a class="pg-back" href="../" data-t="back">&larr; Mi tarjeta</a>
+    <div class="lang" role="group" aria-label="Language"><button type="button" data-lang="en" aria-pressed="false">EN</button><button type="button" data-lang="es" aria-pressed="true">ES</button></div>
+  </div>
+
+  <!-- Intro -->
+  <section id="intro" class="hero">
+    <p class="eyebrow" data-t="eyebrow">Quiz · 3 preguntas · 30 segundos</p>
+    <h1 data-t="h1">Encuentra tu Glow</h1>
+    <p class="lede" data-t="lede">Tres preguntas y te digo qué productos de Farmasi van contigo: piel, maquillaje, control de peso, energía y más.</p>
+    <div class="face"><img src="../images/photo.jpg" alt="Mayra Soto Burgos" width="64" height="64"><span><b>Mayra Soto Burgos</b><span data-t="role">Directora Bronze Farmasi</span></span></div>
+    <div class="cta" style="margin-top:12px"><button type="button" class="pill coral" id="startBtn"><span data-t="start">Empezar</span></button></div>
+  </section>
+
+  <!-- Questions -->
+  <section id="quiz" class="form" hidden aria-live="polite">
+    <div class="qprog" aria-hidden="true"><i id="bar"></i></div>
+    <p class="qcount" id="qcount"></p>
+    <h2 class="qq" id="qq"></h2>
+    <div class="opts" id="opts"></div>
+    <button type="button" class="qback" id="qback" data-t="prev">&larr; Atrás</button>
+  </section>
+
+  <!-- Result -->
+  <section id="result" hidden>
+    <div class="form">
+      <article class="rcard"><small data-t="yours">Tu resultado</small><h2 id="rName"></h2><p id="rDesc"></p></article>
+      <h2 data-t="picksH">Lo que te recomiendo</h2>
+      <ul class="pgrid" id="rProds"></ul>
+      <div class="links" id="rLinks"></div>
+      <p class="note" id="rNote" hidden></p>
+      <div class="cta" id="rCta"></div>
+
+      <form class="form" id="lead" novalidate>
+        <h2 data-t="formH">¿Quieres que te escriba?</h2>
+        <p class="lede" style="font-size:15px;margin:0" data-t="formS">Déjame tu nombre y número, y te ayudo a escoger por WhatsApp.</p>
+        <label class="field"><span data-t="name">Tu nombre</span><input id="lName" autocomplete="given-name" required></label>
+        <label class="field"><span>WhatsApp</span><input id="lPhone" type="tel" inputmode="tel" autocomplete="tel" data-ph="phPh" placeholder="787 555 0123" required></label>
+        <p class="err" id="lErr" role="alert" hidden></p>
+        <button type="submit" class="pill coral" id="lSend"><span data-t="send">Enviar</span></button>
+      </form>
+      <section class="done" id="done" hidden aria-live="polite">
+        <div class="mark"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></div>
+        <h2 id="doneH"></h2>
+        <p data-t="doneP">Te escribo pronto por WhatsApp. Mientras, puedes ver mi tienda.</p>
+        <div class="cta"><a class="pill ink" href="https://www.farmasius.com/mayrasotoburgos" target="_blank" rel="noopener"><span data-t="store">Ver mi tienda</span></a></div>
+      </section>
+      <button type="button" class="link" id="retake" data-t="retake" style="border:0;background:none;cursor:pointer">Hacer el quiz otra vez</button>
+    </div>
+  </section>
+
+  <p class="credit"><span data-t="crafted">Hecho por</span> <a href="https://finessemedia.pro" target="_blank" rel="noopener">Finesse Media</a></p>
+</main>
+
+<form name="quiz-leads" data-netlify="true" netlify-honeypot="bot-field" hidden>
+  <input name="bot-field"><input name="name"><input name="phone"><input name="quiz"><input name="result"><input name="products"><input name="answers"><input name="lang"><input name="source">
+</form>
+<script src="../js/pages.js"></script>
+<script>
+(function () {
+  var S = 'https://www.farmasius.com/mayrasotoburgos/product-list/';
+  // Mayra's own store pages (her ID is in every link, so the sale is hers)
+  var P = {
+    oily: S + 'oiliness?cid=2e84383d-64d3-eb11-a315-005056010963', dry: S + 'dryness?cid=a43c3c36-64d3-eb11-a315-005056010963',
+    lines: S + 'wrinkles-fine-lines?cid=a6cc352d-64d3-eb11-a315-005056010963', spots: S + 'dark-spots?cid=563c3c36-64d3-eb11-a315-005056010963',
+    sensitive: S + 'sensitive-skin?cid=3d0e8444-64d3-eb11-a315-005056010963', vitc: S + 'vitamin-c?cid=b1941492-8977-ef11-84f5-02f716a02c8f',
+    cleanse: S + 'cleansing?cid=1a60a4a4-8977-ef11-84f5-02f716a02c8f', aqua: S + 'aqua?cid=564da68b-64d3-eb11-a315-005056010963',
+    bbcc: S + 'bb-cc-creams?cid=476d9789-61d3-eb11-a315-005056010963', blush: S + 'blush?cid=28fac8a8-61d3-eb11-a315-005056010963',
+    foundation: S + 'foundation?cid=30aa3182-61d3-eb11-a315-005056010963', palettes: S + 'face-palettes?cid=536a3fc2-f4f5-ef11-84fb-02f716a02c8f',
+    mascara: S + 'mascara?cid=8635e0a4-60d3-eb11-a315-005056010963', eyeshadow: S + 'eyeshadow-palettes?cid=fa62ea96-60d3-eb11-a315-005056010963',
+    lipstick: S + 'lipstick?cid=ecf9ef45-61d3-eb11-a315-005056010963', gloss: S + 'lip-gloss?cid=3d235b4d-61d3-eb11-a315-005056010963',
+    weight: S + 'weight-control?cid=19c9e693-aa3d-f111-8519-02f716a02c8f', shakes: S + 'shakes-powders?cid=36be0314-ac3d-f111-8519-02f716a02c8f',
+    coffee: S + 'coffees-teas?cid=fa55533b-ac3d-f111-8519-02f716a02c8f', athletic: S + 'athletic-performance?cid=fceb3f9b-aa3d-f111-8519-02f716a02c8f',
+    energy: S + 'energy---mind?cid=f2eb3f9b-aa3d-f111-8519-02f716a02c8f', vitamins: S + 'vitamins-boosters?cid=8e91f132-ac3d-f111-8519-02f716a02c8f',
+    digest: S + 'digestive-health?cid=28c9e693-aa3d-f111-8519-02f716a02c8f', gummies: S + 'gummies?cid=b3189341-ac3d-f111-8519-02f716a02c8f',
+    fragrance: S + 'fragrances?cid=a93650d8-a461-ed11-83af-000d3a71539d', hair: S + 'hair-care?cid=020e6efe-64d3-eb11-a315-005056010963'
+  };
+  var NAMES = {
+    oily: ['Para piel con brillo', 'For oily skin'], dry: ['Para piel seca', 'For dry skin'], lines: ['Líneas finas y firmeza', 'Fine lines and firmness'],
+    spots: ['Manchas oscuras', 'Dark spots'], sensitive: ['Piel sensible', 'Sensitive skin'], vitc: ['Vitamina C para más luz', 'Vitamin C for glow'],
+    cleanse: ['Limpieza', 'Cleansing'], aqua: ['Hidratación Aqua', 'Aqua hydration'], bbcc: ['Cremas BB y CC', 'BB and CC creams'],
+    blush: ['Rubor', 'Blush'], foundation: ['Bases de maquillaje', 'Foundations'], palettes: ['Paletas para el rostro', 'Face palettes'],
+    mascara: ['Máscaras de pestañas', 'Mascaras'], eyeshadow: ['Paletas de sombras', 'Eyeshadow palettes'], lipstick: ['Labiales', 'Lipsticks'],
+    gloss: ['Brillos de labios', 'Lip glosses'], weight: ['Control de peso', 'Weight control'], shakes: ['Batidos y polvos', 'Shakes and powders'],
+    coffee: ['Cafés y tés', 'Coffees and teas'], athletic: ['Rendimiento deportivo', 'Athletic performance'], energy: ['Energía y mente', 'Energy and mind'],
+    vitamins: ['Vitaminas', 'Vitamins and boosters'], digest: ['Salud digestiva', 'Digestive health'], gummies: ['Gomitas', 'Gummies'],
+    fragrance: ['Fragancias', 'Fragrances'], hair: ['Cuidado del cabello', 'Hair care']
+  };
+  var SUBS = {
+    oily: ['Controla el brillo sin resecar', 'Controls shine without drying'], dry: ['Hidratación que se siente', 'Hydration you can feel'],
+    lines: ['Línea Age Reversist y más', 'Age Reversist line and more'], spots: ['Para un tono más parejo', 'For a more even tone'],
+    weight: ['Apoyo para tus metas', 'Support for your goals'], shakes: ['Fáciles para tu rutina', 'Easy for your routine']
+  };
+  var D = {
+    es: { title: 'Encuentra tu Glow | Mayra Soto Burgos', back: '← Mi tarjeta', eyebrow: 'Quiz · 3 preguntas · 30 segundos', h1: 'Encuentra tu Glow',
+      lede: 'Tres preguntas y te digo qué productos de Farmasi van contigo: piel, maquillaje, control de peso, energía y más.',
+      role: 'Directora Bronze Farmasi', start: 'Empezar', prev: '← Atrás', q: 'Pregunta {i} de {n}', yours: 'Tu resultado', picksH: 'Lo que te recomiendo',
+      formH: '¿Quieres que te escriba?', formS: 'Déjame tu nombre y número, y te ayudo a escoger por WhatsApp.', name: 'Tu nombre', phPh: '787 555 0123',
+      send: 'Enviar', sending: 'Enviando...', doneP: 'Te escribo pronto por WhatsApp. Mientras, puedes ver mi tienda.', store: 'Ver mi tienda',
+      retake: 'Hacer el quiz otra vez', crafted: 'Hecho por', thanks: '¡Listo, {n}!', call: 'Hablemos 15 minutos', shopAll: 'Ver toda mi tienda',
+      wnote: 'Los suplementos no sustituyen una alimentación balanceada ni el ejercicio. Si estás embarazada, lactando o tomas medicamentos, consulta a tu médico antes de usarlos.',
+      errName: 'Escribe tu nombre.', errPhone: 'Escribe tu número de WhatsApp de 10 dígitos.', errSend: 'No se pudo enviar. Revisa tu conexión e intenta otra vez.' },
+    en: { title: 'Find Your Glow | Mayra Soto Burgos', back: '← My card', eyebrow: 'Quiz · 3 questions · 30 seconds', h1: 'Find Your Glow',
+      lede: 'Three questions and I will tell you which Farmasi products fit you: skin, makeup, weight control, energy and more.',
+      role: 'Farmasi Bronze Director', start: 'Start', prev: '← Back', q: 'Question {i} of {n}', yours: 'Your result', picksH: 'What I recommend',
+      formH: 'Want me to reach out?', formS: 'Leave your name and number, and I will help you choose on WhatsApp.', name: 'Your name', phPh: '407 555 0123',
+      send: 'Send', sending: 'Sending...', doneP: 'I will message you soon on WhatsApp. In the meantime, take a look at my store.', store: 'See my store',
+      retake: 'Take the quiz again', crafted: 'Crafted by', thanks: 'Got it, {n}!', call: "Let's talk for 15 minutes", shopAll: 'See my whole store',
+      wnote: 'Supplements do not replace a balanced diet and exercise. If you are pregnant, nursing or take medication, check with your doctor before using them.',
+      errName: 'Please enter your name.', errPhone: 'Please enter your 10-digit WhatsApp number.', errSend: 'Could not send. Check your connection and try again.' }
+  };
+  MS.translate(D);
+  function o(id, es, en) { return { id: id, es: es, en: en }; }
+  var Q1 = { es: '¿Qué quieres lograr primero?', en: 'What do you want to work on first?', opts: [
+    o('skin', 'Una piel más bonita', 'Better skin'), o('makeup', 'Mi maquillaje', 'My makeup'), o('weight', 'Control de peso', 'Weight control'),
+    o('energy', 'Más energía', 'More energy'), o('digest', 'Sentirme mejor por dentro', 'Feel better inside (digestion)')] };
+  var FLOW = {
+    skin: [
+      { es: '¿Cómo se siente tu piel a mediodía?', en: 'How does your skin feel by midday?', opts: [o('oily', 'Con brillo', 'Shiny'), o('dry', 'Seca o tirante', 'Dry or tight'), o('combo', 'Brillo en la zona T, seca en las mejillas', 'Shiny T-zone, dry cheeks'), o('normal', 'Cómoda, sin problemas', 'Comfortable')] },
+      { es: '¿Qué te preocupa más?', en: 'What bothers you most?', opts: [o('lines', 'Líneas finas', 'Fine lines'), o('spots', 'Manchas', 'Dark spots'), o('sensitive', 'Piel sensible o roja', 'Sensitive or red skin'), o('glow', 'Le falta luz', 'It looks dull'), o('none', 'Nada en especial', 'Nothing in particular')] }
+    ],
+    makeup: [
+      { es: '¿Cómo es tu look de todos los días?', en: 'What does your everyday look feel like?', opts: [o('natural', 'Natural, casi sin maquillaje', 'Natural, barely there'), o('soft', 'Glam suave', 'Soft glam'), o('full', 'Glam total', 'Full glam')] },
+      { es: '¿Qué quieres resaltar?', en: 'What do you want to bring out?', opts: [o('eyes', 'Mis ojos', 'My eyes'), o('lips', 'Mis labios', 'My lips'), o('face', 'Mi piel y mi rostro', 'My skin and face')] }
+    ],
+    weight: [
+      { es: '¿Qué te ayudaría más?', en: 'What would help you most?', opts: [o('meals', 'Algo fácil para mis comidas', 'Something easy for my meals'), o('cravings', 'Controlar los antojos', 'Keeping cravings in check'), o('workout', 'Rendir más en el ejercicio', 'Getting more out of my workouts')] },
+      { es: '¿Cómo empiezas tu mañana?', en: 'How do you start your morning?', opts: [o('coffee', 'Con café', 'With coffee'), o('tea', 'Con té o algo ligero', 'With tea or something light'), o('rush', 'Corriendo, sin desayunar', 'Rushing, no breakfast')] }
+    ],
+    energy: [
+      { es: '¿Cuándo te sientes más cansada?', en: 'When do you feel most tired?', opts: [o('morning', 'En la mañana', 'In the morning'), o('afternoon', 'En la tarde', 'In the afternoon'), o('allday', 'Todo el día', 'All day')] },
+      { es: '¿Qué prefieres?', en: 'What do you prefer?', opts: [o('drink', 'Algo para tomar', 'Something to drink'), o('pill', 'Vitaminas', 'Vitamins'), o('gummy', 'Gomitas', 'Gummies')] }
+    ],
+    digest: [
+      { es: '¿Qué sientes más seguido?', en: 'What do you feel most often?', opts: [o('bloat', 'Hinchazón', 'Bloating'), o('heavy', 'Pesadez después de comer', 'Heaviness after meals'), o('irregular', 'Irregularidad', 'Irregularity')] },
+      { es: '¿Qué prefieres?', en: 'What do you prefer?', opts: [o('drink', 'Algo para tomar', 'Something to drink'), o('gummy', 'Gomitas', 'Gummies'), o('any', 'Lo que funcione', 'Whatever works')] }
+    ]
+  };
+  var R = {
+    skin: { name: ['Glow de Piel', 'Skin Glow'], desc: ['Tu piel es tu mejor accesorio. Con la rutina correcta se nota la diferencia en pocas semanas.', 'Your skin is your best accessory. With the right routine you can see the difference in a few weeks.'] },
+    makeup: { name: ['Glam a tu Manera', 'Glam Your Way'], desc: ['Maquillaje que va con tu estilo y dura todo el día.', 'Makeup that fits your style and lasts all day.'] },
+    weight: { name: ['Meta en Forma', 'Fit Goal'], desc: ['Productos que te ayudan a mantenerte enfocada en tus metas, junto con buena alimentación y movimiento.', 'Products that help you stay focused on your goals, alongside good food and movement.'] },
+    energy: { name: ['Energía Total', 'Full Energy'], desc: ['Para que te rinda el día sin depender de tanto café.', 'So your day keeps going without leaning on so much coffee.'] },
+    digest: { name: ['Bienestar por Dentro', 'Wellness Inside'], desc: ['Cuando te sientes bien por dentro, se nota por fuera.', 'When you feel good inside, it shows on the outside.'] }
+  };
+  function picks(goal, a) {
+    var x = a[1] && a[1].id, y = a[2] && a[2].id;
+    if (goal === 'skin') { var t = { oily: 'oily', dry: 'dry', combo: 'oily', normal: 'aqua' }[x] || 'aqua', c = { lines: 'lines', spots: 'spots', sensitive: 'sensitive', glow: 'vitc' }[y]; return (c ? [c, t] : [t, 'vitc']).concat(['cleanse']); }
+    if (goal === 'makeup') { var base = { natural: 'bbcc', soft: 'blush', full: 'foundation' }[x] || 'bbcc', f = { eyes: (x === 'full' ? 'eyeshadow' : 'mascara'), lips: (x === 'full' ? 'lipstick' : 'gloss'), face: (x === 'full' ? 'palettes' : 'blush') }[y]; return [f, base].filter(function (v, i, s) { return v && s.indexOf(v) === i; }).concat(['fragrance']); }
+    if (goal === 'weight') { var w = { meals: ['shakes', 'weight'], cravings: ['weight', 'shakes'], workout: ['athletic', 'shakes'] }[x] || ['weight', 'shakes']; return w.concat(y === 'coffee' || y === 'tea' ? ['coffee'] : ['vitamins']); }
+    if (goal === 'energy') return ['energy'].concat({ drink: ['coffee'], pill: ['vitamins'], gummy: ['gummies'] }[y] || ['vitamins']);
+    return ['digest'].concat(y === 'gummy' ? ['gummies'] : ['vitamins']);
+  }
+  var goal = null, step = 0, ans = [], res = null;
+  function $(id) { return document.getElementById(id); }
+  function qs() { return goal ? [Q1].concat(FLOW[goal]) : [Q1]; }
+  function showQ(l) {
+    var list = qs(), q = list[step], total = 3;
+    $('bar').style.width = Math.round(step / total * 100) + '%';
+    $('qcount').textContent = D[l].q.replace('{i}', step + 1).replace('{n}', total);
+    $('qq').textContent = q[l];
+    var box = $('opts'); box.innerHTML = '';
+    q.opts.forEach(function (op) {
+      var b = document.createElement('button'); b.type = 'button'; b.className = 'opt'; b.textContent = op[l];
+      b.setAttribute('aria-pressed', ans[step] && ans[step].id === op.id ? 'true' : 'false');
+      b.addEventListener('click', function () {
+        ans[step] = op; if (step === 0 && goal !== op.id) { goal = op.id; ans.length = 1; }
+        b.setAttribute('aria-pressed', 'true');
+        setTimeout(function () { if (step < 2) { step++; showQ(MS.lang()); } else finish(); }, 180);
+      });
+      box.appendChild(b);
+    });
+    $('qback').hidden = step === 0;
+  }
+  function showR(l) {
+    if (!res) return; var r = R[goal], i = l === 'en' ? 1 : 0;
+    $('rName').textContent = r.name[i]; $('rDesc').textContent = r.desc[i];
+    var box = $('rLinks'); box.innerHTML = '';
+    res.forEach(function (k) {
+      var a = document.createElement('a'); a.className = 'plink'; a.href = P[k]; a.target = '_blank'; a.rel = 'noopener';
+      var s = document.createElement('span'); s.textContent = NAMES[k][i];
+      if (SUBS[k]) { var sm = document.createElement('small'); sm.textContent = SUBS[k][i]; s.appendChild(sm); }
+      a.appendChild(s); box.appendChild(a);
+    });
+    $('rNote').hidden = goal !== 'weight' && goal !== 'energy' && goal !== 'digest'; $('rNote').textContent = D[l].wnote;
+    var c = $('rCta'); c.innerHTML = '';
+    [['shopAll', 'https://www.farmasius.com/mayrasotoburgos', 'coral'], ['call', '../llamada/', 'ink']].forEach(function (x) {
+      var a = document.createElement('a'); a.className = 'pill ' + x[2]; a.href = x[1];
+      if (/^https/.test(x[1])) { a.target = '_blank'; a.rel = 'noopener'; }
+      var sp = document.createElement('span'); sp.textContent = D[l][x[0]]; a.appendChild(sp); c.appendChild(a);
+    });
+  }
+  // Real products from the first recommended section (her store copy); quietly skipped if unavailable
+  function products(key) {
+    var box = $('rProds'); box.innerHTML = '';
+    var slug = String(P[key] || '').split('/product-list/')[1]; slug = slug ? slug.split('?')[0] : '';
+    if (!slug) return;
+    fetch('/api/catalog?section=' + encodeURIComponent(slug) + '&n=3').then(function (r) { return r.ok ? r.json() : { products: [] }; })
+      .then(function (d) {
+        (d.products || []).forEach(function (p) {
+          var li = document.createElement('li'), a = document.createElement('a'); a.className = 'pcard'; a.href = p.url; a.target = '_blank'; a.rel = 'noopener';
+          var ph = document.createElement('span'); ph.className = 'ph';
+          if (p.img) { var im = new Image(); im.src = p.img; im.alt = ''; im.loading = 'lazy'; ph.appendChild(im); }
+          var b = document.createElement('b'); b.textContent = p.name;
+          var pr = document.createElement('i'); pr.textContent = '$' + Number(p.promo || p.price).toFixed(2);
+          a.appendChild(ph); a.appendChild(b); if (p.price) a.appendChild(pr); li.appendChild(a); box.appendChild(li);
+        });
+      }).catch(function () {});
+  }
+  function finish() { res = picks(goal, ans); products(res[0]); $('bar').style.width = '100%'; $('quiz').hidden = true; $('result').hidden = false; showR(MS.lang()); window.scrollTo(0, 0); }
+  MS.onLang(function (l) { if (!$('quiz').hidden) showQ(l); showR(l); });
+  $('startBtn').addEventListener('click', function () { $('intro').hidden = true; $('quiz').hidden = false; step = 0; ans = []; goal = null; showQ(MS.lang()); window.scrollTo(0, 0); });
+  $('qback').addEventListener('click', function () { if (step > 0) { step--; showQ(MS.lang()); } });
+  $('retake').addEventListener('click', function () { res = null; $('result').hidden = true; $('done').hidden = true; $('lead').hidden = false; $('intro').hidden = false; window.scrollTo(0, 0); });
+  $('lead').addEventListener('input', function () { $('lErr').hidden = true; });
+  $('lead').addEventListener('submit', function (e) {
+    e.preventDefault();
+    var l = MS.lang(), L = D[l], err = $('lErr'), btn = $('lSend'), name = $('lName').value.trim(), phone = MS.digits($('lPhone').value);
+    if (!name) { err.textContent = L.errName; err.hidden = false; return; }
+    if (phone.length < 11) { err.textContent = L.errPhone; err.hidden = false; return; }
+    btn.disabled = true; btn.firstElementChild.textContent = L.sending;
+    var i = l === 'en' ? 1 : 0;
+    MS.postLead({ name: name, phone: phone, quiz: 'glow', result: goal, products: res.map(function (k) { return NAMES[k][i]; }).join(', '), answers: ans.slice(1).map(function (a) { return a[l]; }).join(' · ') })
+      .then(function () { $('doneH').textContent = L.thanks.replace('{n}', name.split(/\s+/)[0]); $('lead').hidden = true; $('done').hidden = false; })
+      .catch(function () { err.textContent = L.errSend; err.hidden = false; })
+      .then(function () { btn.disabled = false; btn.firstElementChild.textContent = D[MS.lang()].send; });
+  });
+})();
+</script>
+</body>
+</html>

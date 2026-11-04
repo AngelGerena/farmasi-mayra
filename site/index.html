@@ -50,6 +50,16 @@
         <span class="txt"><b data-i18n="shopT">Shop My Favorites</b><span data-i18n="shopS">Makeup, skincare and fragrance I actually use.</span></span>
         <span class="go" aria-hidden="true">&#8250;&#65038;</span>
       </a>
+      <a class="item" href="quiz/">
+        <span class="ic"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l2.6 5.4 5.9.8-4.3 4.1 1 5.8L12 16.4 6.8 19.1l1-5.8-4.3-4.1 5.9-.8z"/></svg></span>
+        <span class="txt"><b data-i18n="quizT">Is Farmasi a Fit for You?</b><span data-i18n="quizS">1-minute quiz. See your Farmasi style.</span></span>
+        <span class="go" aria-hidden="true">&#8250;&#65038;</span>
+      </a>
+      <a class="item" href="glow/">
+        <span class="ic"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3c2.5 3 4 5.5 4 8a4 4 0 0 1-8 0c0-2.5 1.5-5 4-8z"/><path d="M5 20h14"/></svg></span>
+        <span class="txt"><b data-i18n="glowT">Find Your Glow</b><span data-i18n="glowS">30-second quiz: the Farmasi products for you.</span></span>
+        <span class="go" aria-hidden="true">&#8250;&#65038;</span>
+      </a>
       <a class="item" href="mi-equipo/">
         <span class="ic"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M20.8 5.6a5.5 5.5 0 0 0-7.8 0L12 6.7l-1-1.1a5.5 5.5 0 0 0-7.8 7.8L12 22l8.8-8.6a5.5 5.5 0 0 0 0-7.8z"/></svg></span>
         <span class="txt"><b data-i18n="whyT">Why My Team</b><span data-i18n="whyS">Nobody starts alone here.</span></span>
@@ -71,6 +81,17 @@
         <span class="go" aria-hidden="true">&#8250;&#65038;</span>
       </a>
     </nav>
+
+    <section class="shop" id="shop" aria-labelledby="shopH">
+      <p class="eyebrow" id="shopH">Busca en mi tienda</p>
+      <form class="shop-f" id="shopF" role="search">
+        <input type="search" id="shopQ" enterkeyhint="search" autocomplete="off" aria-labelledby="shopH" placeholder="Ej. piel seca, hombre, perfume, labial">
+        <button type="submit" class="gl gl-coral" id="shopBtn" aria-label="Buscar"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg></button>
+      </form>
+      <div class="shop-chips" id="shopChips"></div>
+      <p class="shop-msg" id="shopMsg" role="status" aria-live="polite" hidden></p>
+      <ul class="prod-grid" id="shopList"></ul>
+    </section>
 
     <section class="spot" id="spot" hidden aria-labelledby="spotH">
       <p class="eyebrow" id="spotH" data-i18n="spotH">Team spotlight</p>
@@ -111,6 +132,7 @@
   <button type="button" class="done gl gl-coral" id="qrDone"><span data-i18n="qrDone">Done</span></button>
 </div>
 <script src="js/app.js"></script>
+<script src="js/shop.js"></script>
 <!--BODY-END-->
 </body>
 </html>
