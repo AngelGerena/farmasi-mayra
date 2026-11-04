@@ -111,41 +111,41 @@
     if (src) sessionStorage.setItem('card-src', src);
   } catch (e) {}
 
-  // ---------- Mayra's private button ----------
-  // A phone counts as Mayra's once she opens the card with ?equipo=abrir or signs in to /equipo with her PIN.
-  // On her phone only, holding her name (or tapping it 5 times) shows "Mi panel" for 10 seconds. The PIN is the real lock.
+  // ---------- Mayra's private way in ----------
+  // Holding her name (or tapping it 5 times) opens her PIN screen on any phone. The PIN is the lock.
   (function () {
-    var KEY = 'card-owner', owner = false;
     try {
       var q = new URLSearchParams(location.search);
       if (q.get('equipo') === 'abrir') {
-        localStorage.setItem(KEY, '1');
         q.delete('equipo');
         history.replaceState(null, '', location.pathname + (q.toString() ? '?' + q : '') + location.hash);
+        location.href = 'equipo/';
+        return;
       }
-      owner = localStorage.getItem(KEY) === '1';
     } catch (e) {}
-    if (!owner) return;
-    var name = document.querySelector('.cover-name h1'), pill = document.getElementById('ownerPill');
-    if (!name || !pill) return;
-    var hold = null, hide, taps = [];
-    function show() { pill.hidden = false; clearTimeout(hide); hide = setTimeout(function () { pill.hidden = true; }, 10000); }
-    function start() { clearTimeout(hold); hold = setTimeout(show, 700); }
-    function stop() { clearTimeout(hold); }
+    var name = document.querySelector('.cover-name h1');
+    if (!name) return;
+    var hold = null, taps = [], fired = false, armed = false;
+    function go() { if (fired) return; fired = true; location.href = 'equipo/'; }
+    // Held long enough: the name blushes, and the PIN screen opens when she lets go
+    // (opening while the finger is still down would land the release on the next page)
+    function arm() { armed = true; name.classList.add('armed'); if (navigator.vibrate) { try { navigator.vibrate(20); } catch (e) {} } }
+    function start() { armed = false; clearTimeout(hold); hold = setTimeout(arm, 600); }
+    function stop() { clearTimeout(hold); if (armed) go(); }
     function tap() {
       var now = Date.now();
-      taps = taps.filter(function (t) { return now - t < 2000; });
+      taps = taps.filter(function (t) { return now - t < 2500; });
       taps.push(now);
-      if (taps.length >= 5) { taps = []; show(); }
+      if (taps.length >= 5) { taps = []; go(); }
     }
-    name.addEventListener('touchstart', start, { passive: true });
-    name.addEventListener('touchend', function () { stop(); tap(); });
-    name.addEventListener('touchmove', stop, { passive: true });
-    name.addEventListener('touchcancel', stop);
-    name.addEventListener('mousedown', start);
-    name.addEventListener('mouseup', function () { stop(); tap(); });
-    name.addEventListener('mouseleave', stop);
+    // Pointer events cover finger and mouse once each (touch + mouse events would count every tap twice)
+    name.addEventListener('pointerdown', start);
+    name.addEventListener('pointerup', function () { if (armed) return stop(); clearTimeout(hold); tap(); });
+    name.addEventListener('pointercancel', stop);
+    name.addEventListener('pointerleave', stop);
     name.addEventListener('contextmenu', function (e) { e.preventDefault(); });
+    // Coming back with the back button must not reopen the panel by itself
+    window.addEventListener('pageshow', function () { fired = false; armed = false; name.classList.remove('armed'); });
   })();
 
   // ---------- full-screen QR ----------

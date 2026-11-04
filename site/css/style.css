@@ -67,7 +67,8 @@ button{font:inherit;color:inherit}
 /* ---------- Name ---------- */
 .cover-name{padding:8px 22px 0;display:flex;flex-direction:column;gap:4px;align-items:center;text-align:center}
 .cover-name h1{margin:0;font-family:var(--display);font-weight:700;font-size:clamp(32px,9.8vw,40px);line-height:1.04;letter-spacing:-.5px;text-wrap:balance;
-  -webkit-touch-callout:none;-webkit-user-select:none;user-select:none;touch-action:manipulation}
+  -webkit-touch-callout:none;-webkit-user-select:none;user-select:none;touch-action:manipulation;transition:color .2s ease}
+.cover-name h1.armed{color:var(--coral)}
 .role{margin:0;font-size:11px;font-weight:800;letter-spacing:2.5px;text-transform:uppercase;color:var(--coral)}
 .brand{height:22px;width:auto;margin-top:6px;opacity:.9}
 .owner-pill{margin-top:8px;min-height:42px;padding:0 20px;border-radius:999px;font-size:12px;font-weight:800;letter-spacing:1.2px;text-transform:uppercase;animation:pillIn .25s ease both}
