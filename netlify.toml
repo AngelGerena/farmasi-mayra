@@ -32,3 +32,9 @@
   for = "/data/*"
   [headers.values]
     Cache-Control = "no-cache"
+
+# The vCard request form: never indexed
+[[headers]]
+  for = "/vcard/*"
+  [headers.values]
+    X-Robots-Tag = "noindex"
