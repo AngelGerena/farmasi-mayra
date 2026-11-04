@@ -7,12 +7,12 @@
 <meta name="description" content="Save your spot at Mayra Soto Burgos's next Farmasi event.">
 <meta property="og:title" content="Next event | Mayra Soto Burgos">
 <meta property="og:description" content="Save your spot at my next Farmasi event.">
-<meta property="og:image" content="https://farmasi.mayra.finessemedia.pro/images/photo.jpg">
-<link rel="canonical" href="https://farmasi.mayra.finessemedia.pro/evento/">
+<meta property="og:image" content="https://mayra.okunami.pro/images/photo.jpg">
+<link rel="canonical" href="https://mayra.okunami.pro/evento/">
 <meta name="theme-color" content="#FFFFFF">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Abril+Fatface&family=DM+Sans:wght@400;500;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,500&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap">
 <link rel="stylesheet" href="../css/pages.css">
 </head>
 <body>
@@ -134,7 +134,7 @@
     function z(d) { return d.toISOString().replace(/[-:]/g, '').replace(/\.\d{3}/, ''); }
     function esc(s) { return String(s).replace(/([,;\\])/g, '\\$1').replace(/\n/g, '\\n'); }
     var ics = ['BEGIN:VCALENDAR', 'VERSION:2.0', 'PRODID:-//Mayra Soto Burgos//Evento//ES', 'BEGIN:VEVENT',
-      'UID:' + z(start) + '-mayra@farmasi.mayra.finessemedia.pro', 'DTSTAMP:' + z(new Date()),
+      'UID:' + z(start) + '-mayra@mayra.okunami.pro', 'DTSTAMP:' + z(new Date()),
       'DTSTART:' + z(start), 'DTEND:' + z(end), 'SUMMARY:' + esc(E.title[l]), 'LOCATION:' + esc(E.where[l]),
       'DESCRIPTION:' + esc(E.about[l] + '\n' + location.origin + '/evento/'),
       'BEGIN:VALARM', 'TRIGGER:-PT30M', 'ACTION:DISPLAY', 'DESCRIPTION:' + esc(E.title[l]), 'END:VALARM',

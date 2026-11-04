@@ -42,7 +42,9 @@
 
   var contentP;
   function content() {
-    contentP = contentP || fetch('/data/content.json', { cache: 'no-cache' }).then(function (r) { return r.json(); });
+    contentP = contentP || fetch('/api/content', { cache: 'no-cache' })
+      .then(function (r) { if (!r.ok) throw r; return r.json(); })
+      .catch(function () { return fetch('/data/content.json', { cache: 'no-cache' }).then(function (r) { return r.json(); }); });
     return contentP;
   }
 
