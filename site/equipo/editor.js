@@ -3,6 +3,7 @@
 (function () {
   var root = document.getElementById('editor');
   if (!root) return;
+  var host = root; // where new sections go; each group gets its own box so its save bar only sticks inside it
   var TOKEN = 'card-equipo-token';
   function token() { try { return localStorage.getItem(TOKEN) || ''; } catch (e) { return ''; } }
   function $(id) { return document.getElementById(id); }
@@ -65,7 +66,7 @@
     var d = el('details', 'esec'); if (open) d.open = true;
     d.appendChild(el('summary', null, title));
     var body = el('div', 'ebody'); d.appendChild(body);
-    root.appendChild(d);
+    host.appendChild(d);
     return body;
   }
 
@@ -81,6 +82,21 @@
     }
     return obj;
   }
+
+  // If she changed the Spanish but left the English as it was, the old English no longer matches.
+  // Copy the new Spanish over it so English visitors (and Lola) never see the old event or text.
+  function syncEnglish(cur, old) {
+    if (!cur || !old || typeof cur !== 'object' || typeof old !== 'object') return cur;
+    if (Array.isArray(cur)) { cur.forEach(function (c, i) { syncEnglish(c, old[i]); }); return cur; }
+    if ('es' in cur && 'en' in cur && 'es' in old) {
+      if (Array.isArray(cur.es)) {
+        cur.es.forEach(function (v, i) { if (v !== (old.es || [])[i] && cur.en && cur.en[i] === (old.en || [])[i]) cur.en[i] = v; });
+      } else if (cur.es !== old.es && cur.en === old.en) cur.en = cur.es;
+    }
+    Object.keys(cur).forEach(function (k) { if (k !== 'es' && k !== 'en') syncEnglish(cur[k], old[k]); });
+    return cur;
+  }
+  var SAVED = {};
 
   // ---------- list editor ----------
   function listEditor(body, key) {
@@ -204,8 +220,10 @@
     save.addEventListener('click', function () {
       if (which === 'public' && !valid()) return;
       save.disabled = true;
+      syncEnglish(DATA[which], SAVED[which]);
       var data = fillEnglish(clone(DATA[which]));
       api('PUT', { which: which, data: data }).then(function () {
+        SAVED[which] = clone(data);
         toast(which === 'public' ? 'Guardado. Tu tarjeta ya lo muestra.' : 'Guardado. Tu equipo ya lo ve en el Team Hub.');
       }).catch(fail).then(function () { save.disabled = false; });
     });
@@ -216,7 +234,7 @@
         .catch(function (x) { toast(x && x.error === 'nothing_to_restore' ? 'Todavía no hay una versión anterior.' : 'No se pudo. Intenta otra vez.'); undo.disabled = false; });
     });
     bar.appendChild(save); bar.appendChild(undo);
-    root.appendChild(bar);
+    host.appendChild(bar);
   }
   function valid() {
     var bad = (DATA.public.spotlight || []).some(function (x) { return (x.es || x.en) && !x.name; });
@@ -245,19 +263,23 @@
 
   function build(d) {
     DATA = { public: d.public, hub: d.hub };
+    SAVED = { public: clone(d.public), hub: clone(d.hub) };
     root.innerHTML = '';
-    root.appendChild(el('h2', 'egroup', 'Tu tarjeta'));
+    host = root.appendChild(el('div', 'egrp'));
+    host.appendChild(el('h2', 'egroup', 'Tu tarjeta'));
     eventEditor(section('Próximo evento', true));
     listEditor(section('Logros del equipo'), 'spotlight');
     storyEditor(section('Tu historia'));
     listEditor(section('Lo que le das a tu equipo'), 'promises');
     listEditor(section('Primeros 30 días'), 'plan');
     saveBar('public', 'Guardar mi tarjeta');
-    root.appendChild(el('h2', 'egroup', 'Team Hub'));
+    host = root.appendChild(el('div', 'egrp'));
+    host.appendChild(el('h2', 'egroup', 'Team Hub'));
     welcomeEditor(section('Mensaje de bienvenida'));
     ['checklist', 'schedule', 'links', 'promos', 'team'].forEach(function (k) { listEditor(section(LISTS[k].title.replace('Team Hub: ', '').replace(/^./, function (c) { return c.toUpperCase(); })), k); });
     saveBar('hub', 'Guardar Team Hub');
-    root.appendChild(el('h2', 'egroup', 'Código del equipo'));
+    host = root.appendChild(el('div', 'egrp'));
+    host.appendChild(el('h2', 'egroup', 'Código del equipo'));
     codeEditor(section('Cambiar el código', false), d.teamCode || '');
   }
 

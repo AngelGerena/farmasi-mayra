@@ -57,6 +57,7 @@
     <p data-t="doneP">Te escribo por WhatsApp en el horario que escogiste. Si no quieres esperar, escríbeme tú ahora.</p>
     <div class="cta">
       <a class="pill ink" id="doneWa" href="#" target="_blank" rel="noopener"><span data-t="doneWa">Escribirle a Mayra ahora</span></a>
+      <a class="link" id="doneSms" href="#" data-t="doneSms">O envíale un texto</a>
       <a class="link" href="../mi-equipo/" data-t="doneMore">Mientras tanto, conoce mi equipo</a>
     </div>
   </section>
@@ -78,7 +79,7 @@
       iShop: 'Quiero ayuda con productos', whenQ: '¿Cuándo te queda mejor?', wAm: 'Mañana', wPm: 'Tarde', wEve: 'Noche',
       send: 'Quiero mi llamada', fine: 'Solo uso tu número para escribirte sobre esta llamada.',
       doneP: 'Te escribo por WhatsApp en el horario que escogiste. Si no quieres esperar, escríbeme tú ahora.',
-      doneWa: 'Escribirle a Mayra ahora', doneMore: 'Mientras tanto, conoce mi equipo', crafted: 'Hecho por',
+      doneWa: 'Escribirle a Mayra ahora', doneSms: 'O envíale un texto', doneMore: 'Mientras tanto, conoce mi equipo', crafted: 'Hecho por',
       errName: 'Escribe tu nombre.', errPhone: 'Escribe tu número de WhatsApp de 10 dígitos.', errSend: 'No se pudo enviar. Revisa tu conexión e intenta otra vez.',
       thanks: '¡Listo, {n}!', sending: 'Enviando...',
       wa: 'Hola Mayra, soy {n}. Acabo de pedir una llamada desde tu tarjeta. {i} Me queda mejor en la {w}.',
@@ -90,7 +91,7 @@
       iShop: 'I want help with products', whenQ: 'When works best for you?', wAm: 'Morning', wPm: 'Afternoon', wEve: 'Evening',
       send: 'Book my call', fine: 'I only use your number to message you about this call.',
       doneP: 'I will message you on WhatsApp during the time you picked. If you do not want to wait, message me now.',
-      doneWa: 'Message Mayra now', doneMore: 'Meanwhile, meet my team', crafted: 'Crafted by',
+      doneWa: 'Message Mayra now', doneSms: 'Or send her a text', doneMore: 'Meanwhile, meet my team', crafted: 'Crafted by',
       errName: 'Please enter your name.', errPhone: 'Please enter your 10-digit WhatsApp number.', errSend: 'Could not send. Check your connection and try again.',
       thanks: 'You are all set, {n}!', sending: 'Sending...',
       wa: 'Hi Mayra, this is {n}. I just booked a call from your card. {i} The {w} works best for me.',
@@ -112,8 +113,9 @@
       .then(function () {
         var first = name.split(/\s+/)[0];
         document.getElementById('doneH').textContent = L.thanks.replace('{n}', first);
-        document.getElementById('doneWa').href = 'https://wa.me/' + MS.WA + '?text=' +
-          encodeURIComponent(L.wa.replace('{n}', name).replace('{i}', L.i[interest]).replace('{w}', L.w[when]));
+        var msg = L.wa.replace('{n}', name).replace('{i}', L.i[interest]).replace('{w}', L.w[when]);
+        document.getElementById('doneWa').href = 'https://wa.me/' + MS.WA + '?text=' + encodeURIComponent(msg);
+        document.getElementById('doneSms').href = 'sms:+' + MS.WA + '?&body=' + encodeURIComponent(msg);
         f.hidden = true; document.getElementById('done').hidden = false; window.scrollTo(0, 0);
       })
       .catch(function () { err.textContent = L.errSend; err.hidden = false; })

@@ -18,20 +18,35 @@ import { SYSTEM_RULES, TOOLS, liveFacts } from '../../lib/lola.mjs'
 
 const env = (k) => (globalThis.Netlify ? Netlify.env.get(k) : process.env[k]) || ''
 const json = (data, status = 200) => new Response(JSON.stringify(data), { status, headers: { 'content-type': 'application/json; charset=utf-8', 'cache-control': 'no-store' } })
+/** Lola writes plain text, but if the model slips into markdown, clean it so no stars or hashes show on the card. */
+export const plain = (t) => String(t || '')
+  .replace(/\*\*(.+?)\*\*/g, '$1')
+  .replace(/(^|[\s(])\*(\S[^*\n]*?\S|\S)\*(?=[\s).,;:!?]|$)/g, '$1$2')
+  .replace(/^[ \t]*#{1,6}[ \t]+/gm, '').replace(/^[ \t]*[-*•][ \t]+/gm, '- ')
+  .replace(/\[([^\]]+)\]\((https?:[^)\s]+)\)/g, '$1: $2')
+  .replace(/`([^`]+)`/g, '$1').replace(/\n{3,}/g, '\n\n').trim()
 const clip = (v, n) => String(v == null ? '' : v).replace(/[\u0000-\u0008\u000b-\u001f]/g, ' ').trim().slice(0, n)
 const PER_VISITOR_DAY = 40          // replies one visitor can get in a day
 const MAX_TURNS = 30                // messages in one conversation
 
 const day = () => new Date().toISOString().slice(0, 10)
+// Counters use conditional writes, so a burst of requests at once cannot slip past the caps (Mayra's bill guard)
+async function bump(s, key, max) {
+  for (let i = 0; i < 6; i++) {
+    const got = await s.getWithMetadata(key, { type: 'text' })
+    const n = Number(got && got.data) || 0
+    if (n >= max) return false
+    const res = await s.set(key, String(n + 1), got && got.etag ? { onlyIfMatch: got.etag } : { onlyIfNew: true })
+    if (!res || res.modified !== false) return true
+  }
+  return false
+}
 async function overLimit(req) {
   const s = getStore({ name: 'lola', consistency: 'strong' })
   const ip = (req.headers.get('x-nf-client-connection-ip') || req.headers.get('x-forwarded-for') || 'anon').split(',')[0].trim()
   const who = createHash('sha256').update(ip + '|' + day()).digest('hex').slice(0, 24)
-  const [all, mine] = await Promise.all([s.get('day/' + day(), { type: 'text' }), s.get('ip/' + day() + '/' + who, { type: 'text' })])
-  const cap = Number(env('LOLA_DAILY_CAP')) || 400
-  if ((Number(all) || 0) >= cap) return 'busy'
-  if ((Number(mine) || 0) >= PER_VISITOR_DAY) return 'limit'
-  await Promise.all([s.set('day/' + day(), String((Number(all) || 0) + 1)), s.set('ip/' + day() + '/' + who, String((Number(mine) || 0) + 1))])
+  if (!(await bump(s, 'ip/' + day() + '/' + who, PER_VISITOR_DAY))) return 'limit'
+  if (!(await bump(s, 'day/' + day(), Number(env('LOLA_DAILY_CAP')) || 400))) return 'busy'
   return ''
 }
 
@@ -51,10 +66,14 @@ async function saveLead(input, leadId, lang) {
   const id = leadId && /^[\w-]{8,64}$/.test(leadId) ? leadId : ''
   const old = id ? await s.get('lead/' + id, { type: 'json' }) : null
   const lead = old || { id: randomUUID(), origin: 'lola', stage: 'new', step: 0, created: new Date().toISOString(), lastContact: null, products: '' }
+  // Update, never wipe: keep Mayra's own notes and stage, and keep a single up-to-date "Lola:" line
+  const mine = String(lead.notes || '').split('\n').filter((l) => !/^Lola: /.test(l)).join('\n').trim()
+  const oldLola = (String(lead.notes || '').split('\n').find((l) => /^Lola: /.test(l)) || '').replace(/^Lola: /, '')
+  const said = clip(input.summary, 600) || oldLola
   Object.assign(lead, {
-    name, phone: digits, quiz: interest === 'event' ? 'event' : 'call', result: interest, lang: lang === 'en' ? 'en' : 'es', source: 'lola',
+    name, phone: digits, quiz: interest === 'event' ? 'event' : (lead.quiz || 'call'), result: interest, lang: lang === 'en' ? 'en' : 'es', source: lead.source || 'lola',
     answers: clip(input.best_time, 120) || lead.answers || '',
-    notes: ('Lola: ' + (clip(input.summary, 600) || (old && old.notes ? old.notes.replace(/^Lola: /, '') : ''))).trim()
+    notes: [mine, said ? 'Lola: ' + said : ''].filter(Boolean).join('\n')
   })
   await s.setJSON('lead/' + lead.id, lead)
   return { ok: true, id: lead.id }
@@ -84,9 +103,10 @@ export default async (req) => {
     { type: 'text', text: SYSTEM_RULES, cache_control: { type: 'ephemeral' } },
     { type: 'text', text: liveFacts(content) + `\nThe visitor's card is set to ${lang === 'en' ? 'English' : 'Spanish'}.` + (leadId ? '\nThis visitor is already saved for Mayra; update them with save_lead if you learn more.' : '') }
   ]
-  const texts = []
+  const texts = [], t0 = Date.now()
   try {
-    for (let turn = 0; turn < 4; turn++) {
+    // Netlify gives a function about 10 seconds; don't start another model call past 6
+    for (let turn = 0; turn < 4 && (turn === 0 || Date.now() - t0 < 6000); turn++) {
       const res = await fetch('https://api.anthropic.com/v1/messages', {
         method: 'POST',
         headers: { 'x-api-key': key, 'anthropic-version': '2023-06-01', 'content-type': 'application/json' },
@@ -116,7 +136,7 @@ export default async (req) => {
     }
   } catch (e) { console.log('lola failed', e.message) }
   if (!texts.length) return json({ error: 'busy', lead_id: leadId || null })
-  return json({ reply: texts.join('\n\n'), lead_id: leadId || null, products })
+  return json({ reply: plain(texts.join('\n\n')), lead_id: leadId || null, products })
 }
 
 export const config = { path: '/api/lola', method: ['GET', 'POST'] }

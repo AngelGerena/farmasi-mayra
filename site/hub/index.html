@@ -30,6 +30,7 @@
     <p class="err" id="gErr" role="alert" hidden></p>
     <button type="submit" class="pill coral" id="gBtn"><span data-t="enter">Entrar</span></button>
     <a class="link" id="askCode" href="#" target="_blank" rel="noopener" data-t="ask">No tengo el código</a>
+    <a class="link" id="askSms" href="#" data-t="askSms">O envíale un texto a Mayra</a>
   </form>
 
   <div id="hub" hidden>
@@ -76,13 +77,13 @@
       codeL: 'Código del equipo', enter: 'Entrar', ask: 'No tengo el código', checkH: 'Tu primera semana', schedH: 'Calendario del equipo',
       linksH: 'Enlaces importantes', promoH: 'Este mes', teamH: 'Nuestro equipo', out: 'Salir del Team Hub', crafted: 'Hecho por',
       done: '{d} de {t} listos', wrong: 'Ese código no es. Revísalo e intenta otra vez.', locked: 'Demasiados intentos. Espera {m} minutos.',
-      off: 'El Team Hub todavía no está activado.', net: 'No se pudo entrar. Revisa tu conexión.', wa: 'WhatsApp',
+      off: 'El Team Hub todavía no está activado.', net: 'No se pudo entrar. Revisa tu conexión.', wa: 'WhatsApp', sms: 'Texto', askSms: 'O envíale un texto a Mayra', busy: 'Hay mucha gente entrando. Intenta otra vez en un momento.',
       askMsg: 'Hola Mayra, soy parte de tu equipo y necesito el código del Team Hub.' },
     en: { title: 'Team Hub | Mayra Soto Burgos', back: '← My card', eyebrow: 'For my team only', gateP: 'Enter the team code I gave you to get in.',
       codeL: 'Team code', enter: 'Enter', ask: 'I do not have the code', checkH: 'Your first week', schedH: 'Team calendar',
       linksH: 'Important links', promoH: 'This month', teamH: 'Our team', out: 'Leave the Team Hub', crafted: 'Crafted by',
       done: '{d} of {t} done', wrong: 'That is not the code. Check it and try again.', locked: 'Too many tries. Wait {m} minutes.',
-      off: 'The Team Hub is not turned on yet.', net: 'Could not get in. Check your connection.', wa: 'WhatsApp',
+      off: 'The Team Hub is not turned on yet.', net: 'Could not get in. Check your connection.', wa: 'WhatsApp', sms: 'Text', askSms: 'Or send Mayra a text', busy: 'Lots of people are signing in. Try again in a moment.',
       askMsg: 'Hi Mayra, I am on your team and I need the Team Hub code.' }
   };
   MS.translate(D);
@@ -96,6 +97,7 @@
 
   function render(l) {
     $('askCode').href = 'https://wa.me/' + MS.WA + '?text=' + encodeURIComponent(D[l].askMsg);
+    $('askSms').href = 'sms:+' + MS.WA + '?&body=' + encodeURIComponent(D[l].askMsg);
     if (!H) return;
     $('welcome').textContent = H.welcome[l];
     var c = $('checks'); c.innerHTML = '';
@@ -116,7 +118,11 @@
       var li = el('li'), ini = x.name.split(/\s+/).map(function (w) { return w[0]; }).join('').slice(0, 2);
       li.appendChild(el('span', 'avatar', ini));
       var who = el('div', 'who'); who.appendChild(el('b', null, x.name)); who.appendChild(el('span', null, x[l])); li.appendChild(who);
-      var a = el('a', null, D[l].wa); a.href = 'https://wa.me/' + x.phone; a.target = '_blank'; a.rel = 'noopener'; li.appendChild(a);
+      var ph = String(x.phone || '').replace(/\D/g, ''); if (ph.length === 10) ph = '1' + ph;
+      if (ph.length >= 11) {
+        var a = el('a', null, D[l].wa); a.href = 'https://wa.me/' + ph; a.target = '_blank'; a.rel = 'noopener'; li.appendChild(a);
+        var tx = el('a', null, D[l].sms); tx.href = 'sms:+' + ph; li.appendChild(tx);
+      }
       t.appendChild(li);
     });
   }
@@ -134,9 +140,9 @@
       .then(function (d) {
         btn.disabled = false;
         if (d.hub) { H = d.hub; store(KEY, code); $('gate').hidden = true; $('hub').hidden = false; render(MS.lang()); return; }
-        store(KEY, null);
+        if (d.error === 'wrong_code') store(KEY, null); // only forget the saved code when it is really wrong
         if (quiet) return;
-        err.textContent = d.error === 'locked' ? L.locked.replace('{m}', d.minutes || 15) : d.error === 'not_configured' ? L.off : L.wrong;
+        err.textContent = d.error === 'locked' ? L.locked.replace('{m}', d.minutes || 15) : d.error === 'not_configured' ? L.off : d.error === 'busy' ? L.busy : d.error === 'wrong_code' ? L.wrong : L.net;
         err.hidden = false;
       })
       .catch(function () { btn.disabled = false; if (!quiet) { err.textContent = L.net; err.hidden = false; } });

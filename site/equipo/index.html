@@ -607,13 +607,15 @@ h2:first-child{margin-top:4px}
       var acts = el('div', 'acts');
       var wa = el('a', 'btn ink', 'Enviar por WhatsApp');
       wa.href = 'https://wa.me/' + digits(l.phone) + '?text=' + encodeURIComponent(text); wa.target = '_blank'; wa.rel = 'noopener';
+      var sm = el('a', 'btn soft', 'Enviar por texto');
+      sm.href = 'sms:+' + digits(l.phone) + '?&body=' + encodeURIComponent(text);
       var mark = el('button', 'btn soft', 'Ya lo envié'); mark.type = 'button';
       mark.addEventListener('click', function () {
         update(l.id, { step: s + 1, lastContact: new Date().toISOString(), stage: (l.stage || 'new') === 'new' ? 'messaged' : l.stage })
           .then(function () { toast(s + 1 >= 3 ? 'Listo. Ese fue el último mensaje.' : 'Listo. Te aviso cuando toque el próximo.'); });
       });
       var cp = el('button', 'copy', 'Copiar'); cp.type = 'button'; cp.addEventListener('click', function () { copyText(text, cp); });
-      acts.appendChild(wa); acts.appendChild(mark); acts.appendChild(cp);
+      acts.appendChild(wa); acts.appendChild(sm); acts.appendChild(mark); acts.appendChild(cp);
       nx.appendChild(acts); c.appendChild(nx);
     } else if (l.stage === 'talking') {
       var tk = el('div', 'next'); tk.appendChild(el('p', null, 'Están hablando. Usa la pestaña Mensajes si te pone una objeción.')); c.appendChild(tk);
@@ -627,9 +629,16 @@ h2:first-child{margin-top:4px}
 
     if (open[l.id]) {
       if (l.products) c.appendChild(el('p', 'note', 'Productos: ' + l.products));
-      var ta = el('textarea'); ta.value = l.notes || ''; ta.placeholder = 'Notas (lo que te contó, cuándo volver a escribirle...)';
-      ta.setAttribute('aria-label', 'Notas');
-      ta.addEventListener('change', function () { update(l.id, { notes: ta.value }).then(function () { toast('Notas guardadas'); }); });
+      var ta = el('textarea'); ta.value = drafts[l.id] != null ? drafts[l.id] : (l.notes || ''); ta.placeholder = 'Notas (lo que te contó, cuándo volver a escribirle...)';
+      ta.setAttribute('aria-label', 'Notas'); ta.dataset.id = l.id;
+      // Notes save while she types (and when she leaves the box), and a refresh never wipes what she is typing
+      var saveNote = function () {
+        clearTimeout(noteT[l.id]); var v = drafts[l.id]; if (v == null) return;
+        update(l.id, { notes: v }).then(function () { if (drafts[l.id] === v) delete drafts[l.id]; toast('Notas guardadas'); }).catch(function () {});
+      };
+      ta.addEventListener('input', function () { drafts[l.id] = ta.value; clearTimeout(noteT[l.id]); noteT[l.id] = setTimeout(saveNote, 1500); });
+      ta.addEventListener('change', saveNote);
+      ta.addEventListener('blur', function () { setTimeout(function () { if (waitRender) { waitRender = false; renderLeads(); } }, 0); });
       c.appendChild(ta);
       var row = el('div', 'acts'); row.style.display = 'flex'; row.style.gap = '8px'; row.style.flexWrap = 'wrap';
       if (s > 0) {
@@ -647,7 +656,11 @@ h2:first-child{margin-top:4px}
     return c;
   }
 
+  var drafts = {}, noteT = {}, waitRender = false;
   function renderLeads() {
+    // Don't rebuild the list while she is typing a note; it redraws as soon as she leaves the box
+    var f = document.activeElement;
+    if (f && f.tagName === 'TEXTAREA' && f.dataset.id && $('list').contains(f)) { waitRender = true; return; }
     var due = leads.filter(isDue);
     $('sDue').textContent = due.length;
     $('sNew').textContent = leads.filter(function (l) { return (l.stage || 'new') === 'new'; }).length;

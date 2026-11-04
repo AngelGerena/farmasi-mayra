@@ -124,7 +124,7 @@
     if (live) { end = new Date(start.getTime() + (E.minutes || 60) * 60000); $('ev').hidden = false; $('rsvp').hidden = false; }
     else $('none').hidden = false;
     render(MS.lang());
-  });
+  }).catch(function () { $('none').hidden = false; render(MS.lang()); });
 
   $('rsvp').addEventListener('input', function () { $('rErr').hidden = true; });
   $('rsvp').addEventListener('submit', function (e) {

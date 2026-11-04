@@ -3,7 +3,7 @@
 // Ten wrong tries from one connection locks it for 15 minutes.
 import { getStore } from '@netlify/blobs'
 import { createHmac, timingSafeEqual } from 'node:crypto'
-import { json } from '../../lib/auth.mjs'
+import { json, claimTry } from '../../lib/auth.mjs'
 import { read, teamCode } from '../../lib/content.mjs'
 
 const MAX_TRIES = 10
@@ -21,16 +21,11 @@ export default async (req, context) => {
 
   const store = getStore({ name: 'equipo', consistency: 'strong' })
   const who = 'hub-attempts/' + String(context.ip || 'unknown').replace(/[^\w.:-]/g, '_')
-  const rec = (await store.get(who, { type: 'json' })) || { n: 0, until: 0 }
-  if (rec.until > Date.now()) {
-    return json({ error: 'locked', minutes: Math.ceil((rec.until - Date.now()) / 60000) }, 429)
-  }
-
+  const t = await claimTry(store, who, MAX_TRIES, LOCK_MS)
+  if (t.locked) return json({ error: 'locked', minutes: t.locked }, 429)
+  if (t.busy) return json({ error: 'busy' }, 429)
   if (!code || !timingSafeEqual(digest(code), digest(real))) {
-    rec.n += 1
-    if (rec.n >= MAX_TRIES) { rec.n = 0; rec.until = Date.now() + LOCK_MS }
-    await store.setJSON(who, rec)
-    return rec.until > Date.now() ? json({ error: 'locked', minutes: 15 }, 429) : json({ error: 'wrong_code' }, 401)
+    return t.left > 0 ? json({ error: 'wrong_code' }, 401) : json({ error: 'locked', minutes: 15 }, 429)
   }
 
   await store.delete(who)

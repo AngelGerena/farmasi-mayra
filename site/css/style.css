@@ -55,7 +55,7 @@ button{font:inherit;color:inherit}
 .lang button{min-width:44px;min-height:34px;border:0;border-radius:999px;background:transparent;color:var(--white);font-size:12px;font-weight:800;letter-spacing:1px;cursor:pointer}
 .lang button[aria-pressed="true"]{background:var(--white);color:var(--coral-deep)}
 
-.badge{position:absolute;right:16px;top:38%;z-index:3;width:88px;height:88px;border-radius:50%;background:var(--white);color:var(--coral-deep);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;box-shadow:0 10px 24px rgba(196,42,69,.3);animation:ping 2.6s ease-out infinite}
+.badge{position:absolute;right:36px;top:38%;z-index:3;width:88px;height:88px;border-radius:50%;background:var(--white);color:var(--coral-deep);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;box-shadow:0 10px 24px rgba(196,42,69,.3);animation:ping 2.6s ease-out infinite}
 .badge:active{transform:scale(.95)}
 .badge b{font-family:var(--display);font-size:18px;line-height:1}
 .badge small{font-size:9px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;color:var(--slate)}
@@ -174,7 +174,7 @@ body.has-lola .card{padding-bottom:84px}
 .lola-reach a,.lola-fallback a{min-height:42px;border-radius:999px;font-size:13px;font-weight:700;padding:0 10px;white-space:nowrap}
 .lola-log{flex:1;overflow-y:auto;overscroll-behavior:contain;padding:14px 16px;display:flex;flex-direction:column;gap:10px}
 .lola-msg{max-width:86%;padding:10px 14px;border-radius:18px;font-size:15px;line-height:1.45;overflow-wrap:anywhere}
-.lola-msg p{margin:0}.lola-msg p+p{margin-top:8px}
+.lola-msg p{margin:0;white-space:pre-line}.lola-msg p+p{margin-top:8px}
 .lola-msg a{color:var(--raspberry);text-decoration:underline;font-weight:600}
 .lola-msg.her{align-self:flex-start;background:var(--petal);color:var(--slate);border-bottom-left-radius:6px}
 .lola-msg.me{align-self:flex-end;background:var(--coral);color:var(--white);border-bottom-right-radius:6px}

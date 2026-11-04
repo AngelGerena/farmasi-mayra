@@ -67,17 +67,17 @@
   function render(l) {
     if (!C) return;
     var s = document.getElementById('story'); s.innerHTML = '';
-    C.story[l].forEach(function (p) { s.appendChild(el('p', null, p)); });
+    ((C.story && C.story[l]) || []).forEach(function (p) { s.appendChild(el('p', null, p)); });
     var pr = document.getElementById('promises'); pr.innerHTML = '';
-    C.promises.forEach(function (x, i) {
+    (C.promises || []).forEach(function (x, i) {
       var r = el('div', 'row'); r.appendChild(el('span', 'n', String(i + 1).padStart(2, '0')));
       var t = el('div'); t.appendChild(el('b', null, x[l][0])); t.appendChild(el('span', null, x[l][1])); r.appendChild(t); pr.appendChild(r);
     });
     var pl = document.getElementById('plan'); pl.innerHTML = '';
-    C.plan.forEach(function (x) { var li = el('li'); li.appendChild(el('b', null, x[l][0])); li.appendChild(el('span', null, x[l][1])); pl.appendChild(li); });
+    (C.plan || []).forEach(function (x) { var li = el('li'); li.appendChild(el('b', null, x[l][0])); li.appendChild(el('span', null, x[l][1])); pl.appendChild(li); });
   }
   MS.onLang(render);
-  MS.content().then(function (c) { C = c; render(MS.lang()); });
+  MS.content().then(function (c) { C = c || {}; render(MS.lang()); }).catch(function () {});
 })();
 </script>
 </body>
