@@ -33,13 +33,7 @@
   [headers.values]
     Cache-Control = "no-cache"
 
-# Referrals page for Angel and Hiram, and the vCard request form: never indexed, never cached
-[[headers]]
-  for = "/referidos/*"
-  [headers.values]
-    X-Robots-Tag = "noindex, nofollow"
-    Cache-Control = "no-store"
-
+# The vCard request form: never indexed
 [[headers]]
   for = "/vcard/*"
   [headers.values]
