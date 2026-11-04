@@ -39,12 +39,10 @@
   <section class="done" id="done" hidden aria-live="polite">
     <div class="mark"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></div>
     <h2 id="doneH"></h2>
-    <p data-t="doneP">Recibí tus datos. Si quieres adelantar, mándame un mensaje ahora:</p>
+    <p data-t="doneP">Recibí tus datos. Te escribo pronto por WhatsApp para empezar tu vCard.</p>
+    <p class="fine" data-t="codeL">Tu código</p>
     <p class="code" id="code"></p>
-    <div class="cta">
-      <a class="pill coral" id="wa" href="#" target="_blank" rel="noopener"><span data-t="wa">Escribirle a Angel por WhatsApp</span></a>
-      <a class="pill ink" id="sms" href="#"><span data-t="sms">O mándale un texto</span></a>
-    </div>
+    <div class="cta"><a class="pill ink" href="../"><span data-t="back2">Volver a la tarjeta de Mayra</span></a></div>
   </section>
 
   <p class="credit"><b>OKUNAMI</b> · <span data-t="crafted">Hecho por</span> <a href="https://finessemedia.pro" target="_blank" rel="noopener">Finesse Media</a></p>
@@ -57,29 +55,24 @@
       lede: 'Te hago una igual de bonita para tu negocio. Déjame tus datos y te escribo por WhatsApp.',
       name: 'Tu nombre', phPh: '787 555 0123', biz: '¿A qué te dedicas?', bizPh: 'Ej. Farmasi, salón, bienes raíces',
       send: 'Quiero mi vCard', sending: 'Enviando...', fine: 'Angel Gerena · Finesse Media LLC. Sin compromiso.',
-      thanks: '¡Gracias, {n}!', doneP: 'Recibí tus datos. Si quieres adelantar, mándame un mensaje ahora:',
-      wa: 'Escribirle a Angel por WhatsApp', sms: 'O mándale un texto', crafted: 'Hecho por',
-      msg: 'Hola Angel, me gustó la vCard que le hiciste a Mayra Soto Burgos y quiero una para mí. Mi código es {c}.',
+      thanks: '¡Gracias, {n}!', doneP: 'Recibí tus datos. Te escribo pronto por WhatsApp para empezar tu vCard.',
+      codeL: 'Tu código', back2: 'Volver a la tarjeta de Mayra', crafted: 'Hecho por',
       errName: 'Escribe tu nombre.', errPhone: 'Escribe tu número de WhatsApp de 10 dígitos.',
       errSend: 'No se pudo enviar. Revisa tu conexión e intenta otra vez.', errBusy: 'Demasiados intentos. Intenta más tarde o escríbele a Angel directo.' },
     en: { title: 'Get your own vCard | OKUNAMI', back: "← Mayra's card", h1: 'Like this card?',
       lede: 'I will make you one just as beautiful for your business. Leave your details and I will message you on WhatsApp.',
       name: 'Your name', phPh: '407 555 0123', biz: 'What do you do?', bizPh: 'E.g. Farmasi, salon, real estate',
       send: 'I want my vCard', sending: 'Sending...', fine: 'Angel Gerena · Finesse Media LLC. No strings attached.',
-      thanks: 'Thank you, {n}!', doneP: 'I got your details. If you want to get started now, send me a message:',
-      wa: 'Message Angel on WhatsApp', sms: 'Or send a text', crafted: 'Crafted by',
-      msg: 'Hi Angel, I liked the vCard you made for Mayra Soto Burgos and I would like one for me. My code is {c}.',
+      thanks: 'Thank you, {n}!', doneP: 'I got your details. I will message you on WhatsApp soon to start your vCard.',
+      codeL: 'Your code', back2: "Back to Mayra's card", crafted: 'Crafted by',
       errName: 'Please enter your name.', errPhone: 'Please enter your 10-digit WhatsApp number.',
       errSend: 'Could not send. Check your connection and try again.', errBusy: 'Too many tries. Try again later or message Angel directly.' }
   };
   MS.translate(D);
-  var ANGEL = '14079609004', code = '', first = '';
+  var code = '', first = '';
   function $(id) { return document.getElementById(id); }
   function links(l) {
     if (!code) return;
-    var m = encodeURIComponent(D[l].msg.replace('{c}', code));
-    $('wa').href = 'https://wa.me/' + ANGEL + '?text=' + m;
-    $('sms').href = 'sms:+' + ANGEL + '?&body=' + m;
     $('doneH').textContent = D[l].thanks.replace('{n}', first);
   }
   MS.onLang(links);
