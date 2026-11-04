@@ -6,27 +6,27 @@
 <meta name="robots" content="noindex, nofollow">
 <meta name="theme-color" content="#FFFFFF">
 <link rel="apple-touch-icon" href="../images/photo.jpg">
-<title>Mi Equipo · Mayra</title>
+<title>Mi Panel · Mayra</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Abril+Fatface&family=DM+Sans:wght@400;500;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,500&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap">
 <style>
 /* Layout: Mayra's working desk in the same world as her card. Tabs up top; Leads is a scannable list with one-tap WhatsApp follow-ups. Single light look on purpose, to match her brand. */
 :root{
   --paper:#FFFFFF;
-  --ink:#16121A;
-  --coral:#EE6E73;
-  --rose:#C2414B;
-  --mute:#5A4A50;
-  --line:#EADCD6;
-  --blush:#F6E3E1;
-  --tint:#FBEDEC;
+  --ink:#2D354E;
+  --coral:#FF5A68;
+  --rose:#E23D52;
+  --mute:#6B6F80;
+  --line:#FFE4E6;
+  --blush:#FFC2C8;
+  --tint:#FFF3F4;
   --ok:#2F7D5B;
   --okbg:#E6F2EC;
   --warn:#9A5B00;
   --warnbg:#FBF0DC;
-  --display:'Abril Fatface','Bodoni 72',Didot,Georgia,serif;
-  --body:'DM Sans','Helvetica Neue',Helvetica,Arial,sans-serif;
+  --display:'Playfair Display',Georgia,'Times New Roman',serif;
+  --body:'Plus Jakarta Sans','Helvetica Neue',Helvetica,Arial,sans-serif;
   color-scheme:light;
 }
 *{box-sizing:border-box}
@@ -43,8 +43,8 @@ h1{margin:0;font-family:var(--display);font-weight:400;font-size:clamp(34px,9vw,
 .head p{margin:4px 0 0;color:var(--mute);line-height:1.45}
 
 .tabs{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--paper);display:flex;gap:6px;padding:12px 0;border-bottom:1px solid var(--line)}
-.tabs button{flex:1;min-height:44px;border:1.5px solid var(--line);border-radius:999px;background:var(--paper);font-size:13px;font-weight:700;letter-spacing:1px;text-transform:uppercase;cursor:pointer}
-.tabs button[aria-selected="true"]{background:var(--ink);border-color:var(--ink);color:var(--paper)}
+.tabs button{flex:1 1 0;min-width:0;padding:0 4px;min-height:44px;border:1.5px solid var(--line);border-radius:999px;background:var(--paper);font-size:13px;font-weight:700;letter-spacing:1px;text-transform:uppercase;cursor:pointer}
+.tabs button[aria-selected="true"]{background:var(--coral);border-color:var(--coral);color:var(--paper)}
 .tabs .count{display:inline-block;min-width:20px;margin-left:4px;padding:0 6px;border-radius:999px;background:var(--coral);color:var(--paper);font-size:11px;line-height:18px;font-variant-numeric:tabular-nums}
 
 section{padding-top:18px}
@@ -62,8 +62,8 @@ h2:first-child{margin-top:4px}
 
 .bar{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-top:16px}
 .btn{min-height:44px;padding:0 18px;border:0;border-radius:999px;font-weight:700;font-size:13px;letter-spacing:1px;text-transform:uppercase;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:8px;text-decoration:none}
-.btn.coral{background:linear-gradient(180deg,#FFA4A6 0%,#EE6E73 45%,#C94753 100%);color:var(--paper);box-shadow:0 6px 16px rgba(238,110,115,.35),inset 0 1px 1px rgba(255,255,255,.6)}
-.btn.ink{background:var(--ink);color:var(--paper)}
+.btn.coral{background:linear-gradient(180deg,#FFA5AC 0%,#FF5A68 45%,#E23D52 100%);color:var(--paper);box-shadow:0 6px 16px rgba(238,110,115,.35),inset 0 1px 1px rgba(255,255,255,.6)}
+.btn.ink{background:linear-gradient(180deg,#FFA5AC 0%,#FF5A68 45%,#E23D52 100%);color:var(--paper);box-shadow:0 6px 16px rgba(255,90,104,.35),inset 0 1px 1px rgba(255,255,255,.6)}
 .btn.soft{background:var(--tint);color:var(--rose)}
 .btn.line{background:var(--paper);border:1.5px solid var(--line)}
 .btn:disabled{opacity:.5;cursor:default}
@@ -106,9 +106,9 @@ h2:first-child{margin-top:4px}
 .status{margin:14px 0 0;padding:12px 14px;border-radius:12px;background:var(--warnbg);color:var(--warn);font-size:14px;line-height:1.45}
 
 /* Share + scripts */
-.lang{display:inline-flex;background:var(--ink);border-radius:999px;padding:3px}
-.lang button{min-width:48px;min-height:36px;border:0;border-radius:999px;background:transparent;color:var(--paper);font-size:12px;font-weight:700;letter-spacing:1px;cursor:pointer}
-.lang button[aria-pressed="true"]{background:var(--paper);color:var(--ink)}
+.lang{display:inline-flex;background:var(--line);border-radius:999px;padding:3px}
+.lang button{min-width:48px;min-height:36px;border:0;border-radius:999px;background:transparent;color:var(--rose);font-size:12px;font-weight:700;letter-spacing:1px;cursor:pointer}
+.lang button[aria-pressed="true"]{background:var(--coral);color:var(--paper)}
 .msgs{display:flex;flex-direction:column;gap:10px}
 .msg{border:1px solid var(--line);border-radius:16px;padding:14px;display:flex;flex-direction:column;gap:8px}
 .msg h3{margin:0;font-size:14px;font-weight:700}
@@ -144,6 +144,29 @@ h2:first-child{margin-top:4px}
 .back{margin-top:18px;font-size:12px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;text-decoration:none;color:var(--mute)}
 .headrow{display:flex;justify-content:space-between;align-items:center;gap:12px}
 .signout{border:0;background:none;color:var(--mute);font-size:12px;font-weight:700;letter-spacing:1px;text-transform:uppercase;text-decoration:underline;cursor:pointer;min-height:40px}
+
+/* Card editor (tab Tarjeta) */
+.egroup{margin:22px 0 10px;font-family:var(--display);font-size:24px}
+.esec{border:1.5px solid var(--line);border-radius:18px;margin-bottom:10px;background:var(--paper)}
+.esec>summary{min-height:52px;padding:0 16px;display:flex;align-items:center;justify-content:space-between;font-weight:800;cursor:pointer;list-style:none}
+.esec>summary::-webkit-details-marker{display:none}
+.esec>summary::after{content:"+";color:var(--coral);font-size:22px;font-weight:700}
+.esec[open]>summary::after{content:"\2212"}
+.ebody{padding:0 16px 16px;display:flex;flex-direction:column;gap:12px}
+.egrid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.egrid .full,.ef.full{grid-column:1/-1}
+.ef{display:flex;flex-direction:column;gap:5px;font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;min-width:0}
+.ef.en>span::after{content:" (inglés, opcional)";text-transform:none;letter-spacing:0;font-weight:500;color:var(--mute)}
+.ef input,.ef textarea{min-height:44px;padding:8px 12px;border:1.5px solid var(--line);border-radius:12px;background:var(--paper);font-size:16px;font-weight:400;letter-spacing:0;text-transform:none;width:100%}
+.ef textarea{resize:vertical;line-height:1.45}
+.ef input:focus,.ef textarea:focus{border-color:var(--coral);outline:none}
+.enote{margin:0;font-size:13px;color:var(--mute);line-height:1.45}
+.elist{display:flex;flex-direction:column;gap:10px}
+.eitem{border-radius:14px;background:var(--tint);padding:12px;display:flex;flex-direction:column;gap:10px}
+.erow{display:flex;gap:8px;align-items:center;justify-content:space-between}
+.esave{position:sticky;bottom:calc(10px + env(safe-area-inset-bottom,0px));z-index:4;display:flex;gap:8px;flex-wrap:wrap;padding:10px;margin:6px -10px 4px;border-radius:999px;background:rgba(255,255,255,.92);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);box-shadow:0 8px 24px rgba(45,53,78,.12)}
+.esave .btn{flex:1 1 auto}
+@media (max-width:480px){.egrid{grid-template-columns:1fr}}
 </style>
 
 </head>
@@ -165,14 +188,15 @@ h2:first-child{margin-top:4px}
 <div class="wrap" id="app" hidden>
   <header class="head">
     <div class="headrow"><p class="eyebrow">Mayra Soto Burgos · Farmasi</p><button type="button" class="signout" id="signOut">Salir</button></div>
-    <h1>Mi Equipo</h1>
-    <p>Quién pidió llamada o se anotó a tu evento, el próximo mensaje para cada una, y todo lo que necesitas para compartir.</p>
+    <h1>Mi Panel</h1>
+    <p>Tus leads con el próximo mensaje para cada una, lo que necesitas para compartir, y en Tarjeta cambias tu evento, tus logros del equipo y el Team Hub.</p>
   </header>
 
   <nav class="tabs" role="tablist" aria-label="Secciones">
     <button type="button" role="tab" id="t-leads" aria-controls="p-leads" aria-selected="true">Leads<span class="count" id="dueCount" hidden></span></button>
     <button type="button" role="tab" id="t-share" aria-controls="p-share" aria-selected="false">Compartir</button>
     <button type="button" role="tab" id="t-scripts" aria-controls="p-scripts" aria-selected="false">Mensajes</button>
+    <button type="button" role="tab" id="t-edit" aria-controls="p-edit" aria-selected="false">Tarjeta</button>
   </nav>
 
   <!-- LEADS -->
@@ -239,12 +263,18 @@ h2:first-child{margin-top:4px}
     <h2>Cuando te digan...</h2>
     <div class="msgs" id="objMsgs"></div>
   </section>
+
+  <!-- EDIT: Mayra changes her card and Team Hub here (saved on Netlify) -->
+  <section id="p-edit" role="tabpanel" aria-labelledby="t-edit" hidden>
+    <p class="note">Lo que cambies aquí se guarda y sale en tu tarjeta enseguida. Escribe en español; el inglés es opcional (si lo dejas vacío, se usa el español). Si te equivocas, usa <b>Volver a la versión anterior</b>.</p>
+    <div id="editor"><p class="status">Cargando tu contenido...</p></div>
+  </section>
 </div>
 <p class="toast" id="toast" role="status" aria-live="polite" hidden></p>
 
 <script>
 (function () {
-  var SITE = 'https://farmasi.mayra.finessemedia.pro';
+  var SITE = 'https://mayra.okunami.pro';
   var STORE = 'https://www.farmasius.com/mayrasotoburgos';
   var JOIN = STORE + '/package-selection';
   var DAY = 86400000;
@@ -392,7 +422,7 @@ h2:first-child{margin-top:4px}
   function isDue(l) { var d = dueAt(l); return isActive(l) && (l.stage || 'new') !== 'talking' && d != null && d <= Date.now(); }
 
   // ---------- tabs ----------
-  var tabs = ['leads', 'share', 'scripts'];
+  var tabs = ['leads', 'share', 'scripts', 'edit'];
   function showTab(name) {
     tabs.forEach(function (t) {
       $('t-' + t).setAttribute('aria-selected', t === name ? 'true' : 'false');
@@ -666,5 +696,6 @@ h2:first-child{margin-top:4px}
   if (token()) unlock(); else lock('');
 })();
 </script>
+<script src="editor.js"></script>
 </body>
 </html>

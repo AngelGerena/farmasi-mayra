@@ -1,10 +1,10 @@
 // POST /api/hub {code} -> {hub}. Team members open Mayra's Team Hub with the shared team code.
-// TEAM_CODE is a Netlify environment variable (scope: Functions), separate from Mayra's own OWNER_PIN.
+// The team code is set by Mayra in her panel (falls back to the TEAM_CODE env var), separate from her own OWNER_PIN.
 // Ten wrong tries from one connection locks it for 15 minutes.
 import { getStore } from '@netlify/blobs'
 import { createHmac, timingSafeEqual } from 'node:crypto'
 import { json } from '../../lib/auth.mjs'
-import hub from '../../lib/hub-content.mjs'
+import { read, teamCode } from '../../lib/content.mjs'
 
 const MAX_TRIES = 10
 const LOCK_MS = 15 * 60 * 1000
@@ -13,7 +13,7 @@ function norm(v) { return String(v || '').trim().toLowerCase().slice(0, 64) }
 function digest(v) { return createHmac('sha256', 'team-code').update(v).digest() }
 
 export default async (req, context) => {
-  const real = norm(Netlify.env.get('TEAM_CODE'))
+  const real = norm(await teamCode())
   if (!real) return json({ error: 'not_configured' }, 503)
   let body = {}
   try { body = await req.json() } catch {}
@@ -34,7 +34,7 @@ export default async (req, context) => {
   }
 
   await store.delete(who)
-  return json({ hub })
+  return json({ hub: await read('hub') })
 }
 
 export const config = { path: '/api/hub', method: 'POST' }
