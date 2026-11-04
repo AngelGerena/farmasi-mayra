@@ -18,6 +18,13 @@ import { SYSTEM_RULES, TOOLS, liveFacts } from '../../lib/lola.mjs'
 
 const env = (k) => (globalThis.Netlify ? Netlify.env.get(k) : process.env[k]) || ''
 const json = (data, status = 200) => new Response(JSON.stringify(data), { status, headers: { 'content-type': 'application/json; charset=utf-8', 'cache-control': 'no-store' } })
+/** Lola writes plain text, but if the model slips into markdown, clean it so no stars or hashes show on the card. */
+export const plain = (t) => String(t || '')
+  .replace(/\*\*(.+?)\*\*/g, '$1').replace(/__(.+?)__/g, '$1')
+  .replace(/(^|[\s(])\*(\S[^*\n]*?\S|\S)\*(?=[\s).,;:!?]|$)/g, '$1$2')
+  .replace(/^#{1,6}\s+/gm, '').replace(/^\s*[-*•]\s+/gm, '- ')
+  .replace(/\[([^\]]+)\]\((https?:[^)\s]+)\)/g, '$1: $2')
+  .replace(/`([^`]+)`/g, '$1').replace(/\n{3,}/g, '\n\n').trim()
 const clip = (v, n) => String(v == null ? '' : v).replace(/[\u0000-\u0008\u000b-\u001f]/g, ' ').trim().slice(0, n)
 const PER_VISITOR_DAY = 40          // replies one visitor can get in a day
 const MAX_TURNS = 30                // messages in one conversation
@@ -116,7 +123,7 @@ export default async (req) => {
     }
   } catch (e) { console.log('lola failed', e.message) }
   if (!texts.length) return json({ error: 'busy', lead_id: leadId || null })
-  return json({ reply: texts.join('\n\n'), lead_id: leadId || null, products })
+  return json({ reply: plain(texts.join('\n\n')), lead_id: leadId || null, products })
 }
 
 export const config = { path: '/api/lola', method: ['GET', 'POST'] }
