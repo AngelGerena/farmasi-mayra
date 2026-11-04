@@ -1,0 +1,240 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>¿Farmasi es para ti? | Mayra Soto Burgos</title>
+<meta name="description" content="Is Farmasi a fit for you? Take Mayra Soto Burgos's 1-minute quiz and see what your Farmasi beauty business could look like.">
+<meta property="og:title" content="¿Farmasi es para ti? | Mayra Soto Burgos">
+<meta property="og:description" content="Quiz de 1 minuto: descubre cómo sería tu negocio de belleza con Farmasi.">
+<meta property="og:image" content="https://mayra.okunami.pro/images/photo.jpg">
+<link rel="canonical" href="https://mayra.okunami.pro/quiz/">
+<meta name="theme-color" content="#FFFFFF">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,500&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap">
+<link rel="stylesheet" href="../css/pages.css">
+<style>
+  .qprog{height:6px;border-radius:999px;background:var(--line);overflow:hidden}
+  .qprog i{display:block;height:100%;width:0;background:linear-gradient(90deg,#FF8A94,#E23D52);border-radius:999px;transition:width .3s ease}
+  .qcount{margin:0;font-size:12px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--rose)}
+  .qq{margin:0;font-family:var(--display);font-weight:700;font-size:28px;line-height:1.12;text-wrap:balance}
+  .opts{display:flex;flex-direction:column;gap:10px}
+  .opt{min-height:56px;padding:12px 18px;border:1.5px solid var(--line);border-radius:16px;background:#FFFFFF;text-align:left;font-size:16px;font-weight:500;cursor:pointer;transition:border-color .15s ease,background .15s ease,transform .1s ease}
+  .opt:active{transform:scale(.98)}
+  .opt[aria-pressed="true"]{border-color:var(--coral);background:var(--tint)}
+  .qback{align-self:flex-start;min-height:44px;border:0;background:none;padding:0;font-size:13px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--rose);cursor:pointer}
+  .rcard{border-radius:22px;background:linear-gradient(160deg,#FF8A94 0%,#FF5A68 50%,#E23D52 100%);color:#FFFFFF;box-shadow:0 14px 30px rgba(226,61,82,.3);padding:24px 22px;display:flex;flex-direction:column;gap:10px;position:relative;overflow:hidden}
+  .rcard::after{content:"";position:absolute;right:-60px;top:-60px;width:180px;height:180px;border-radius:50%;background:radial-gradient(circle,rgba(255,255,255,.35),rgba(255,255,255,0) 70%)}
+  .rcard small{position:relative;z-index:1;font-size:11px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:rgba(255,255,255,.9)}
+  .rcard h2{position:relative;z-index:1;margin:0;color:#FFFFFF;font-size:34px}
+  .rcard p{position:relative;z-index:1;margin:0;font-size:16px;color:rgba(255,255,255,.95)}
+  .steps{margin:0;padding:0 0 0 20px;display:flex;flex-direction:column;gap:8px;font-size:16px}
+  .steps li::marker{color:var(--coral);font-weight:700}
+</style>
+</head>
+<body>
+<main class="pg">
+  <div class="pg-top">
+    <a class="pg-back" href="../" data-t="back">&larr; Mi tarjeta</a>
+    <div class="lang" role="group" aria-label="Language"><button type="button" data-lang="en" aria-pressed="false">EN</button><button type="button" data-lang="es" aria-pressed="true">ES</button></div>
+  </div>
+
+  <!-- Intro -->
+  <section id="intro" class="hero">
+    <p class="eyebrow" data-t="eyebrow">Quiz · 6 preguntas · 1 minuto</p>
+    <h1 data-t="h1">¿Farmasi es para ti?</h1>
+    <p class="lede" data-t="lede">Seis preguntas rápidas y te digo cómo sería tu negocio de belleza con Farmasi, y cómo te ayudaría yo.</p>
+    <div class="face"><img src="../images/photo.jpg" alt="Mayra Soto Burgos" width="64" height="64"><span><b>Mayra Soto Burgos</b><span data-t="role">Directora Bronze Farmasi</span></span></div>
+    <div class="cta" style="margin-top:12px"><button type="button" class="pill coral" id="startBtn"><span data-t="start">Empezar</span></button></div>
+  </section>
+
+  <!-- Questions -->
+  <section id="quiz" class="form" hidden aria-live="polite">
+    <div class="qprog" aria-hidden="true"><i id="bar"></i></div>
+    <p class="qcount" id="qcount"></p>
+    <h2 class="qq" id="qq"></h2>
+    <div class="opts" id="opts"></div>
+    <button type="button" class="qback" id="qback" data-t="prev">&larr; Atrás</button>
+  </section>
+
+  <!-- Result -->
+  <section id="result" hidden>
+    <div class="form">
+      <article class="rcard"><small data-t="yours">Tu resultado</small><h2 id="rName"></h2><p id="rDesc"></p></article>
+      <h2 data-t="stepsH">Tu primera semana</h2>
+      <ol class="steps" id="rSteps"></ol>
+      <h2 data-t="helpH">Cómo te ayudo yo</h2>
+      <p class="prose" id="rHelp" style="margin:0"></p>
+      <div class="cta" id="rCta"></div>
+
+      <form class="form" id="lead" novalidate>
+        <h2 data-t="formH">¿Quieres que te escriba?</h2>
+        <p class="lede" style="font-size:15px;margin:0" data-t="formS">Déjame tu nombre y número, y te escribo por WhatsApp con tu resultado.</p>
+        <label class="field"><span data-t="name">Tu nombre</span><input id="lName" autocomplete="given-name" required></label>
+        <label class="field"><span>WhatsApp</span><input id="lPhone" type="tel" inputmode="tel" autocomplete="tel" data-ph="phPh" placeholder="787 555 0123" required></label>
+        <p class="err" id="lErr" role="alert" hidden></p>
+        <button type="submit" class="pill coral" id="lSend"><span data-t="send">Enviar</span></button>
+      </form>
+      <section class="done" id="done" hidden aria-live="polite">
+        <div class="mark"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></div>
+        <h2 id="doneH"></h2>
+        <p data-t="doneP">Te escribo pronto por WhatsApp. Mientras, mira cómo trabajo con mi equipo.</p>
+        <div class="cta"><a class="pill ink" href="../mi-equipo/"><span data-t="why">Por qué mi equipo</span></a></div>
+      </section>
+      <button type="button" class="link" id="retake" data-t="retake" style="border:0;background:none;cursor:pointer">Hacer el quiz otra vez</button>
+    </div>
+  </section>
+
+  <p class="credit"><span data-t="crafted">Hecho por</span> <a href="https://finessemedia.pro" target="_blank" rel="noopener">Finesse Media</a></p>
+</main>
+
+<form name="quiz-leads" data-netlify="true" netlify-honeypot="bot-field" hidden>
+  <input name="bot-field"><input name="name"><input name="phone"><input name="quiz"><input name="result"><input name="products"><input name="answers"><input name="lang"><input name="source">
+</form>
+<script src="../js/pages.js"></script>
+<script>
+(function () {
+  var D = {
+    es: { title: '¿Farmasi es para ti? | Mayra Soto Burgos', back: '← Mi tarjeta', eyebrow: 'Quiz · 6 preguntas · 1 minuto', h1: '¿Farmasi es para ti?',
+      lede: 'Seis preguntas rápidas y te digo cómo sería tu negocio de belleza con Farmasi, y cómo te ayudaría yo.',
+      role: 'Directora Bronze Farmasi', start: 'Empezar', prev: '← Atrás', q: 'Pregunta {i} de {n}', yours: 'Tu resultado',
+      stepsH: 'Tu primera semana', helpH: 'Cómo te ayudo yo', formH: '¿Quieres que te escriba?',
+      formS: 'Déjame tu nombre y número, y te escribo por WhatsApp con tu resultado.', name: 'Tu nombre', phPh: '787 555 0123', send: 'Enviar',
+      sending: 'Enviando...', doneP: 'Te escribo pronto por WhatsApp. Mientras, mira cómo trabajo con mi equipo.', why: 'Por qué mi equipo',
+      retake: 'Hacer el quiz otra vez', crafted: 'Hecho por', thanks: '¡Listo, {n}!',
+      call: 'Hablemos 15 minutos', join: 'Únete a mi equipo', event: 'Ven a mi próximo evento', shop: 'Ver mi tienda',
+      errName: 'Escribe tu nombre.', errPhone: 'Escribe tu número de WhatsApp de 10 dígitos.', errSend: 'No se pudo enviar. Revisa tu conexión e intenta otra vez.' },
+    en: { title: 'Is Farmasi a fit for you? | Mayra Soto Burgos', back: '← My card', eyebrow: 'Quiz · 6 questions · 1 minute', h1: 'Is Farmasi a fit for you?',
+      lede: 'Six quick questions and I will show you what your Farmasi beauty business could look like, and how I would help you.',
+      role: 'Farmasi Bronze Director', start: 'Start', prev: '← Back', q: 'Question {i} of {n}', yours: 'Your result',
+      stepsH: 'Your first week', helpH: 'How I will help you', formH: 'Want me to reach out?',
+      formS: 'Leave your name and number, and I will message you on WhatsApp with your result.', name: 'Your name', phPh: '407 555 0123', send: 'Send',
+      sending: 'Sending...', doneP: 'I will message you soon on WhatsApp. In the meantime, see how I work with my team.', why: 'Why my team',
+      retake: 'Take the quiz again', crafted: 'Crafted by', thanks: 'Got it, {n}!',
+      call: "Let's talk for 15 minutes", join: 'Join my team', event: 'Come to my next event', shop: 'See my store',
+      errName: 'Please enter your name.', errPhone: 'Please enter your 10-digit WhatsApp number.', errSend: 'Could not send. Check your connection and try again.' }
+  };
+  MS.translate(D);
+  var JOIN = 'https://www.farmasius.com/mayrasotoburgos/package-selection';
+  var SHOP = 'https://www.farmasius.com/mayrasotoburgos';
+  function o(id, es, en, pts) { return { id: id, es: es, en: en, pts: pts }; }
+  var QS = [
+    { es: '¿Qué te llama la atención de Farmasi?', en: 'What draws you to Farmasi?', opts: [
+      o('income', 'Ganar un dinero extra', 'Earning some extra money', { leader: 2, connector: 1 }),
+      o('discount', 'Descuentos en productos que ya uso', 'Discounts on products I already use', { shopper: 3 }),
+      o('own', 'Tener algo propio', 'Having something of my own', { leader: 2, creator: 1 }),
+      o('team', 'Conocer gente y ser parte de un equipo', 'Meeting people and being part of a team', { connector: 3 })] },
+    { es: '¿Cuánto tiempo podrías darle cada semana?', en: 'How much time could you give it each week?', opts: [
+      o('t1', '1 a 3 horas', '1 to 3 hours', { shopper: 2, creator: 1 }),
+      o('t2', '4 a 7 horas', '4 to 7 hours', { creator: 1, connector: 1 }),
+      o('t3', '8 horas o más', '8 hours or more', { leader: 2, connector: 1 })] },
+    { es: '¿Qué disfrutas más?', en: 'What do you enjoy most?', opts: [
+      o('content', 'Crear fotos y videos', 'Making photos and videos', { creator: 3 }),
+      o('talk', 'Conversar con la gente', 'Talking with people', { connector: 3 }),
+      o('try', 'Probar productos nuevos', 'Trying new products', { shopper: 3 }),
+      o('teach', 'Enseñar y motivar a otras', 'Teaching and motivating others', { leader: 3 })] },
+    { es: '¿Cómo te sientes frente a la cámara?', en: 'How do you feel in front of a camera?', opts: [
+      o('love', 'Me encanta', 'I love it', { creator: 3 }),
+      o('behind', 'Prefiero estar detrás', 'I prefer to stay behind it', { shopper: 1, leader: 1 }),
+      o('person', 'Prefiero en persona o por WhatsApp', 'I prefer in person or on WhatsApp', { connector: 2 })] },
+    { es: '¿Quiénes te rodean?', en: 'Who is in your circle?', opts: [
+      o('fam', 'Familia y amigas que aman la belleza', 'Family and friends who love beauty', { connector: 2, shopper: 1 }),
+      o('social', 'Seguidores en redes sociales', 'Followers on social media', { creator: 2 }),
+      o('groups', 'Grupos del trabajo, la iglesia o la comunidad', 'Groups from work, church or my community', { leader: 2, connector: 1 }),
+      o('zero', 'Empiezo desde cero', 'I am starting from zero', { shopper: 1, creator: 1 })] },
+    { es: '¿Dónde te ves en un año?', en: 'Where do you see yourself in a year?', opts: [
+      o('clients', 'Con clientas fieles que me compran', 'With loyal customers who buy from me', { connector: 2 }),
+      o('side', 'Con un negocio estable de medio tiempo', 'With a steady part-time business', { creator: 1, connector: 1, leader: 1 }),
+      o('lead', 'Liderando mi propio equipo', 'Leading my own team', { leader: 3 }),
+      o('enjoy', 'Disfrutando mis productos a mejor precio', 'Enjoying my products at a better price', { shopper: 3 })] }
+  ];
+  var ORDER = ['leader', 'creator', 'connector', 'shopper'];
+  var R = {
+    leader: { name: { es: 'Futura Líder', en: 'Future Leader' },
+      desc: { es: 'Piensas en grande. Te motiva crecer, aprender y ayudar a otras mujeres a crecer contigo.', en: 'You think big. You are motivated to grow, learn and help other women grow with you.' },
+      steps: { es: ['Aprende el sistema conmigo en tu primera semana.', 'Comparte tu historia y por qué empezaste.', 'Invita a una amiga a hacer este quiz.'],
+               en: ['Learn the system with me in your first week.', 'Share your story and why you started.', 'Invite a friend to take this quiz.'] },
+      help: { es: 'Te enseño paso a paso lo que yo hago como Directora, y crecemos juntas.', en: 'I will show you step by step what I do as a Director, and we will grow together.' },
+      cta: ['call', 'join', 'event'] },
+    creator: { name: { es: 'Creadora de Contenido', en: 'Content Creator' },
+      desc: { es: 'Tu fuerza es el contenido. Una foto, un video corto o una reseña honesta tuya puede hacer que alguien quiera probar un producto.', en: 'Your strength is content. A photo, a short video or an honest review from you can make someone want to try a product.' },
+      steps: { es: ['Elige 3 productos que te encanten y grábate usándolos.', 'Publica un video corto por semana con tu rutina.', 'Comparte el enlace de tu tienda en cada publicación.'],
+               en: ['Pick 3 products you love and film yourself using them.', 'Post one short video a week showing your routine.', 'Share your store link in every post.'] },
+      help: { es: 'Te paso ideas de contenido y te ayudo con tus primeras publicaciones.', en: 'I will share content ideas with you and help with your first posts.' },
+      cta: ['call', 'join', 'event'] },
+    connector: { name: { es: 'Conectora Social', en: 'Social Connector' },
+      desc: { es: 'A ti te encanta la gente, y a la gente le encantas tú. Recomiendas lo que te gusta de forma natural, en persona o por WhatsApp.', en: 'You love people, and people love you. You recommend what you like naturally, in person or on WhatsApp.' },
+      steps: { es: ['Haz una lista de 20 personas que aman la belleza.', 'Organiza una pequeña reunión de belleza en casa.', 'Crea una lista de difusión de WhatsApp para tus ofertas.'],
+               en: ['Make a list of 20 people who love beauty.', 'Host a small beauty get-together at home.', 'Start a WhatsApp broadcast list for your deals.'] },
+      help: { es: 'Te ayudo a planear tu primera reunión y te doy mensajes listos para enviar.', en: 'I will help you plan your first get-together and give you ready-to-send messages.' },
+      cta: ['call', 'event', 'join'] },
+    shopper: { name: { es: 'Compradora Inteligente', en: 'Smart Shopper' },
+      desc: { es: 'Ya amas los productos y quieres pagar menos por ellos. Es una gran forma de empezar, y si un día quieres compartir, ya sabrás de lo que hablas.', en: 'You already love the products and want to pay less for them. That is a great way to start, and if you ever want to share, you will already know what you are talking about.' },
+      steps: { es: ['Arma tu primer pedido con tus favoritos.', 'Prueba cada producto y anota lo que te encanta.', 'Cuéntale a una amiga cuando algo te funcione.'],
+               en: ['Build your first order with your favorites.', 'Try each product and note what you love.', 'Tell a friend when something works for you.'] },
+      help: { es: 'Te ayudo a escoger el paquete y los productos que más te convienen.', en: 'I will help you choose the package and products that fit you best.' },
+      cta: ['call', 'shop'] }
+  };
+  var HREF = { call: '../llamada/', join: JOIN, event: '../evento/', shop: SHOP };
+  var i = 0, ans = [], res = null;
+  function $(id) { return document.getElementById(id); }
+  function scoreIt() {
+    var s = { leader: 0, creator: 0, connector: 0, shopper: 0 };
+    ans.forEach(function (a) { for (var k in a.pts) s[k] += a.pts[k]; });
+    var best = ORDER[0]; ORDER.forEach(function (k) { if (s[k] > s[best]) best = k; }); return best;
+  }
+  function showQ(l) {
+    var q = QS[i];
+    $('bar').style.width = Math.round(i / QS.length * 100) + '%';
+    $('qcount').textContent = D[l].q.replace('{i}', i + 1).replace('{n}', QS.length);
+    $('qq').textContent = q[l];
+    var box = $('opts'); box.innerHTML = '';
+    q.opts.forEach(function (op) {
+      var b = document.createElement('button'); b.type = 'button'; b.className = 'opt'; b.textContent = op[l];
+      b.setAttribute('aria-pressed', ans[i] && ans[i].id === op.id ? 'true' : 'false');
+      b.addEventListener('click', function () {
+        ans[i] = op; b.setAttribute('aria-pressed', 'true');
+        setTimeout(function () { if (i < QS.length - 1) { i++; showQ(MS.lang()); } else finish(); }, 180);
+      });
+      box.appendChild(b);
+    });
+    $('qback').hidden = i === 0;
+  }
+  function showR(l) {
+    if (!res) return; var r = R[res];
+    $('rName').textContent = r.name[l]; $('rDesc').textContent = r.desc[l]; $('rHelp').textContent = r.help[l];
+    var ol = $('rSteps'); ol.innerHTML = '';
+    r.steps[l].forEach(function (s) { var li = document.createElement('li'); li.textContent = s; ol.appendChild(li); });
+    var c = $('rCta'); c.innerHTML = '';
+    r.cta.forEach(function (k, n) {
+      var a = document.createElement('a'); a.className = 'pill ' + (n === 0 ? 'coral' : 'ink'); a.href = HREF[k];
+      if (/^https/.test(HREF[k])) { a.target = '_blank'; a.rel = 'noopener'; }
+      var sp = document.createElement('span'); sp.textContent = D[l][k]; a.appendChild(sp); c.appendChild(a);
+    });
+  }
+  function finish() {
+    res = scoreIt(); $('bar').style.width = '100%';
+    $('quiz').hidden = true; $('result').hidden = false; showR(MS.lang()); window.scrollTo(0, 0);
+  }
+  function summary(l) { return [ans[1], ans[5]].filter(Boolean).map(function (a) { return a[l]; }).join(' · '); }
+  MS.onLang(function (l) { if (!$('quiz').hidden) showQ(l); showR(l); });
+  $('startBtn').addEventListener('click', function () { $('intro').hidden = true; $('quiz').hidden = false; i = 0; ans = []; showQ(MS.lang()); window.scrollTo(0, 0); });
+  $('qback').addEventListener('click', function () { if (i > 0) { i--; showQ(MS.lang()); } });
+  $('retake').addEventListener('click', function () { res = null; $('result').hidden = true; $('done').hidden = true; $('lead').hidden = false; $('intro').hidden = false; window.scrollTo(0, 0); });
+  $('lead').addEventListener('input', function () { $('lErr').hidden = true; });
+  $('lead').addEventListener('submit', function (e) {
+    e.preventDefault();
+    var L = D[MS.lang()], err = $('lErr'), btn = $('lSend'), name = $('lName').value.trim(), phone = MS.digits($('lPhone').value);
+    if (!name) { err.textContent = L.errName; err.hidden = false; return; }
+    if (phone.length < 11) { err.textContent = L.errPhone; err.hidden = false; return; }
+    btn.disabled = true; btn.firstElementChild.textContent = L.sending;
+    MS.postLead({ name: name, phone: phone, quiz: 'boss', result: res, products: '', answers: summary(MS.lang()) })
+      .then(function () { $('doneH').textContent = L.thanks.replace('{n}', name.split(/\s+/)[0]); $('lead').hidden = true; $('done').hidden = false; })
+      .catch(function () { err.textContent = L.errSend; err.hidden = false; })
+      .then(function () { btn.disabled = false; btn.firstElementChild.textContent = D[MS.lang()].send; });
+  });
+})();
+</script>
+</body>
+</html>

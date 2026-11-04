@@ -284,6 +284,10 @@ h2:first-child{margin-top:4px}
     info:  { es: 'Quiere información', en: 'Wants info', quiz: 'call' },
     shop:  { es: 'Quiere productos', en: 'Wants products', quiz: 'call' },
     event: { es: 'Viene al evento', en: 'Coming to the event', quiz: 'event' },
+    leader:    { es: 'Futura Líder', en: 'Future Leader', quiz: 'boss' },
+    creator:   { es: 'Creadora de Contenido', en: 'Content Creator', quiz: 'boss' },
+    connector: { es: 'Conectora Social', en: 'Social Connector', quiz: 'boss' },
+    shopper:   { es: 'Compradora Inteligente', en: 'Smart Shopper', quiz: 'boss' },
     none:  { es: 'En persona', en: 'Met in person', quiz: 'none' }
   };
   // Map stored result names back to a type key
@@ -300,7 +304,11 @@ h2:first-child{margin-top:4px}
   var LINE = {
     join: { es: 'Me alegra mucho que te interese unirte a mi equipo.', en: 'I am so glad you are interested in joining my team.' },
     info: { es: 'Te explico cómo funciona, sin ningún compromiso.', en: 'I will walk you through how it works, no strings attached.' },
-    shop: { es: 'Te ayudo a escoger lo que mejor te quede.', en: 'I will help you pick what suits you best.' }
+    shop: { es: 'Te ayudo a escoger lo que mejor te quede.', en: 'I will help you pick what suits you best.' },
+    leader: { es: 'Eso quiere decir que piensas en grande y te motiva ayudar a otras a crecer. Me encantaría trabajar contigo.', en: 'That means you think big and love helping others grow. I would love to work with you.' },
+    creator: { es: 'Eso quiere decir que tienes talento para crear contenido, y en Farmasi eso se nota mucho.', en: 'That means you have a talent for content, and in Farmasi that really shows.' },
+    connector: { es: 'Eso quiere decir que la gente confía en ti, y eso es lo más importante en este negocio.', en: 'That means people trust you, and that is the most important thing in this business.' },
+    shopper: { es: 'Eso quiere decir que ya amas los productos, y como influencer los compras a mejor precio.', en: 'That means you already love the products, and as an influencer you buy them at a better price.' }
   };
   var FOLLOW = {
     call: [
@@ -324,6 +332,17 @@ h2:first-child{margin-top:4px}
       { when: { es: 'Día 5 · después del evento', en: 'Day 5 · after the event' },
         es: 'Hola {n}, ¡gracias por tu interés en el evento! ¿Qué te pareció? Si quieres, hablamos 15 minutos y te contesto cualquier pregunta: ' + SITE + '/llamada/',
         en: 'Hi {n}, thank you for your interest in the event! What did you think? If you want, we can talk for 15 minutes and I will answer any questions: ' + SITE + '/llamada/' }
+    ],
+    boss: [
+      { when: { es: 'Día 0 · el mismo día', en: 'Day 0 · same day' },
+        es: '¡Hola {n}! Soy Mayra. Vi que hiciste mi quiz y te salió {r}. {line} ¿Te gustaría que habláramos 15 minutos esta semana?',
+        en: 'Hi {n}! It is Mayra. I saw you took my quiz and got {r}. {line} Would you like to talk for 15 minutes this week?' },
+      { when: { es: 'Día 2 · si no contestó', en: 'Day 2 · if no reply' },
+        es: 'Hola {n}, te escribí por tu resultado del quiz. Aquí puedes ver cómo trabajo con mi equipo, sin compromiso: ' + SITE + '/mi-equipo/\nY si prefieres, escoge un horario para hablar: ' + SITE + '/llamada/',
+        en: 'Hi {n}, I messaged you about your quiz result. Here is how I work with my team, no strings attached: ' + SITE + '/mi-equipo/\nOr pick a time to talk: ' + SITE + '/llamada/' },
+      { when: { es: 'Día 5 · último mensaje', en: 'Day 5 · last message' },
+        es: 'Hola {n}, no te quiero molestar. Si ahora no es buen momento, no pasa nada. Te invito a mi próximo evento por Zoom, sin compromiso: ' + SITE + '/evento/',
+        en: 'Hi {n}, I do not want to bother you. If now is not a good time, that is completely fine. You are welcome at my next Zoom event, no strings attached: ' + SITE + '/evento/' }
     ],
     none: [
       { when: { es: 'Día 0 · el mismo día', en: 'Day 0 · same day' },
@@ -358,6 +377,12 @@ h2:first-child{margin-top:4px}
   ];
 
   var SHARE = [
+    { t: { es: 'Mensaje personal · Quiz', en: 'Personal message · Quiz' }, src: 'msg', p: 'quiz',
+      es: 'Hola [nombre], hice un quiz de 1 minuto para ver si Farmasi es para ti y cómo sería tu negocio de belleza. ¿Lo haces y me cuentas qué te salió?\n{link}',
+      en: 'Hi [name], I made a 1-minute quiz to see if Farmasi is a fit for you and what your beauty business could look like. Will you take it and tell me what you got?\n{link}' },
+    { t: { es: 'Estado de WhatsApp · Quiz', en: 'WhatsApp status · Quiz' }, src: 'status', p: 'quiz',
+      es: '¿Farmasi es para ti? Descúbrelo en 1 minuto con mi quiz:\n{link}',
+      en: 'Is Farmasi a fit for you? Find out in 1 minute with my quiz:\n{link}' },
     { t: { es: 'Mensaje personal · Llamada', en: 'Personal message · Call' }, src: 'msg', p: 'llamada',
       es: 'Hola [nombre], estoy creciendo mi equipo de belleza con Farmasi y pensé en ti. ¿Te gustaría que habláramos 15 minutos? Sin compromiso. Aquí escoges el horario:\n{link}',
       en: 'Hi [name], I am growing my beauty team with Farmasi and thought of you. Would you like to talk for 15 minutes? No strings attached. Pick a time here:\n{link}' },
@@ -374,7 +399,7 @@ h2:first-child{margin-top:4px}
       es: 'Hola [nombre], ¿pudiste ver mi mensaje? Si quieres, hablamos 15 minutos esta semana. Aquí escoges el horario:\n{link}',
       en: 'Hi [name], did you get a chance to see my message? If you want, we can talk for 15 minutes this week. Pick a time here:\n{link}' }
   ];
-  var PAGES = [['llamada', 'Llamada'], ['mi-equipo', 'Por qué mi equipo'], ['evento', 'Evento']];
+  var PAGES = [['quiz', 'Quiz'], ['llamada', 'Llamada'], ['mi-equipo', 'Por qué mi equipo'], ['evento', 'Evento']];
   var LINKS = [
     ['Estado de WhatsApp', 'status'], ['Mensaje personal', 'msg'], ['Grupo de WhatsApp', 'group'],
     ['Flyer', 'flyer'], ['Letrero de mesa', 'tent'], ['Sticker en bolsa', 'bag'], ['En persona', 'person']
@@ -471,7 +496,7 @@ h2:first-child{margin-top:4px}
       b.addEventListener('click', function () { ptype = k; renderScripts(); });
       tp.appendChild(b);
     });
-    var sampleT = TYPES[ptype].quiz === 'event'
+    var sampleT = TYPES[ptype].quiz === 'boss' ? (slang === 'es' ? '8 horas o más · Liderando mi propio equipo' : '8 hours or more · Leading my own team') : TYPES[ptype].quiz === 'event'
       ? (slang === 'es' ? 'Noche de Oportunidad Farmasi · Jueves, 29 de octubre · 7:00 PM' : 'Farmasi Opportunity Night · Thursday, October 29 · 7:00 PM')
       : (slang === 'es' ? 'tarde (12:00 PM a 5:00 PM)' : 'afternoon (12:00 PM to 5:00 PM)');
     var sample = { name: slang === 'es' ? '[nombre]' : '[name]', result: ptype, answers: TYPES[ptype].quiz === 'none' ? '' : sampleT };
