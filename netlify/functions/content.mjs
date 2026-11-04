@@ -13,7 +13,10 @@ const WHICH = ['public', 'hub']
 export default async (req) => {
   const url = new URL(req.url)
   if (req.method === 'GET' && url.searchParams.get('scope') !== 'owner') {
-    const res = json(await read('public'))
+    // The Zoom details stay off the public card; people get them after they save their spot (/api/evento)
+    const pub = await read('public')
+    if (pub && pub.event && pub.event.join) pub.event = { ...pub.event, join: undefined, hasJoin: !!pub.event.join.url }
+    const res = json(pub)
     res.headers.set('cache-control', 'no-cache')
     return res
   }
