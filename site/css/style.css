@@ -156,3 +156,47 @@ button{font:inherit;color:inherit}
   .gl::after,.ring,.badge,.owner-pill{animation:none}
   .item,.gl{transition:none}
 }
+
+/* ---------- Lola, the chat assistant (shows only once switched on) ---------- */
+body.has-lola .card{padding-bottom:84px}
+.lola-fab{position:fixed;right:16px;bottom:calc(16px + env(safe-area-inset-bottom));z-index:40;min-height:52px;padding:0 20px 0 16px;border-radius:999px;font-weight:800;font-size:15px;letter-spacing:.2px}
+.lola-fab .ico{width:22px;height:22px}
+.lola{position:fixed;inset:0;z-index:60;display:flex;align-items:flex-end;justify-content:center}
+.lola-scrim{position:absolute;inset:0;background:rgba(45,53,78,.45)}
+.lola-panel{position:relative;width:100%;max-width:480px;height:min(88vh,760px);height:min(88dvh,760px);background:var(--white);border-radius:24px 24px 0 0;display:flex;flex-direction:column;box-shadow:0 -12px 40px rgba(45,53,78,.25);padding-bottom:env(safe-area-inset-bottom)}
+.lola-head{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px 16px 10px}
+.lola-who{display:flex;align-items:center;gap:12px;min-width:0}
+.lola-av{flex:none;width:44px;height:44px;border-radius:50%;background:linear-gradient(180deg,#FFA5AC,#E23D52);color:var(--white);font:700 22px/44px var(--display);text-align:center}
+.lola-head h2{margin:0;font:700 22px/1.1 var(--display);color:var(--slate)}
+.lola-head p{margin:2px 0 0;font-size:13px;color:var(--slate-mute)}
+.lola-x{flex:none;width:44px;height:44px;border:0;border-radius:50%;background:var(--petal);font-size:26px;line-height:1;color:var(--slate);cursor:pointer}
+.lola-reach{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:0 16px 10px;border-bottom:1px solid var(--blush)}
+.lola-reach a,.lola-fallback a{min-height:42px;border-radius:999px;font-size:13px;font-weight:700;padding:0 10px;white-space:nowrap}
+.lola-log{flex:1;overflow-y:auto;overscroll-behavior:contain;padding:14px 16px;display:flex;flex-direction:column;gap:10px}
+.lola-msg{max-width:86%;padding:10px 14px;border-radius:18px;font-size:15px;line-height:1.45;overflow-wrap:anywhere}
+.lola-msg p{margin:0}.lola-msg p+p{margin-top:8px}
+.lola-msg a{color:var(--raspberry);text-decoration:underline;font-weight:600}
+.lola-msg.her{align-self:flex-start;background:var(--petal);color:var(--slate);border-bottom-left-radius:6px}
+.lola-msg.me{align-self:flex-end;background:var(--coral);color:var(--white);border-bottom-right-radius:6px}
+.lola-msg.typing{display:flex;gap:5px;padding:14px}
+.lola-msg.typing i{width:7px;height:7px;border-radius:50%;background:var(--rose);animation:lolaDot 1s infinite ease-in-out}
+.lola-msg.typing i:nth-child(2){animation-delay:.15s}.lola-msg.typing i:nth-child(3){animation-delay:.3s}
+@keyframes lolaDot{0%,80%,100%{opacity:.3;transform:translateY(0)}40%{opacity:1;transform:translateY(-3px)}}
+.lola-fallback{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}
+.lola-prods{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px;max-width:92%}
+.lola-prods a{display:flex;align-items:center;gap:10px;padding:6px 10px 6px 6px;border:1px solid var(--blush);border-radius:14px;background:var(--white)}
+.lola-prods .ph{flex:none;width:56px;height:56px;border-radius:10px;background:var(--petal);overflow:hidden}
+.lola-prods img{width:100%;height:100%;object-fit:contain}
+.lola-prods .tx{display:flex;flex-direction:column;gap:2px;min-width:0}
+.lola-prods b{font-size:13px;line-height:1.3;font-weight:700;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.lola-prods .pr{font-size:13px;font-weight:800;color:var(--coral-deep)}
+.lola-prods s{color:var(--slate-mute);font-weight:500}
+.lola-quick{display:flex;gap:8px;overflow-x:auto;padding:0 16px 10px;scrollbar-width:none}
+.lola-quick::-webkit-scrollbar{display:none}
+.lola-chip{flex:none;min-height:40px;padding:0 14px;border:1.5px solid var(--pink);border-radius:999px;background:var(--white);color:var(--raspberry);font-size:13px;font-weight:700;cursor:pointer;white-space:nowrap}
+.lola-form{display:flex;gap:8px;align-items:flex-end;padding:8px 16px 4px;border-top:1px solid var(--blush)}
+.lola-form textarea{flex:1;min-width:0;min-height:46px;max-height:120px;resize:none;padding:12px 14px;border:1.5px solid var(--pink);border-radius:22px;font:16px/1.35 var(--body);color:var(--slate);background:var(--white)}
+.lola-form textarea:focus{outline:none;border-color:var(--coral)}
+.lola-form button{flex:none;width:46px;height:46px;border-radius:50%;padding:0}
+.lola-form button:disabled{opacity:.6}
+.lola-note{margin:0;padding:4px 16px 10px;font-size:11.5px;color:var(--slate-mute);text-align:center}
