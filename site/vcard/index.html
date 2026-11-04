@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Get your own vCard | OKUNAMI</title>
+<meta name="description" content="Like Mayra's card? Get your own digital business card from OKUNAMI, crafted by Finesse Media.">
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#FFFFFF">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,500&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap">
+<link rel="stylesheet" href="../css/pages.css">
+<style>.hp{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}.code{font-family:var(--display);font-size:28px;font-weight:700;color:var(--rose);letter-spacing:1px}</style>
+</head>
+<body>
+<main class="pg">
+  <div class="pg-top">
+    <a class="pg-back" href="../" data-t="back">&larr; Tarjeta de Mayra</a>
+    <div class="lang" role="group" aria-label="Language"><button type="button" data-lang="en" aria-pressed="false">EN</button><button type="button" data-lang="es" aria-pressed="true">ES</button></div>
+  </div>
+
+  <header class="hero">
+    <p class="eyebrow">OKUNAMI</p>
+    <h1 data-t="h1">¿Te gustó esta tarjeta?</h1>
+    <p class="lede" data-t="lede">Te hago una igual de bonita para tu negocio. Déjame tus datos y te escribo por WhatsApp.</p>
+  </header>
+
+  <form class="form" id="f" novalidate>
+    <label class="field"><span data-t="name">Tu nombre</span><input id="fName" autocomplete="name" required></label>
+    <label class="field"><span>WhatsApp</span><input id="fPhone" type="tel" inputmode="tel" autocomplete="tel" data-ph="phPh" placeholder="787 555 0123" required></label>
+    <label class="field"><span data-t="biz">¿A qué te dedicas?</span><input id="fBiz" data-ph="bizPh" placeholder="Ej. Farmasi, salón, bienes raíces"></label>
+    <label class="hp" aria-hidden="true">Website<input id="fWeb" tabindex="-1" autocomplete="off"></label>
+    <p class="err" id="fErr" role="alert" hidden></p>
+    <button type="submit" class="pill coral" id="fSend"><span data-t="send">Quiero mi vCard</span></button>
+    <p class="fine" data-t="fine">Angel Gerena · Finesse Media LLC. Sin compromiso.</p>
+  </form>
+
+  <section class="done" id="done" hidden aria-live="polite">
+    <div class="mark"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></div>
+    <h2 id="doneH"></h2>
+    <p data-t="doneP">Recibí tus datos. Si quieres adelantar, mándame un mensaje ahora:</p>
+    <p class="code" id="code"></p>
+    <div class="cta">
+      <a class="pill coral" id="wa" href="#" target="_blank" rel="noopener"><span data-t="wa">Escribirle a Angel por WhatsApp</span></a>
+      <a class="pill ink" id="sms" href="#"><span data-t="sms">O mándale un texto</span></a>
+    </div>
+  </section>
+
+  <p class="credit"><b>OKUNAMI</b> · <span data-t="crafted">Hecho por</span> <a href="https://finessemedia.pro" target="_blank" rel="noopener">Finesse Media</a></p>
+</main>
+<script src="../js/pages.js"></script>
+<script>
+(function () {
+  var D = {
+    es: { title: 'Quiero mi vCard | OKUNAMI', back: '← Tarjeta de Mayra', h1: '¿Te gustó esta tarjeta?',
+      lede: 'Te hago una igual de bonita para tu negocio. Déjame tus datos y te escribo por WhatsApp.',
+      name: 'Tu nombre', phPh: '787 555 0123', biz: '¿A qué te dedicas?', bizPh: 'Ej. Farmasi, salón, bienes raíces',
+      send: 'Quiero mi vCard', sending: 'Enviando...', fine: 'Angel Gerena · Finesse Media LLC. Sin compromiso.',
+      thanks: '¡Gracias, {n}!', doneP: 'Recibí tus datos. Si quieres adelantar, mándame un mensaje ahora:',
+      wa: 'Escribirle a Angel por WhatsApp', sms: 'O mándale un texto', crafted: 'Hecho por',
+      msg: 'Hola Angel, me gustó la vCard que le hiciste a Mayra Soto Burgos y quiero una para mí. Mi código es {c}.',
+      errName: 'Escribe tu nombre.', errPhone: 'Escribe tu número de WhatsApp de 10 dígitos.',
+      errSend: 'No se pudo enviar. Revisa tu conexión e intenta otra vez.', errBusy: 'Demasiados intentos. Intenta más tarde o escríbele a Angel directo.' },
+    en: { title: 'Get your own vCard | OKUNAMI', back: "← Mayra's card", h1: 'Like this card?',
+      lede: 'I will make you one just as beautiful for your business. Leave your details and I will message you on WhatsApp.',
+      name: 'Your name', phPh: '407 555 0123', biz: 'What do you do?', bizPh: 'E.g. Farmasi, salon, real estate',
+      send: 'I want my vCard', sending: 'Sending...', fine: 'Angel Gerena · Finesse Media LLC. No strings attached.',
+      thanks: 'Thank you, {n}!', doneP: 'I got your details. If you want to get started now, send me a message:',
+      wa: 'Message Angel on WhatsApp', sms: 'Or send a text', crafted: 'Crafted by',
+      msg: 'Hi Angel, I liked the vCard you made for Mayra Soto Burgos and I would like one for me. My code is {c}.',
+      errName: 'Please enter your name.', errPhone: 'Please enter your 10-digit WhatsApp number.',
+      errSend: 'Could not send. Check your connection and try again.', errBusy: 'Too many tries. Try again later or message Angel directly.' }
+  };
+  MS.translate(D);
+  var ANGEL = '14079609004', code = '', first = '';
+  function $(id) { return document.getElementById(id); }
+  function links(l) {
+    if (!code) return;
+    var m = encodeURIComponent(D[l].msg.replace('{c}', code));
+    $('wa').href = 'https://wa.me/' + ANGEL + '?text=' + m;
+    $('sms').href = 'sms:+' + ANGEL + '?&body=' + m;
+    $('doneH').textContent = D[l].thanks.replace('{n}', first);
+  }
+  MS.onLang(links);
+  $('f').addEventListener('input', function () { $('fErr').hidden = true; });
+  $('f').addEventListener('submit', function (e) {
+    e.preventDefault();
+    var l = MS.lang(), L = D[l], err = $('fErr'), btn = $('fSend');
+    var name = $('fName').value.trim(), phone = MS.digits($('fPhone').value);
+    if (!name) { err.textContent = L.errName; err.hidden = false; return; }
+    if (phone.length < 11) { err.textContent = L.errPhone; err.hidden = false; return; }
+    btn.disabled = true; btn.firstElementChild.textContent = L.sending;
+    fetch('/api/referral', { method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ name: name, phone: phone, business: $('fBiz').value.trim(), lang: l, website: $('fWeb').value }) })
+      .then(function (r) { return r.json().then(function (d) { if (!r.ok) throw d; return d; }); })
+      .then(function (d) {
+        code = d.code; first = name.split(/\s+/)[0]; $('code').textContent = code; links(MS.lang());
+        $('f').hidden = true; $('done').hidden = false; window.scrollTo(0, 0);
+      })
+      .catch(function (d) { err.textContent = d && d.error === 'busy' ? L.errBusy : L.errSend; err.hidden = false; })
+      .then(function () { btn.disabled = false; btn.firstElementChild.textContent = D[MS.lang()].send; });
+  });
+})();
+</script>
+</body>
+</html>
