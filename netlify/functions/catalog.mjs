@@ -20,8 +20,10 @@ export default async (req) => {
   let need = []
   if (section) need = SECTIONS.filter(([slug]) => slug === section)
   else if (q) {
-    const w = fold(q)
-    need = SECTIONS.filter(([slug, , es, en]) => (fold(slug.replace(/-+/g, ' ') + ' ' + es + ' ' + en)).split(' ').some((t) => t.length > 2 && w.includes(t)))
+    // most specific first: "piel seca" should copy the dry-skin section before every other skin section
+    const words = fold(q).split(/[^a-z0-9]+/).filter((x) => x.length > 2)
+    const hits = (sec) => { const tags = fold(sec[0].replace(/-+/g, ' ') + ' ' + sec[2] + ' ' + sec[3]).split(' '); return words.filter((w) => tags.includes(w)).length }
+    need = SECTIONS.map((sec) => [hits(sec), sec]).filter((x) => x[0] > 0).sort((a, b) => b[0] - a[0]).map((x) => x[1])
   }
   const missing = need.filter(([slug]) => !sections[slug]).slice(0, 2)
   if (missing.length) {
