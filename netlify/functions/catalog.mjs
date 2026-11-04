@@ -1,5 +1,5 @@
 // /api/catalog: search Mayra's Farmasi store from her card.
-//   GET ?q=hombre            -> {products:[{name, price, promo, img, url}]}  (up to 12, Spanish or English words)
+//   GET ?q=hombre&n=12       -> {products:[{name, price, promo, img, url}]}  (12 by default, up to 24; Spanish or English words)
 //   GET ?section=weight-control&n=3 -> the first n products of one store section (used by the Glow quiz)
 // Reads the copy kept fresh by catalog-refresh. If a needed section was never copied yet, it copies it now.
 import { SECTIONS, crawlSection, saveSection, search, store } from '../../lib/catalog.mjs'
@@ -41,7 +41,8 @@ export default async (req) => {
     return json({ products: sec ? sec.products.slice(0, n) : [] })
   }
   if (!q.trim()) return json({ products: [] })
-  return json({ products: search(q, sections, 12) })
+  const lim = Math.max(1, Math.min(24, Number(url.searchParams.get('n')) || 12))
+  return json({ products: search(q, sections, lim) })
 }
 
 export const config = { path: '/api/catalog', method: ['GET'] }
