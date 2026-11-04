@@ -26,7 +26,7 @@ Call requests and RSVPs post to the Netlify form `quiz-leads`; `netlify/function
 - Floating "Pregúntale a Lola" button on the card. Answers Farmasi product and price questions (live from the store copy), events, and joining Mayra's team; saves interested people as leads (source "Lola (chat)") in Mi Panel.
 - Code: `site/js/lola.js` (chat), `netlify/functions/lola.mjs` (/api/lola), `lib/lola.mjs` (rules, facts, tools).
 - Guardrails: no income or earnings claims, no sign-up prices or commission percentages, no health or cure claims, products and prices only from the store search.
-- Hidden until `ANTHROPIC_API_KEY` is set. Billed to whichever Anthropic account owns the key: set a monthly spend limit there too.
+- Hidden until `ANTHROPIC_API_KEY` is set. Live since Nov 4, 2026, on Mayra's own Claude Console organization (key "lola", not linked to a person, billed to her card). Changing the key needs a redeploy. Billed to whichever Anthropic account owns the key: set a monthly spend limit there too.
 - Limits: 40 replies per visitor per day, 30 messages per chat, `LOLA_DAILY_CAP` replies per day for the whole card (default 400).
 
 ## Environment variables (Netlify, scope Functions, production)
