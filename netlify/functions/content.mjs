@@ -42,6 +42,15 @@ export default async (req) => {
     return json({ ok: true })
   }
   if (req.method === 'PUT' && WHICH.includes(body.which) && body.data && typeof body.data === 'object') {
+    // Quiz cart links: only Farmasi links get through, so the card never sends people anywhere else
+    if (body.which === 'public' && body.data.carts) {
+      const ok = {}
+      for (const k of ['skin', 'makeup', 'weight', 'energy', 'digest']) {
+        const u = String(body.data.carts[k] || '').trim().slice(0, 500)
+        if (/^https:\/\/(www\.)?farmasius\.com\//i.test(u)) ok[k] = u
+      }
+      body.data.carts = ok
+    }
     await save(body.which, body.data)
     return json({ ok: true })
   }

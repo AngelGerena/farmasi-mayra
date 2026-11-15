@@ -212,6 +212,20 @@
     });
   }
 
+  // ---------- quiz carts (Farmasi Share Cart links, one per Glow quiz result) ----------
+  var CART_GOALS = [['skin', 'Piel'], ['makeup', 'Maquillaje'], ['weight', 'Control de peso'], ['energy', 'Energía'], ['digest', 'Digestión']];
+  var CART_RE = /^https:\/\/(www\.)?farmasius\.com\//i;
+  function cartsEditor(body) {
+    var c = DATA.public.carts || (DATA.public.carts = {});
+    body.appendChild(el('p', 'enote', 'Opcional. Para cada resultado del quiz "Find Your Glow": llena un carrito en tu cuenta de Farmasi, toca Share Cart y pega el enlace aquí. En el quiz sale el botón "Agregar todo al carrito" y la persona abre tu tienda con esos productos ya en su carrito. Si lo dejas vacío, ese botón no sale.'));
+    CART_GOALS.forEach(function (g) {
+      var x = input(g[1] + ' (enlace de Share Cart)', c[g[0]] || '', { type: 'url', full: true });
+      x.input.placeholder = 'https://www.farmasius.com/...';
+      x.input.addEventListener('input', function () { c[g[0]] = x.input.value.trim(); });
+      body.appendChild(x.label);
+    });
+  }
+
   // ---------- save / restore bars ----------
   function saveBar(which, label) {
     var bar = el('div', 'esave');
@@ -239,6 +253,9 @@
   function valid() {
     var bad = (DATA.public.spotlight || []).some(function (x) { return (x.es || x.en) && !x.name; });
     if (bad) { toast('A una persona en Logros le falta el nombre.'); return false; }
+    var carts = DATA.public.carts || {};
+    var off = CART_GOALS.filter(function (g) { return carts[g[0]] && !CART_RE.test(carts[g[0]]); })[0];
+    if (off) { toast('El enlace de ' + off[1] + ' tiene que ser de farmasius.com (cópialo de Share Cart).'); return false; }
     return true;
   }
   function fail(x) {
@@ -272,6 +289,7 @@
     storyEditor(section('Tu historia'));
     listEditor(section('Lo que le das a tu equipo'), 'promises');
     listEditor(section('Primeros 30 días'), 'plan');
+    cartsEditor(section('Carritos del quiz (opcional)'));
     saveBar('public', 'Guardar mi tarjeta');
     host = root.appendChild(el('div', 'egrp'));
     host.appendChild(el('h2', 'egroup', 'Team Hub'));
