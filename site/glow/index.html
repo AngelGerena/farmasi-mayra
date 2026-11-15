@@ -42,6 +42,12 @@
   .pcard img{width:100%;height:100%;object-fit:contain;display:block}
   .pcard b{font-size:12px;line-height:1.25;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
   .pcard i{font-style:normal;font-size:13px;font-weight:800;color:var(--rose);margin-top:auto}
+  .pgrid li{display:flex;flex-direction:column;gap:6px;min-width:0}
+  .pgrid .pcard{flex:1}
+  .padd{display:flex;align-items:center;justify-content:center;gap:5px;min-height:40px;padding:0 6px;border-radius:999px;font-size:12px;font-weight:800;line-height:1.1;text-align:center;color:#FFFFFF;background:linear-gradient(180deg,#FF8A95 0%,#E23D52 70%,#B8243E 100%);box-shadow:0 6px 12px rgba(226,61,82,.3),0 1px 0 rgba(255,255,255,.45) inset}
+  .padd svg{width:15px;height:15px;flex:none;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+  .padd svg circle{fill:currentColor;stroke:none}
+  .phint{margin:8px 0 0;font-size:13px;line-height:1.4;color:var(--muted,#6B5A60);text-align:center}
   .note{margin:0;font-size:13px;color:var(--mute);background:var(--tint);border-radius:12px;padding:10px 12px}
 </style>
 </head>
@@ -76,6 +82,7 @@
       <article class="rcard"><small data-t="yours">Tu resultado</small><h2 id="rName"></h2><p id="rDesc"></p></article>
       <h2 data-t="picksH">Lo que te recomiendo</h2>
       <ul class="pgrid" id="rProds"></ul>
+      <p class="phint" id="rHint" hidden></p>
       <div class="links" id="rLinks"></div>
       <p class="note" id="rNote" hidden></p>
       <div class="cta" id="rCta"></div>
@@ -147,6 +154,9 @@
       formH: '¿Quieres que te escriba?', formS: 'Déjame tu nombre y número, y te ayudo a escoger por WhatsApp.', name: 'Tu nombre', phPh: '787 555 0123',
       send: 'Enviar', sending: 'Enviando...', doneP: 'Te escribo pronto por WhatsApp. Mientras, puedes ver mi tienda.', store: 'Ver mi tienda',
       retake: 'Hacer el quiz otra vez', crafted: 'Hecho por', thanks: '¡Listo, {n}!', call: 'Hablemos 15 minutos', shopAll: 'Ver toda mi tienda',
+      add: 'Al carrito', addAll: 'Agregar todo al carrito', seeAll: 'Ver todo en Farmasi',
+      hintOne: 'Cada botón abre el producto en mi tienda Farmasi, con Agregar al carrito listo.',
+      hintAll: 'Agregar todo al carrito abre mi tienda Farmasi con lo que te recomiendo ya en tu carrito.',
       wnote: 'Los suplementos no sustituyen una alimentación balanceada ni el ejercicio. Si estás embarazada, lactando o tomas medicamentos, consulta a tu médico antes de usarlos.',
       errName: 'Escribe tu nombre.', errPhone: 'Escribe tu número de WhatsApp de 10 dígitos.', errSend: 'No se pudo enviar. Revisa tu conexión e intenta otra vez.' },
     en: { title: 'Find Your Glow | Mayra Soto Burgos', back: '← My card', eyebrow: 'Quiz · 3 questions · 30 seconds', h1: 'Find Your Glow',
@@ -155,6 +165,9 @@
       formH: 'Want me to reach out?', formS: 'Leave your name and number, and I will help you choose on WhatsApp.', name: 'Your name', phPh: '407 555 0123',
       send: 'Send', sending: 'Sending...', doneP: 'I will message you soon on WhatsApp. In the meantime, take a look at my store.', store: 'See my store',
       retake: 'Take the quiz again', crafted: 'Crafted by', thanks: 'Got it, {n}!', call: "Let's talk for 15 minutes", shopAll: 'See my whole store',
+      add: 'Add to cart', addAll: 'Add all to cart', seeAll: 'See all on Farmasi',
+      hintOne: 'Each button opens the product in my Farmasi store, with Add to cart ready.',
+      hintAll: 'Add all to cart opens my Farmasi store with my picks for you already in your cart.',
       wnote: 'Supplements do not replace a balanced diet and exercise. If you are pregnant, nursing or take medication, check with your doctor before using them.',
       errName: 'Please enter your name.', errPhone: 'Please enter your 10-digit WhatsApp number.', errSend: 'Could not send. Check your connection and try again.' }
   };
@@ -233,28 +246,51 @@
     });
     $('rNote').hidden = goal !== 'weight' && goal !== 'energy' && goal !== 'digest'; $('rNote').textContent = D[l].wnote;
     var c = $('rCta'); c.innerHTML = '';
-    [['shopAll', 'https://www.farmasius.com/mayrasotoburgos', 'coral'], ['call', '../llamada/', 'ink']].forEach(function (x) {
+    // "Add all to cart" only shows once Mayra pastes a Farmasi Share Cart link for this result in Mi Panel
+    var cart = cartLink(goal), btns = [];
+    if (cart) btns.push(['addAll', cart, 'coral', true]);
+    btns.push(['seeAll', P[res[0]] || 'https://www.farmasius.com/mayrasotoburgos', cart ? 'ink' : 'coral', !cart]);
+    btns.push(['call', '../llamada/', 'ink']);
+    btns.forEach(function (x) {
       var a = document.createElement('a'); a.className = 'pill ' + x[2]; a.href = x[1];
       if (/^https/.test(x[1])) { a.target = '_blank'; a.rel = 'noopener'; }
+      if (x[3]) a.insertAdjacentHTML('afterbegin', CART_SVG);
       var sp = document.createElement('span'); sp.textContent = D[l][x[0]]; a.appendChild(sp); c.appendChild(a);
     });
+    drawProds(l);
+  }
+  var CART_SVG = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 4h2l2.2 10.2a1.5 1.5 0 0 0 1.5 1.2h8.6a1.5 1.5 0 0 0 1.5-1.1L21 8H6.2"/><circle cx="9.5" cy="19.5" r="1.3"/><circle cx="17" cy="19.5" r="1.3"/></svg>';
+  var CARTS = {};
+  MS.content().then(function (d) { CARTS = (d && d.carts) || {}; if (res) showR(MS.lang()); }).catch(function () {});
+  function cartLink(g) {
+    var u = String(CARTS[g] || '').trim();
+    return /^https:\/\/(www\.)?farmasius\.com\//i.test(u) ? u : '';
+  }
+  var PRODS = [];
+  function drawProds(l) {
+    var box = $('rProds'); box.innerHTML = '';
+    PRODS.forEach(function (p) {
+      var li = document.createElement('li'), a = document.createElement('a'); a.className = 'pcard'; a.href = p.url; a.target = '_blank'; a.rel = 'noopener';
+      var ph = document.createElement('span'); ph.className = 'ph';
+      if (p.img) { var im = new Image(); im.src = p.img; im.alt = ''; im.loading = 'lazy'; ph.appendChild(im); }
+      var b = document.createElement('b'); b.textContent = p.name;
+      var pr = document.createElement('i'); pr.textContent = '$' + Number(p.promo || p.price).toFixed(2);
+      a.appendChild(ph); a.appendChild(b); if (p.price) a.appendChild(pr); li.appendChild(a);
+      var add = document.createElement('a'); add.className = 'padd'; add.href = p.url; add.target = '_blank'; add.rel = 'noopener';
+      add.setAttribute('aria-label', D[l].add + ': ' + p.name);
+      add.insertAdjacentHTML('afterbegin', CART_SVG); var t = document.createElement('span'); t.textContent = D[l].add; add.appendChild(t);
+      li.appendChild(add); box.appendChild(li);
+    });
+    var h = $('rHint'); h.hidden = !PRODS.length; h.textContent = cartLink(goal) ? D[l].hintAll : D[l].hintOne;
   }
   // Real products from the first recommended section (her store copy); quietly skipped if unavailable
   function products(key) {
-    var box = $('rProds'); box.innerHTML = '';
+    PRODS = []; drawProds(MS.lang());
     var slug = String(P[key] || '').split('/product-list/')[1]; slug = slug ? slug.split('?')[0] : '';
     if (!slug) return;
     fetch('/api/catalog?section=' + encodeURIComponent(slug) + '&n=3').then(function (r) { return r.ok ? r.json() : { products: [] }; })
-      .then(function (d) {
-        (d.products || []).forEach(function (p) {
-          var li = document.createElement('li'), a = document.createElement('a'); a.className = 'pcard'; a.href = p.url; a.target = '_blank'; a.rel = 'noopener';
-          var ph = document.createElement('span'); ph.className = 'ph';
-          if (p.img) { var im = new Image(); im.src = p.img; im.alt = ''; im.loading = 'lazy'; ph.appendChild(im); }
-          var b = document.createElement('b'); b.textContent = p.name;
-          var pr = document.createElement('i'); pr.textContent = '$' + Number(p.promo || p.price).toFixed(2);
-          a.appendChild(ph); a.appendChild(b); if (p.price) a.appendChild(pr); li.appendChild(a); box.appendChild(li);
-        });
-      }).catch(function () {});
+      .then(function (d) { PRODS = (d.products || []).slice(0, 3); drawProds(MS.lang()); })
+      .catch(function () {});
   }
   function finish() { res = picks(goal, ans); products(res[0]); $('bar').style.width = '100%'; $('quiz').hidden = true; $('result').hidden = false; showR(MS.lang()); window.scrollTo(0, 0); }
   MS.onLang(function (l) { if (!$('quiz').hidden) showQ(l); showR(l); });
